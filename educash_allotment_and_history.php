@@ -104,7 +104,7 @@ function allocate_educash_form_page()
 	top:0;
 	right:0;
     z-index: 1;
-    padding-top: 80px;
+    padding-top: 5%;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.4);
@@ -116,8 +116,9 @@ function allocate_educash_form_page()
 	margin:auto;
     padding: 0;
     border: 1px solid #888;
-    width: 50%;
-	height:auto;
+    width: 55%;
+	height:80%;
+	overflow:auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
@@ -137,7 +138,7 @@ function allocate_educash_form_page()
 
 .closebg {
     color: white;
-    float: right;
+    float: left;
     font-size: 28px;
     font-weight: bold;
 }
@@ -150,6 +151,7 @@ function allocate_educash_form_page()
 }
 
 .modal-headerbg {
+	width:100%;
     padding: 2px 16px;
     background-color: #5cb85c;
     color: white;
@@ -402,10 +404,22 @@ function allocate_educash_form_page()
         require('pdf_library/invoice_functions.php');
         $pdf = new PDF_Invoice( 'P', 'mm', 'A4' );
         $pdf->AddPage();
-        $pdf->Image("https://electronicsguide.000webhostapp.com/wp-content/uploads/2017/01/eg_logo.jpg",10,10,53.898305,60);
-        $pdf->right_blocks(70, 25, 20, "EduGorilla");
-		$pdf->right_blocks(71, 35, 12, "U74999UP2016PTC088614");
-        $pdf->addCompanyAddress("House No. 4719/A,\n".
+
+		$pdf->right_blocks(7, 10, 22, "EduGorilla community pvt. ltd.");
+		$pdf->right_blocks(7, 20, 12, "U74999UP2016PTC088614");
+		$pdf->Image("https://electronicsguide.000webhostapp.com/wp-content/uploads/2017/01/eg_logo.jpg",10,30,53.898305,60);
+		
+		$pdf->right_blocks(100, 33, 30, "INVOICE");
+		$pdf->right_blocks(100, 53, 18, "DATE: ");
+		$pdf->right_blocks(150, 95, 12, "Bill To: ");
+		$pdf->right_blocks(100, 225, 18, "PAYMENT MADE: ");
+		$pdf->right_blocks(7, 265, 18, "THANKS FOR YOUR BUSINESS");
+		
+		$pdf->right_blocks(130, 53, 18, date("Y/m/d"));
+		$pdf->right_blocks(160, 225, 18, "Rs. ".$money."/-");
+		
+		
+		$pdf->addCompanyAddress("House No. 4719/A,\n".
                                 "Sector 23A,\n" .
                                 "Gurgaon - 122002,\n".
                                 "India.\n" .
@@ -416,11 +430,8 @@ function allocate_educash_form_page()
                                $client_city.' - '.$client_postal_code."\n".
                                $client_state."\n" .
                                $client_country);
-        $pdf->left_blocks(80, 90, "DATE: "." ".date("Y/m/d"));
-        $pdf->left_blocks(80, 100, "AMOUNT IN RUPEES: ".$money."/-");
-        $pdf->right_blocks(2, 80, 16, "INVOICE");
-        $pdf->right_blocks(1, 90, 12, "Bill To:");
-        $cols=array( "ITEM"      => 61,
+							   
+		$cols=array( "ITEM"      => 61,
                      "RATE"      => 43,
                      "QUANTITY"  => 43,
                      "AMOUNT"    => 43,);
@@ -431,7 +442,7 @@ function allocate_educash_form_page()
                      "AMOUNT"    => "C");
         $pdf->addLineFormat( $cols);
         $pdf->addLineFormat($cols);
-        $y    = 157;
+        $y    = 180;
 		$educash_rate = get_option("current_rate");
         $line = array( "ITEM"      => "EDUCASH",
                        "RATE"      => $educash_rate['rate'],
@@ -439,13 +450,7 @@ function allocate_educash_form_page()
                        "AMOUNT"    => "Rs. ".$money."/-");
         $size = $pdf->addLine( $y, $line );
         $y   += $size + 2;
-        $pdf->left_blocks(80, 200, "TOTAL: ");
-        $pdf->left_blocks(80, 220, "PAYMENT MADE: ");
-
-		$pdf->left_blocks(40, 200, "Rs. ".$money."/-");
-        $pdf->left_blocks(40, 220, "Rs. ".$money."/-");
-        $pdf->right_blocks(25, 200, 16, "Thanks For Your Business");
-
+							   
 		$file_name = sys_get_temp_dir();
 		$file_name.= "/invoice.pdf";
 		$pdf->Output($file_name , "F");
@@ -556,9 +561,9 @@ function transaction_history_form_page()
                                            IF('$client_Name' != '', client_id = '$client_ID_result', 1=1)");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE IF('$admin_Name' != '', admin_id = '$admin_ID_result', 1=1) AND
                                             IF('$client_Name' != '', client_id = '$client_ID_result', 1=1)");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -566,7 +571,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
@@ -582,9 +587,9 @@ function transaction_history_form_page()
                                            IF('$client_Name' != '', client_id = '$client_ID_result', 1=1) AND DATE(time) BETWEEN '$date' AND '2050-12-31' ");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE IF('$admin_Name' != '', admin_id = '$admin_ID_result', 1=1) AND
                                             IF('$client_Name' != '', client_id = '$client_ID_result', 1=1) AND DATE(time) BETWEEN '$date' AND '2050-12-31' ");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -592,7 +597,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
@@ -608,9 +613,9 @@ function transaction_history_form_page()
                                            IF('$client_Name' != '', client_id = '$client_ID_result', 1=1) AND DATE(time) BETWEEN 'TRUE' AND '$date2' ");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE IF('$admin_Name' != '', admin_id = '$admin_ID_result', 1=1) AND
                                             IF('$client_Name' != '', client_id = '$client_ID_result', 1=1) AND DATE(time) BETWEEN 'TRUE' AND '$date2' ");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -618,7 +623,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
@@ -631,9 +636,9 @@ function transaction_history_form_page()
             else{
             $results = $wpdb->get_results("SELECT * FROM $table_name3 WHERE DATE(time) BETWEEN '$date' AND '2050-12-31' ");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE DATE(time) BETWEEN '$date' AND '2050-12-31' ");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions done from ".$_POST['date']." is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -641,7 +646,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
@@ -654,9 +659,9 @@ function transaction_history_form_page()
             else{
             $results = $wpdb->get_results("SELECT * FROM $table_name3 WHERE DATE(time) BETWEEN 'TRUE' AND '$date2' ");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE DATE(time) BETWEEN 'TRUE' AND '$date2' ");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions done till ".$_POST['date2']." is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -664,7 +669,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
@@ -677,9 +682,9 @@ function transaction_history_form_page()
             else{
             $results = $wpdb->get_results("SELECT * FROM $table_name3 WHERE DATE(time) BETWEEN '$date' AND '$date2' ");
             $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE DATE(time) BETWEEN '$date' AND '$date2' ");
-            echo "<center><span style='color:green;'>Total educash transactions are <b>" . $total . "</b></span>";
+            echo "<span style='color:green;'>Total EduCash transactions are <b>" . $total . "</b></span>";
             echo "<p>The history of transactions done from ".$_POST['date']." to ".$_POST['date2']." is:</p>";
-            echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<center><table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             foreach ($results as $r) {
                 $Admin_Id = $r->admin_id;
                 $Client_Id = $r->client_id;
@@ -687,7 +692,7 @@ function transaction_history_form_page()
                 $client_email_result = $wpdb->get_var("SELECT user_email FROM $users_table WHERE ID = '$Client_Id' ");
                 echo "<tr><td>" . $r->id . "</td><td>" . $admin_email_result . "</td><td>" . $client_email_result . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
             }
-            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+            echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>EduCash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
             echo "</table></center><br/>";
             }
       }
