@@ -290,7 +290,7 @@ function allocate_educash_form_page()
 					<td></td>
 					<th>Amount (Amount paid by client)</th>
 					<td>
-						<input type='number' id='money22' class='popup_input_field' name='money' min='0' value = "<?php echo $_POST['money1']; ?>" max='100000000'>
+						<input type='number' id='money22' class='popup_input_field' name='money' min='0' value = "<?php $educash_rate = get_option("current_rate"); echo $educash_rate['rate']*$_POST['educash1']; ?>" max='100000000'>
 						<span style='color:red;' id='errmsgf3'></span>
 					</td>
 				</tr>
@@ -323,13 +323,6 @@ function allocate_educash_form_page()
 						<input type='number' id='educash11' name='educash1' min='-100000000' value = "<?php echo $_POST['educash1']; ?>" max='100000000'>
 						<span><?php echo $educasherr;?> </span>
                         <span style='color:red;' id='errmsg2'></span>
-					</td>
-				</tr>
-				<tr>
-					<th>Amount (Amount paid by client)</th>
-					<td>
-						<input type='number' id='money11' name='money1' min='0' value = "<?php echo $_POST['money1']; ?>" max='100000000'>
-						<span style='color:red;' id='errmsg3'></span>
 					</td>
 				</tr>
 				<tr>
