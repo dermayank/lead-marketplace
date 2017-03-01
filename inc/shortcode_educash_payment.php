@@ -36,8 +36,8 @@
         <form name="tranaction_form" method="post" action="">
           <div class="pay_card"  style="background-image: url("<?php echo $background;?>");">
             <div class ="pay_card2">
-            <input type="text" id="rspay" value="<?php echo $conversion; ?>"  hidden/>
-            <input type="text" id="karmapay" value="<?php echo $conversion_karmas;?>"  hidden/>
+              <input id="rspay" value="<?php echo $conversion; ?>" type="hidden"/>
+              <input id="karmapay" value="<?php echo $conversion_karmas;?>"  type="hidden"/>
               <input name="userid" id="userid" value="<?php echo $current_user->id; ?>" type="hidden" />
               <input name="allocation_page" id="allocation_page" value="<?php echo $allocation_page; ?>" type="hidden" />
               <input name="email" id="email" value="<?php echo $current_user->user_email; ?>" type="hidden" />
