@@ -778,7 +778,6 @@ function get_user_educash()
 	  $current_educash = 0;
 
 	  $current_user_id = get_current_user_id();
-	  echo $current_user_id;
 	  $table_name1 = $wpdb->prefix . 'edugorilla_lead_client_mapping';
 	  $sql = "SELECT * FROM $table_name1 WHERE client_id = $current_user_id order by date_time";
 	  $totalrows = $wpdb->get_results($sql);
