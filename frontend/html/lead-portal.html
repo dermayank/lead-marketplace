@@ -48,8 +48,7 @@
 	            </a>
             </ul>
 		</div>
-		<div class="container col-sm-8">
-			<div ng-hide="cards.length">No items found</div>
+		<div class="container col-sm-8" ng-init="cardsNotEmpty = 'false'">
 			<div ng-repeat="card in cards" class="repeated-item">
 				<div class="container col-sm-6" id="stamp" ng-if="cardSelectionCriteria(card)">
 					<div class="contents">
@@ -64,6 +63,7 @@
 					<div class="content col-sm-12">
 						<h6>Query</h6>
 						<p>{{card.query}}</p>
+						<p>Updated {{card.relativeTime}}</p>
 						<p ng-if="card.isUnlocked">Email : {{card.email}}</p>
 						<p ng-if="card.isUnlocked">Contact : {{card.contact_no}}</p>
 						<div class="hide_lead" ng-if="!card.isUnlocked && !cardHiddenStatus(card)">
@@ -84,6 +84,7 @@
 					</div>
 				</div>
 			</div>
+			<div ng-hide="cardsNotEmptyVariable">No leads found</div>
 		</div>
 	</div>
 </div>
