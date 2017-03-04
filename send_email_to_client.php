@@ -211,7 +211,8 @@ function edugorilla_client(){
 					<?php } ?>
 				</datalist>
 				<div id="get_location">
-					<input list="location_list" name="location0" size="50"><input type="button" value="  +  " onclick="addLocation()" >
+					<input list="location_list" name="location0" size="50" value="Enter a location to filter by."><input
+						type="button" value="  +  " onclick="addLocation()">
 				</div>
 				<input type="text" hidden name="location_count" id="location_count" value="1">
 				<font color="red"><?php echo $c_errors['location']; ?></font></td></tr>
@@ -223,7 +224,8 @@ function edugorilla_client(){
 					<?php } ?>
 				</datalist>
 				<div id="get_category">
-					<input list="categories_list" name="category0" size="50"><input type="button" value="  +  " onclick="add()" >
+					<input list="categories_list" name="category0" size="50"
+					       value="Enter a category to filter by."><input type="button" value="  +  " onclick="add()">
 				</div>
 				<input type="text" hidden name="category_count" id="category_count" value="1">
 			<font color="red"><?php echo $c_errors['category']; ?></font></td></tr>
