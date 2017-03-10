@@ -1,8 +1,12 @@
 <?php
+require_once __DIR__ . '/frontend/class-Educash-Helper.php';
+
 function allocate_educash_form_page()
 {
     global $wpdb;
+	global $table_name3;
     $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
+    global $users_table;
     $users_table = $wpdb->prefix.users;
 
 //Checking if the admin has filled adequate information to submit the form to allot educash and inserting the legal values in table
@@ -16,49 +20,39 @@ function allocate_educash_form_page()
             echo '<script>alert("The field of educash cannot be blank");</script>';
             }
 			else {
-			$clientName = $_POST['clientName'];
+            $clientName	= $_POST['clientName'];
             $check_client = $wpdb->get_var("SELECT COUNT(ID) from $users_table WHERE user_email = '$clientName' ");
             if($check_client == 0){
                 echo '<script>alert("This client does not exist in our database");</script>';
             }
 			else{
-            $educash_added = $_POST['educash'];
-            $client_ID_result = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientName' ");
-            $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID_result' ");
-            $final_total = $total + $educash_added;
-            if($final_total>=0){
-            $money = $_POST['money'];
-            $adminName = wp_get_current_user();
-            $adminComment = $_POST['adminComment'];
-            $time = current_time('mysql');
-            $wpdb->insert($table_name3, array(
-                'time' => $time,
-                'admin_id' => $adminName->ID,
-                'client_id' => $client_ID_result,
-                'transaction' => $educash_added,
-                'amount' => $money,
-                'comments' => $adminComment
-            ));
+				$educash_added = $_POST['educash'];
+				$adminName = wp_get_current_user();
+				$time = current_time('mysql');
+				$money = $_POST['money'];
+				$adminComment = $_POST['adminComment'];
+				
+				$firstname = $_POST['client_firstname'];
+				$lastname = $_POST['client_lastname'];
+				$street = $_POST['client_street'];
+				$city = $_POST['client_city'];
+				$postalcode = $_POST['client_postalcode'];
+				$state = $_POST['client_state'];
+				$country = $_POST['client_country'];
+				
+				$initiate_transaction = new EduCash_Helper();
+				$initiate_transaction->add_educash($clientName, $educash_added, $money, $adminComment, $firstname, $lastname, $street, $money, $postalcode, $state, $country);
 			
-			update_user_meta($client_ID_result, 'user_general_first_name', $_POST['client_firstname']);
-			update_user_meta($client_ID_result, 'user_general_last_name', $_POST['client_lastname']);
-			update_user_meta($client_ID_result, 'user_address_street_and_number', $_POST['client_street']);
-			update_user_meta($client_ID_result, 'user_address_city', $_POST['client_city']);
-			update_user_meta($client_ID_result, 'user_address_postal_code', $_POST['client_postalcode']);
-			update_user_meta($client_ID_result, 'user_address_county', $_POST['client_state']);
-			update_user_meta($client_ID_result, 'user_address_country', $_POST['client_country']);
-			
-			$all_meta_for_user = get_user_meta( $client_ID_result );
-	        $client_firstname = $all_meta_for_user['user_general_first_name'][0];
-	        $client_lastname = $all_meta_for_user['user_general_last_name'][0];
-	        $client_street = $all_meta_for_user['user_address_street_and_number'][0];
-	        $client_city = $all_meta_for_user['user_address_city'][0];
-	        $client_postal_code = $all_meta_for_user['user_address_postal_code'][0];
-	        $client_state = $all_meta_for_user['user_address_county'][0];
-	        $client_country = $all_meta_for_user['user_address_country'][0];
+			    $all_meta_for_user = get_user_meta( $client_ID_result );
+	            $client_firstname = $all_meta_for_user['user_general_first_name'][0];
+	            $client_lastname = $all_meta_for_user['user_general_last_name'][0];
+	            $client_street = $all_meta_for_user['user_address_street_and_number'][0];
+	            $client_city = $all_meta_for_user['user_address_city'][0];
+	            $client_postal_code = $all_meta_for_user['user_address_postal_code'][0];
+	            $client_state = $all_meta_for_user['user_address_county'][0];
+	            $client_country = $all_meta_for_user['user_address_country'][0];
            }
         }
-		}
 		}
 		}
 
@@ -163,7 +157,6 @@ function allocate_educash_form_page()
     function validate_allotment_form() {
     var x = document.getElementById("clientName11").value;
     var y = document.getElementById("educash11").value;
-    var z = document.getElementById("money11").value;
     if (x == "" && (y == "" || y == 0)) {
         document.getElementById('errmsg1').innerHTML = "* This field cannot be blank";
         document.getElementById('errmsg2').innerHTML = "* This field cannot be blank or 0";
@@ -177,11 +170,7 @@ function allocate_educash_form_page()
         document.getElementById('errmsg2').innerHTML = "* This field cannot be blank or 0";
         return false;
     }
-    if (z < 0) {
-        document.getElementById('errmsg3').innerHTML = "* This field cannot be negative";
-		return false;
-    }
-	if(x != "" && y != 0 && z >= 0) {
+	if(x != "" && y != 0) {
 	    return true;
 	}
 }
@@ -369,6 +358,8 @@ function allocate_educash_form_page()
 
     $client_display_name = $wpdb->get_var("SELECT display_name FROM $users_table WHERE user_email = '$clientName' ");
     if ($_POST['submit'] && (!empty($_POST['clientName'])) && (!empty($_POST['educash'])) && (!($check_client == 0))) {
+		$total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
+		$final_total = $total;
         if($final_total<0){
            echo "<center><span style='color:red;'>The total balance that the client ".$_POST['clientName']." has
                  is ".$total. ". Your entry will leave this client with negative amount of educash which is not allowed.</span></center>";
@@ -402,13 +393,17 @@ function allocate_educash_form_page()
 		$pdf->right_blocks(7, 20, 12, "U74999UP2016PTC088614");
 		$pdf->Image("https://electronicsguide.000webhostapp.com/wp-content/uploads/2017/01/eg_logo.jpg",10,30,53.898305,60);
 		
-		$pdf->right_blocks(100, 33, 30, "INVOICE");
-		$pdf->right_blocks(100, 53, 18, "DATE: ");
+		$pdf->right_blocks(120, 33, 30, "INVOICE");
+		$pdf->right_blocks(120, 53, 18, "DATE: ");
+		$pdf->right_blocks(120, 63, 18, "TRANSACTION ID: ");
 		$pdf->right_blocks(150, 95, 12, "Bill To: ");
 		$pdf->right_blocks(100, 225, 18, "PAYMENT MADE: ");
 		$pdf->right_blocks(7, 265, 18, "THANKS FOR YOUR BUSINESS");
 		
-		$pdf->right_blocks(130, 53, 18, date("Y/m/d"));
+		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
+		
+		$pdf->right_blocks(150, 53, 18, date("Y/m/d"));
+		$pdf->right_blocks(180, 63, 18, $r->id);
 		$pdf->right_blocks(160, 225, 18, "Rs. ".$money."/-");
 		
 		
@@ -418,12 +413,12 @@ function allocate_educash_form_page()
                                 "India.\n" .
                                 "hello@edugorilla.com\n\n".
                                 "+91 9410007819");
-        $pdf->addClientAddress($client_firstname.' '.$client_lastname."\n".
-		                       $client_street."\n".
-                               $client_city.' - '.$client_postal_code."\n".
-                               $client_state."\n" .
-                               $client_country);
-							   
+        $pdf->addClientAddress($firstname.' '.$lastname."\n".
+		                       $street."\n".
+                               $city.' - '.$postalcode."\n".
+                               $state."\n" .
+                               $country);
+
 		$cols=array( "ITEM"      => 61,
                      "RATE"      => 43,
                      "QUANTITY"  => 43,
