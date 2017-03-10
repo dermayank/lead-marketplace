@@ -2,9 +2,34 @@
 $appear = '';
 
 require_once(explode("wp-content", __FILE__)[0] . "wp-load.php");
+require_once __DIR__ . '/../database/class-DataBase-Helper.php';
 
 class EduCash_Helper
 {
+
+    public function add_educash($clientEmail, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country)
+	{
+		global $wpdb;
+        $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
+        $users_table = $wpdb->prefix.users;
+
+        $client_ID = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientEmail' ");
+        $final_total = $this->get_educash($client_ID_result) + $educash;
+        if($final_total>=0){
+			$add_to_database = new DataBase_Helper();
+			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country);
+		}
+	}
+	
+	public function get_educash($client_ID)
+	{
+		global $wpdb;
+        $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
+        $users_table = $wpdb->prefix.users;
+	
+	    $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
+		return $total;
+	}
 
 	public function removeEduCashFromCurrentUser($amount)
 	{
