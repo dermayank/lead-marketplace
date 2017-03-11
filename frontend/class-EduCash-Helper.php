@@ -20,13 +20,13 @@ class EduCash_Helper
 			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country);
 		}
 	}
-	
+
 	public function get_educash($client_ID)
 	{
 		global $wpdb;
         $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
         $users_table = $wpdb->prefix.users;
-	
+
 	    $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
 		return $total;
 	}
@@ -74,36 +74,39 @@ class EduCash_Helper
 	  $current_user = $userId;
   	  global $wpdb;
   	  $current_educash = 0;
+	   $out = get_option("user_educash_count");
+	  if($out['users_id']!= $userId){
+		  //echo "calledthis";
+	  	  $current_user_id = $userId;
+	  	  $table_name1 = $wpdb->prefix . 'edugorilla_lead_client_mapping';
+	  	  $sql = "SELECT * FROM $table_name1 WHERE client_id = $current_user_id order by date_time";
+	  	  $totalrows = $wpdb->get_results($sql);
 
-  	  $current_user_id = $userId;
-  	  $table_name1 = $wpdb->prefix . 'edugorilla_lead_client_mapping';
-  	  $sql = "SELECT * FROM $table_name1 WHERE client_id = $current_user_id order by date_time";
-  	  $totalrows = $wpdb->get_results($sql);
+	  	  $table_name2 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
+	  	  $sql = "SELECT * FROM $table_name2 WHERE client_id = $current_user_id";
+	  	  $total_cash = $wpdb->get_results($sql);
+	  	  $i = 0;
+	  	  if(count($total_cash)>0)
+	  	  {
+	  		foreach ($total_cash as $cash)
+	  		{
+	  		   if($cash->transaction > 0){
+	  			 $date = $cash->time;
+	  			 $consumption[$i]['date']= $date;
+	  			 $consumption[$i]['spent'] = $cash->transaction;
+	  			 $consumption[$i]['val'] = 0;
+	  			 $i=$i+1;
+	  			 $current_educash = $current_educash + ($cash->transaction);}
+	  		}
+	  	  }
 
-  	  $table_name2 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
-  	  $sql = "SELECT * FROM $table_name2 WHERE client_id = $current_user_id";
-  	  $total_cash = $wpdb->get_results($sql);
-  	  $i = 0;
-  	  if(count($total_cash)>0)
-  	  {
-  		foreach ($total_cash as $cash)
-  		{
-  		   if($cash->transaction > 0){
-  			 $date = $cash->time;
-  			 $consumption[$i]['date']= $date;
-  			 $consumption[$i]['spent'] = $cash->transaction;
-  			 $consumption[$i]['val'] = 0;
-  			 $i=$i+1;
-  			 $current_educash = $current_educash + ($cash->transaction);}
-  		}
-  	  }
+	  	  $current_educash = $current_educash - count($totalrows);
+	  	  if($current_educash<0)
+	  		 $current_educash = 0;
 
-  	  $current_educash = $current_educash - count($totalrows);
-  	  if($current_educash<0)
-  		 $current_educash = 0;
-
-	  $user_cash = array("user_educash"=>$current_educash);
-  	  update_option("user_educash_count",$user_cash);
+		  $user_cash = array("user_educash"=>$current_educash,"users_id"=>$current_user_id);
+	  	  update_option("user_educash_count",$user_cash);
+	  }
 	  $out = get_option("user_educash_count");
 	  return $out['user_educash'];
 	}

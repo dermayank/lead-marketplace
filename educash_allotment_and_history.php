@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/frontend/class-Educash-Helper.php';
+require_once __DIR__ . '/frontend/class-EduCash-Helper.php';
 
 function allocate_educash_form_page()
 {
@@ -31,7 +31,7 @@ function allocate_educash_form_page()
 				$time = current_time('mysql');
 				$money = $_POST['money'];
 				$adminComment = $_POST['adminComment'];
-				
+
 				$firstname = $_POST['client_firstname'];
 				$lastname = $_POST['client_lastname'];
 				$street = $_POST['client_street'];
@@ -39,10 +39,10 @@ function allocate_educash_form_page()
 				$postalcode = $_POST['client_postalcode'];
 				$state = $_POST['client_state'];
 				$country = $_POST['client_country'];
-				
+
 				$initiate_transaction = new EduCash_Helper();
 				$initiate_transaction->add_educash($clientName, $educash_added, $money, $adminComment, $firstname, $lastname, $street, $money, $postalcode, $state, $country);
-			
+
 			    $all_meta_for_user = get_user_meta( $client_ID_result );
 	            $client_firstname = $all_meta_for_user['user_general_first_name'][0];
 	            $client_lastname = $all_meta_for_user['user_general_last_name'][0];
@@ -178,7 +178,7 @@ function allocate_educash_form_page()
     var x = document.getElementById("clientName22").value;
     var y = document.getElementById("educash22").value;
     var z = document.getElementById("money22").value;
-	
+
     if (x == "" && (y == "" || y == 0)) {
         document.getElementById('errmsgf1').innerHTML = "* This field cannot be blank";
         document.getElementById('errmsgf2').innerHTML = "* This field cannot be blank or 0";
@@ -287,7 +287,7 @@ function allocate_educash_form_page()
 <center><b>Comments (optional)</b><br/><textarea rows='4' cols='60' id='adminComment22' class='popup_input_field' name='adminComment' maxlength='500'><?php echo $_POST['adminComment1']; ?></textarea><br/><br/>
 						<input type='submit' name='submit'><br/><br/></center>
 
-			
+
 </form>
 </div>
     </div>
@@ -295,7 +295,7 @@ function allocate_educash_form_page()
 </div>
         <div class="wrap">
 		<h1>Use this form to allocate educash to a client</h1>
-		
+
 		<form method='post' onsubmit = "return validate_allotment_form()" action="<?php echo $_SERVER['REQUEST_URI'];?>">
 			<table class="form-table">
 				<tr>
@@ -347,7 +347,7 @@ function allocate_educash_form_page()
 			}}
 	    display_dialogue();</script>";
 		};
-		
+
 		if($final_total < 0){
 			   echo "<center><span style='color:red;'>The total balance that the client ".$_POST['clientName']." has
                  is ".$total. ". Your entry will leave this client with negative amount of educash which is not allowed.</span></center>";
@@ -392,21 +392,21 @@ function allocate_educash_form_page()
 		$pdf->right_blocks(7, 10, 22, "EduGorilla community pvt. ltd.");
 		$pdf->right_blocks(7, 20, 12, "U74999UP2016PTC088614");
 		$pdf->Image("https://electronicsguide.000webhostapp.com/wp-content/uploads/2017/01/eg_logo.jpg",10,30,53.898305,60);
-		
+
 		$pdf->right_blocks(120, 33, 30, "INVOICE");
 		$pdf->right_blocks(120, 53, 18, "DATE: ");
 		$pdf->right_blocks(120, 63, 18, "TRANSACTION ID: ");
 		$pdf->right_blocks(150, 95, 12, "Bill To: ");
 		$pdf->right_blocks(100, 225, 18, "PAYMENT MADE: ");
 		$pdf->right_blocks(7, 265, 18, "THANKS FOR YOUR BUSINESS");
-		
+
 		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
-		
+
 		$pdf->right_blocks(150, 53, 18, date("Y/m/d"));
 		$pdf->right_blocks(180, 63, 18, $r->id);
 		$pdf->right_blocks(160, 225, 18, "Rs. ".$money."/-");
-		
-		
+
+
 		$pdf->addCompanyAddress("House No. 4719/A,\n".
                                 "Sector 23A,\n" .
                                 "Gurgaon - 122002,\n".
@@ -438,7 +438,7 @@ function allocate_educash_form_page()
                        "AMOUNT"    => "Rs. ".$money."/-");
         $size = $pdf->addLine( $y, $line );
         $y   += $size + 2;
-							   
+
 		$file_name = sys_get_temp_dir();
 		$file_name.= "/invoice.pdf";
 		$pdf->Output($file_name , "F");
