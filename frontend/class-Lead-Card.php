@@ -143,7 +143,12 @@ class Lead_Card implements JsonSerializable
 
 	public function edu_shortcode($appear)
 	{
-		include 'html/lead-portal.html';
+		if (is_user_logged_in()) {
+			include 'html/lead-portal.html';
+		} else {
+			$redirecting_url = home_url("/login");
+			echo '<script>location.href="' . $redirecting_url . '";</script>';
+		}
 		return null;
 	}
 

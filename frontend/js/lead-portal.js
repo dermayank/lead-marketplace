@@ -15,18 +15,20 @@ function showHint(str) {
 	angular.module('leadPortalModule', ['ngAnimate'])
 		.controller('leadsFromAPI', ['$scope', '$http', function ($scope, $http) {
 			$scope.cardSelectionCriteria = function(card){
+				$scope.cardsNotEmptyVariable = false;
 				if(!$scope.user_hidden && card.isHidden) {
 					return false;
 				}
 				if ($scope.user_purchased && !card.isUnlocked) {
 					return false;
 				}
-				if ($scope.userSelectedLocations != 0 && !($scope.containsInArray($scope.userSelectedLocations, card.location))) {
+				if ($scope.userSelectedLocations != 0 && !($scope.containsInArray($scope.userSelectedLocations, card.locationName))) {
 					return false;
 				}
-				if ($scope.userSelectedCategories != 0 && !($scope.containsInArray($scope.userSelectedCategories, card.category))) {
+				if ($scope.userSelectedCategories != 0 && !($scope.containsInArray($scope.userSelectedCategories, card.categoryName))) {
 					return false;
 				}
+				$scope.cardsNotEmptyVariable = true;
 				return true;
 			};
 			$scope.cardHiddenStatus = function (card) {
@@ -176,6 +178,7 @@ function showHint(str) {
 					if (card.categoryId == -1) {
 						card.categoryName = "Unknown Category";
 					}
+					card.relativeTime = moment(card.date_time, "YYYY-MM-DD HH:mm:ss").fromNow();
 					$scope.cards.push(card);
 				}
 				$scope.reCalcCounts();

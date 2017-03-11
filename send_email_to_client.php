@@ -49,18 +49,46 @@ function edugorilla_client(){
 			# code...
 			$notification = $value.", ".$notification;
 		}
-		$_location = $_POST['location'];
-		$_category = $_POST['category'];
 
-		foreach ($_category as $cat) {
+		$category_count = $_POST['category_count'];
+		$location_count = $_POST['location_count'];
+
+		$category = array();
+		$location = array();
+		for ($i=0; $i <$category_count ; $i++) { 
 			# code...
-			$all_cat =  $cat.",".$all_cat;
+			$category_name = "category".$i;
+			array_push($category, $_POST[$category_name]);
 		}
 
-
-		foreach ($_location as $loc) {
+		for ($i=0; $i < $location_count ; $i++) { 
 			# code...
-			$all_loc = $loc.",".$all_loc;
+			$location_name = "location".$i;
+			array_push($location, $_POST[$location_name]);
+		}
+
+		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		foreach ($categories_list as $cat_value) {
+			# code...
+			foreach ($category as $category_value) {
+				# code...
+			if ($category_value == $cat_value->name) {
+				# code...
+				$all_cat = $cat_value->term_id.",".$all_cat;
+				}
+			}
+		}
+
+		$location_list = get_terms('locations', array('hide_empty' => false));
+		foreach ($location_list as $loc_value) {
+			# code...
+			foreach ($location as $location_value) {
+				# code...
+			if ($location_value == $loc_value->name) {
+				# code...
+				$all_loc = $loc_value->term_id.",".$all_loc;
+				}
+			}
 		}
 
 		/** Error Checking **/
@@ -68,10 +96,10 @@ function edugorilla_client(){
 
 
 		if (empty($location)) $c_errors['location'] = "Empty";
-		elseif (!preg_match("/([A-Za-z]+)/", $location)) $c_errors['location'] = "Invalid Name";
+		//elseif (!preg_match("/([A-Za-z]+)/", $location)) $c_errors['location'] = "Invalid Name";
 
 		if (empty($category)) $c_errors['category'] = "Empty";
-		elseif (!preg_match("/([A-Za-z]+)/", $category)) $c_errors['category'] = "Invalid Name";
+		//elseif (!preg_match("/([A-Za-z]+)/", $category)) $c_errors['category'] = "Invalid Name";
 
 		$user_id = get_current_user_id(); 
      	$user_detail = get_user_meta($user_id); 
@@ -119,6 +147,52 @@ function edugorilla_client(){
 }
 	
 ?>
+
+	<script type="text/javascript">
+
+		var ctrC = 1;
+		var ctrL = 1;
+
+		function add() {
+
+		  //Create an input type dynamically.
+		  var element = document.createElement("input");
+		  var br = document.createElement("br");
+		  var element_name = "category"+ctrC;
+		  element.setAttribute("list" , "categories_list");
+		  element.setAttribute("size" , 50);
+		  element.setAttribute("name" , element_name);
+
+		  var foo = document.getElementById("get_category");
+
+		  foo.insertBefore(br , foo.childNodes[0])
+		  foo.insertBefore(element , foo.childNodes[0]);
+		  ctrC++;
+		  document.getElementById("category_count").value = ctrC;
+
+		}
+
+		function addLocation() {
+
+		  //Create an input type dynamically.
+		  var element = document.createElement("input");
+		  var br = document.createElement("br");
+		  var element_name = "location"+ctrL;
+		  element.setAttribute("list" , "location_list");
+		  element.setAttribute("size" , 50);
+		  element.setAttribute("name" , element_name);
+
+		  var foo = document.getElementById("get_location");
+
+		  foo.insertBefore(br , foo.childNodes[0])
+		  foo.insertBefore(element , foo.childNodes[0]);
+		  ctrL++;
+		  document.getElementById("location_count").value = ctrL;
+
+		}
+
+	</script>
+
 	<!-- Client Form -->
 	<form action="" method="post">
 		<p><?php echo $client_success; ?></p>
@@ -130,20 +204,30 @@ function edugorilla_client(){
 				<font color="red"><?php echo $c_errors['notification']; ?></font>
 			</td></tr>
 			<tr><td>Location/State</td><td>
-				<?php $location = get_terms('locations', array('hide_empty' => false));
-					foreach ($location as $value) {
-			?>
-				<input type="checkbox" value="<?php echo $value->term_id; ?>" name="location[]" id="location"><?php echo $value->name; ?>/	
-			<?php	}
-				 ?>
+				<?php $location = get_terms('locations', array('hide_empty' => false)); ?>
+				<datalist id="location_list">
+					<?php foreach ($location as $value) {?>
+					<option value="<?php echo $value->name; ?>">
+					<?php } ?>
+				</datalist>
+				<div id="get_location">
+					<input list="location_list" name="location0" size="50" value="Enter a location to filter by."><input
+						type="button" value="  +  " onclick="addLocation()">
+				</div>
+				<input type="text" hidden name="location_count" id="location_count" value="1">
 				<font color="red"><?php echo $c_errors['location']; ?></font></td></tr>
 			<tr><td>Category</td><td>
-				<?php $categories = get_terms('listing_categories', array('hide_empty' => false));
-					foreach ($categories as $value) {
-			?>
-				<input type="checkbox" value="<?php echo $value->term_id; ?>" name="category[]" id="category"><?php echo $value->name; ?>/	
-			<?php	}
-				 ?>
+				<?php $categories = get_terms('listing_categories', array('hide_empty' => false)); ?>
+				<datalist id="categories_list">
+					<?php foreach ($categories as $value) {?>
+					<option value="<?php echo $value->name;?>">
+					<?php } ?>
+				</datalist>
+				<div id="get_category">
+					<input list="categories_list" name="category0" size="50"
+					       value="Enter a category to filter by."><input type="button" value="  +  " onclick="add()">
+				</div>
+				<input type="text" hidden name="category_count" id="category_count" value="1">
 			<font color="red"><?php echo $c_errors['category']; ?></font></td></tr>
 			<tr><td><input type="submit" name="submit_client_pref"/></td></tr>
 		</table>

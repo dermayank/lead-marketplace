@@ -773,6 +773,10 @@ html, body {
 	margin-bottom: 5px;
 }
 
+.col-sm-6 {
+
+}
+
 .container.cards {
 	max-width: 900px;
 	/*display: flex;*/
@@ -851,8 +855,8 @@ input[type="text"] {
 	padding: 0px;
 	max-width: 225px;
 	min-width: 225px;
-	max-height: 300px;
-	min-height: 300px;
+	max-height: 23rem;
+	min-height: 23rem;
 	border: 1px solid #ddd;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }

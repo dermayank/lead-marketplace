@@ -766,5 +766,6 @@ function edugorilla_shortcode_require()
 	);
 }
 
+
 add_action('wp_enqueue_scripts', 'edugorilla_shortcode_require');
 ?>
