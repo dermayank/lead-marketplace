@@ -1,3 +1,29 @@
+
+var modal = document.getElementById('custom_myModal');
+
+var btn = document.getElementById("custom_myBtn");
+
+var span = document.getElementsByClassName("custom_close")[0];
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+function Load()
+{
+    document.getElementById('custom_myBtn').click();
+}
+
 function showHint(str) {
     if (str.length == 0) {
         document.getElementById("rspayment").innerHTML = "0";
