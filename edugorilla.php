@@ -219,6 +219,7 @@ include_once plugin_dir_path(__FILE__) . "educash_allotment_and_history.php";
 include_once plugin_dir_path(__FILE__) . 'frontend/class-Lead-Card.php'; /*Cards used for displaying leads */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-Custom-Lead-API.php'; /*API to be used for displaying leads */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduCash-Helper.php'; /*Utility class used for dealing with EduCash */
+include_once plugin_dir_path(__FILE__) . 'frontend/class-EduLead-Helper.php'; /*Utility class used for managing Leads */
 include_once plugin_dir_path(__FILE__) . 'database/class-DataBase-Helper.php'; /*Utility class used for dealing with Database */
 include_once plugin_dir_path(__FILE__) . "send_email_to_client.php";
 
@@ -290,6 +291,9 @@ function edugorilla()
 					'date_time' => current_time('mysql')
 				)
 			);
+
+			$lead_id = $wpdb->insert_id;
+			$lead_card = new Lead_Card($lead_id, $name, $contact_no, $email, $query, $category, $location_id, current_time('mysql'));
 			$user_login = str_replace(" ", "_", $name);
 
 			$uid = email_exists($email);
@@ -323,7 +327,7 @@ function edugorilla()
 						$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 					}
 
-					$institute_send_emails_status = send_mail($edugorilla_email_subject, $edugorilla_email_body);
+					$institute_send_emails_status = send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
 
 					$institute_emails = explode(",", $json_result->emails);
 					foreach ($institute_emails as $institute_email) {

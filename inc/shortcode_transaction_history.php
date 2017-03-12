@@ -28,17 +28,15 @@
        {
          foreach ($total_cash as $cash)
          {
-            if($cash->transaction > 0){
               $date = $cash->time;
               $consumption[$i]['date']= $date;
               $consumption[$i]['spent'] = $cash->transaction;
               $consumption[$i]['val'] = 0;
               $i=$i+1;
-              $current_educash = $current_educash + ($cash->transaction);}
+           $current_educash = $current_educash + ($cash->transaction);
          }
        }
 
-       $current_educash = $current_educash - count($totalrows);
        if($current_educash<0)
           $current_educash = 0;
 
@@ -58,19 +56,19 @@
     <ul>
       <?php
 
-        if(count($totalrows)>0){
-          foreach($totalrows as $row){
-            $date = $row->date_time;
-            $new_time = explode(" ",$row->date_time);
-            $get_date = $new_time[0];
-            $get_time = $new_time[1];
+      /*if(count($totalrows)>0){
+		foreach($totalrows as $row){
+		  $date = $row->date_time;
+		  $new_time = explode(" ",$row->date_time);
+		  $get_date = $new_time[0];
+		  $get_time = $new_time[1];
 
-            $consumption[$i]['date'] = $date;
-            $consumption[$i]['spent'] = 1;
-            $consumption[$i]['val'] = 1;
-            $i=$i+1;
-          }
-        }
+		  $consumption[$i]['date'] = $date;
+		  $consumption[$i]['spent'] = 1;
+		  $consumption[$i]['val'] = 1;
+		  $i=$i+1;
+		}
+	  }*/
 
         function cmp($a, $b){
             return strnatcmp($a["date"], $b["date"]);
@@ -82,11 +80,20 @@
           $new_format = explode(" ",$value['date']);
           $date = $new_format[0];
           $time = $new_format[1];
-          if($value['val']==1){
+      if ($value['spent'] < 0){
       ?>
                 <li>
                   <div>
-                    <time><tl class="tl">You</tl><tl class="tl">spend</tl><tl class="tl">1</tl><tl class="tl">educash<tl class="tl">on</tl><tl class="tl"><?php echo $date;?></tl><tl class="tl">at</tl><tl class="tl"><?php echo $time;?></tl></time>
+                    <time>
+                      <tl class="tl">You</tl>
+                      <tl class="tl">spent</tl>
+                      <tl class="tl"><?php echo $value['spent']; ?></tl>
+                      <tl class="tl">educash
+                        <tl class="tl">on</tl>
+                        <tl class="tl"><?php echo $date; ?></tl>
+                        <tl class="tl">at</tl>
+                        <tl class="tl"><?php echo $time; ?></tl>
+                    </time>
                   </div>
         <?php
         }
