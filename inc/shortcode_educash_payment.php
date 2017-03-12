@@ -5,7 +5,8 @@
   {
       if(is_user_logged_in())
       {
-
+        include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
+        custom_dialog("unable to fetch api details");
         global $current_user;
         get_currentuserinfo();
         $out = get_option("current_rate");
