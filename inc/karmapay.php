@@ -32,15 +32,18 @@
                echo "<h4>Soon you will be allocated expected educash.</h4>";
 
                $eduCashHelper = new EduCash_Helper();
-               $eduCashHelper->addEduCashToUser($user_id, $karmas, $status);
+               $eduCashHelper->addEduCashToUser($user_id, $educash, $status);
             }
             else{
-                echo '<script type="text/javascript">alert("You do not have sufficient karmas to buy educash"); </script>';
+                include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
+                custom_dialog("It looks like you don't have enough karmas to buy educash. Try another method of payment.");
             }
         }
     }
     else{
-    echo "Sorry, you are not allowed to view this page";
+        include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
+        custom_dialog("<b>Sorry, you are allowed to view the page.<b>");
+        echo "<b>Sorry, you are not allowed to view this page.</b>";
     }
     session_destroy();
  ?>
