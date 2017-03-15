@@ -36,7 +36,7 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
 
 
               $eduCashHelper = new EduCash_Helper();
-              $eduCashHelper->addEduCashToUser($userid, $amount, $status);
+              $eduCashHelper->addEduCashToUser($userid, $educash, $status);
 
               echo "<h3>Thank You. Your order status is ". $status .".</h3>";
               echo "<h4>Your Transaction ID for this transaction is ".$txnid.".</h4>";

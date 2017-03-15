@@ -46,11 +46,11 @@ class EduCash_Helper
 	public function addEduCashToUser($userId, $amount, $transactionMessage)
 	{
         $databaseHelper = new DataBase_Helper();
-		$currentEduCashValue = $databaseHelper->get_educash_for_user($user_id);
+		$currentEduCashValue = $databaseHelper->get_educash_for_user($userId);
 		$newEduCashValue = $currentEduCashValue + $amount;
 		$transaction_cost = $amount;
 		if ($newEduCashValue > 0) {
-			$insertion_status = $databaseHelper->add_educash_transaction($user_id, $transaction_cost, $transactionMessage);
+			$insertion_status = $databaseHelper->add_educash_transaction($userId, $transaction_cost, $transactionMessage);
 			return "Success : $insertion_status";
 		}
 		return "Insufficient Funds : $newEduCashValue";
