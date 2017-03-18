@@ -1,7 +1,6 @@
 <?php
 
 	function show_all_other_shortcodes(){ ?>
-
 	   <div id="wrap">
           <ul class="tab">
 	          <li><a href="#" class="tablinks active" onclick="select_page('edugorilla_leads_sh')">Leads</a></li>
@@ -83,7 +82,6 @@ ul.tab li a:focus, .active {background-color: #ccc;}
     event.currentTarget.className += " active";
 	}
 </script>
-
 
 <?php
 

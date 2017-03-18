@@ -750,6 +750,8 @@ include_once plugin_dir_path(__FILE__) . "inc/shortcode_transaction_history.php"
 
 include_once plugin_dir_path(__FILE__) . "inc/shortcode_educash_payment.php";
 
+include_once plugin_dir_path(__FILE__) . "frontend/custom_dialog.html";
+
 function edugorilla_shortcode_require()
 {
 	// for bootstrap 4.0 to work
