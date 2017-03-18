@@ -31,4 +31,4 @@ function send_sms($user_id,$pwd,$mobile_no, $msg)
 	list($status,$statuscode,$msg) = explode("|",$curl_scraped_page);
 	return trim($status);
 }
-?> 
+?>

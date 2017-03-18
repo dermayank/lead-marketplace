@@ -1285,7 +1285,7 @@ Model dialog CSS by mayank
 */
 
 /* The Modal (background) */
-.custom_modal {
+#custom_myModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */

@@ -41,8 +41,6 @@
         }
     }
     else{
-        include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
-        custom_dialog("<b>Sorry, you are allowed to view the page.<b>");
         echo "<b>Sorry, you are not allowed to view this page.</b>";
     }
     session_destroy();
