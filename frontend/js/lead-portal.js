@@ -23,6 +23,7 @@ function Load(msg)
 {
     modal.style.display = "block";
     document.getElementById('custom_msg').innerHTML = msg;
+    document.getElementById('close_now').innerHTML = "&times;";
 }
 
 function showHint(str) {
