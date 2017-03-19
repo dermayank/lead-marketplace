@@ -1,7 +1,7 @@
 <?php
 
 	function show_all_other_shortcodes(){ ?>
-		
+
 		<input type="hidden" id="custom_myBtn"/>
 
 		<!-- The Modal -->
@@ -78,13 +78,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 <script type="text/javascript">
 	var modal = document.getElementById('custom_myModal');
 
-	var btn = document.getElementById("custom_myBtn");
-
 	var span = document.getElementsByClassName("custom_close")[0];
-
-	btn.onclick = function() {
-	    modal.style.display = "block";
-	}
 
 	span.onclick = function() {
 	    modal.style.display = "none";
