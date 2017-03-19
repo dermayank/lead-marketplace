@@ -1,29 +1,3 @@
-
-var modal = document.getElementById('custom_myModal');
-
-var btn = document.getElementById("custom_myBtn");
-
-var span = document.getElementsByClassName("custom_close")[0];
-
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-function Load()
-{
-    document.getElementById('custom_myBtn').click();
-}
-
 function showHint(str) {
     if (str.length == 0) {
         document.getElementById("rspayment").innerHTML = "0";
@@ -92,7 +66,7 @@ function showHint(str) {
 
 				function hideErrorCallback(error) {
 					//error code
-					alert("Unable to set the hidden status.");
+					Load("Unable to set the hidden status.");
 				}
 				$http({
 					method: 'POST',
@@ -118,11 +92,11 @@ function showHint(str) {
 					//error code
 					var retVal = confirm("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
 					if( retVal == true ){
-						alert("Redirect to Payment page!");
+						Load("Redirecting to Payment page!");
 						return true;
 					}
 					else{
-						alert("Redirect to home page!");
+						Load("Redirecting to home page!");
 						return false;
 					}
 				}
@@ -216,7 +190,7 @@ function showHint(str) {
 
 			function detailErrorCallback(error) {
 				//error code
-				alert("Unable to fetch the lead details from the API.");
+				Load('unable to fetch api details');
 			}
 			$http({
 				url: '/wp-json/marketplace/v1/leads/details',

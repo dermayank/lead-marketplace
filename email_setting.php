@@ -4,7 +4,6 @@ function edugorilla_email_setting()
 ?>
     <div class="wrap">
         <h1>Promotional Email Template</h1>
-     
         <div id="tabs">
           <ul>
               <li><a href="#tabs-lead-received">Lead Received</a></li>
@@ -25,29 +24,29 @@ function edugorilla_email_setting()
                     $edugorilla_email_subject1 = $_POST['edugorilla_subject1'];
                     $edugorilla_email_body1 = $_POST['edugorilla_body1'];
                     if (empty($edugorilla_email_subject1)) $errors1['edugorilla_subject1'] = "Empty";
-            
+
                     if (empty($edugorilla_email_body1)) $errors1['edugorilla_body1'] = "Empty";
-            
+
                     if (empty($errors1)) {
                         $edugorilla_email_setting1 = array('subject' => stripslashes($edugorilla_email_subject1), 'body' => stripslashes($edugorilla_email_body1));
-            
+
                         update_option("edugorilla_email_setting1", $edugorilla_email_setting1);
                         $success1 = "Email Settings Saved Successfully.";
                     	$email_setting_options1 = get_option('edugorilla_email_setting1');
-            
+
                     	$edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
-            
+
                    		$edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
                     }
                 } else {
                     $email_setting_options1 = get_option('edugorilla_email_setting1');
-            
+
                     $edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
-            
+
                     $edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
-            
+
                 }
-     
+
                 if ($success1) {
                     ?>
                     <div class="updated notice">
@@ -90,22 +89,22 @@ function edugorilla_email_setting()
           </div>
             <div id="tabs-educash-added">
             <?php
-            
+
                 $email_setting_form2 = $_POST['email_setting_form2'];
                 if ($email_setting_form2 == "self") {
                     $errors2 = array();
                     $edugorilla_email_subject2 = $_POST['edugorilla_subject2'];
                     $edugorilla_email_body2 = $_POST['edugorilla_body2'];
                     if (empty($edugorilla_email_subject2)) $errors2['edugorilla_subject2'] = "Empty";
-            
+
                     if (empty($edugorilla_email_body2)) $errors2['edugorilla_body2'] = "Empty";
-            
+
                     if (empty($errors2)) {
                         $edugorilla_email_setting2 = array('subject' => stripslashes($edugorilla_email_subject2), 'body' => stripslashes($edugorilla_email_body2));
-            
+
                         update_option("edugorilla_email_setting2", $edugorilla_email_setting2);
                         $success2 = "Email Settings Saved Successfully.";
-                    
+
                     	$email_setting_options2 = get_option('edugorilla_email_setting2');
                     	$edugorilla_email_subject2 = stripslashes($email_setting_options2['subject']);
                     	$edugorilla_email_body2 = stripslashes($email_setting_options2['body']);
@@ -114,9 +113,9 @@ function edugorilla_email_setting()
                     $email_setting_options2 = get_option('edugorilla_email_setting2');
                     $edugorilla_email_subject2 = stripslashes($email_setting_options2['subject']);
                     $edugorilla_email_body2 = stripslashes($email_setting_options2['body']);
-            
+
                 }
-                
+
                 if ($success2) {
                     ?>
                     <div class="updated notice">
@@ -165,12 +164,12 @@ function edugorilla_email_setting()
                     $edugorilla_email_subject3 = $_POST['edugorilla_subject3'];
                     $edugorilla_email_body3 = $_POST['edugorilla_body3'];
                     if (empty($edugorilla_email_subject3)) $errors3['edugorilla_subject3'] = "Empty";
-            
+
                     if (empty($edugorilla_email_body3)) $errors3['edugorilla_body3'] = "Empty";
-            
+
                     if (empty($errors3)) {
                         $edugorilla_email_setting3 = array('subject' => stripslashes($edugorilla_email_subject3), 'body' => stripslashes($edugorilla_email_body3));
-            
+
                         update_option("edugorilla_email_setting3", $edugorilla_email_setting3);
                         $success3 = "Email Settings Saved Successfully.";
                     	$email_setting_options3 = get_option('edugorilla_email_setting3');
@@ -181,9 +180,9 @@ function edugorilla_email_setting()
                     $email_setting_options3 = get_option('edugorilla_email_setting3');
                     $edugorilla_email_subject3 = stripslashes($email_setting_options3['subject']);
                     $edugorilla_email_body3 = stripslashes($email_setting_options3['body']);
-            
+
                 }
-                
+
                 if ($success3) {
                     ?>
                     <div class="updated notice">
@@ -502,12 +501,12 @@ function edugorilla_email_setting()
                     $edugorilla_email_subject4 = $_POST['edugorilla_subject4'];
                     $edugorilla_email_body4 = $_POST['edugorilla_body4'];
                     if (empty($edugorilla_email_subject4)) $errors4['edugorilla_subject4'] = "Empty";
-            
+
                     if (empty($edugorilla_email_body4)) $errors4['edugorilla_body4'] = "Empty";
-            
+
                     if (empty($errors4)) {
                         $edugorilla_email_setting4 = array('subject' => stripslashes($edugorilla_email_subject4), 'body' => stripslashes($edugorilla_email_body4));
-            
+
                         update_option("edugorilla_email_setting4", $edugorilla_email_setting4);
                         $success4 = "Email Settings Saved Successfully.";
                     	$email_setting_options4 = get_option('edugorilla_email_setting4');
@@ -518,9 +517,9 @@ function edugorilla_email_setting()
                     $email_setting_options4 = get_option('edugorilla_email_setting4');
                     $edugorilla_email_subject4 = stripslashes($email_setting_options4['subject']);
                     $edugorilla_email_body4 = stripslashes($email_setting_options4['body']);
-            
+
                 }
-            
+
                 if ($success4) {
                     ?>
                     <div class="updated notice">
@@ -560,7 +559,7 @@ function edugorilla_email_setting()
                     </table>
                 </form>
           </div>
-          
+
         <div id="tabs-5">
             <?php
                 $email_setting_form5 = $_POST['email_setting_form5'];
@@ -569,15 +568,15 @@ function edugorilla_email_setting()
                     $edugorilla_email_subject5 = $_POST['edugorilla_subject5'];
                     $edugorilla_email_body5 = $_POST['edugorilla_body5'];
                     if (empty($edugorilla_email_subject5)) $errors5['edugorilla_subject5'] = "Empty";
-            
+
                     if (empty($edugorilla_email_body5)) $errors5['edugorilla_body5'] = "Empty";
-            
+
                     if (empty($errors5)) {
                         $edugorilla_email_setting5 = array('subject' => stripslashes($edugorilla_email_subject5), 'body' => stripslashes($edugorilla_email_body5));
-            
+
                         update_option("edugorilla_email_setting5", $edugorilla_email_setting5);
                         $success5 = "Email Settings Saved Successfully.";
-                    	
+
                     	 $email_setting_options5 = get_option('edugorilla_email_setting5');
                    		 $edugorilla_email_subject5 = stripslashes($email_setting_options5['subject']);
                     	 $edugorilla_email_body5 = stripslashes($email_setting_options5['body']);
@@ -586,9 +585,9 @@ function edugorilla_email_setting()
                     $email_setting_options5 = get_option('edugorilla_email_setting5');
                     $edugorilla_email_subject5 = stripslashes($email_setting_options5['subject']);
                     $edugorilla_email_body5 = stripslashes($email_setting_options5['body']);
-            
+
                 }
-                
+
                 if ($success5) {
                     ?>
                     <div class="updated notice">
@@ -629,7 +628,7 @@ function edugorilla_email_setting()
                 </form>
           </div>
         </div>
-       
+
     </div>
     <?php
 }

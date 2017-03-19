@@ -29,20 +29,17 @@
                $value = wp_mail($to,$email_subject,$email_body,$headers);
                $status = "success";
                echo "<h3>Thank You. Your order status is ". $status .".</h3>";
-               echo "<h4>Soon you will be allocated expected educash.</h4>";
+               echo "<h4>Soon you will be allocated".$educash." educash.</h4>";
 
                $eduCashHelper = new EduCash_Helper();
                $eduCashHelper->addEduCashToUser($user_id, $educash, $status);
             }
             else{
-                include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
-                custom_dialog("It looks like you don't have enough karmas to buy educash. Try another method of payment.");
+                echo("<b>It looks like you don't have enough karmas to buy educash. Try another method of payment.</b>");
             }
         }
     }
     else{
-        include_once str_replace('inc/','frontend/custom_dialog.php',plugin_dir_path( __FILE__ ));
-        custom_dialog("<b>Sorry, you are allowed to view the page.<b>");
         echo "<b>Sorry, you are not allowed to view this page.</b>";
     }
     session_destroy();
