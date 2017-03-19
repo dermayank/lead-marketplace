@@ -42,20 +42,35 @@ function showHint(str) {
 				}
 				return false;
 			};
-			$scope.userSelectedLocations = [];
-			$scope.userSelectedCategories = [];
+			var domURL = new Url;
+			var locationsStringFromURL = domURL.query.loctn;
+			var categoriesStringFromURL = domURL.query.catgr;
+			if (locationsStringFromURL != undefined && locationsStringFromURL.length > 0) {
+				$scope.userSelectedLocations = locationsStringFromURL.split(',');
+			} else {
+				$scope.userSelectedLocations = [];
+			}
+			if (categoriesStringFromURL != undefined && categoriesStringFromURL.length > 0) {
+				$scope.userSelectedCategories = categoriesStringFromURL.split(',');
+			} else {
+				$scope.userSelectedCategories = [];
+			}
 			$scope.setSelectedCategories = function(prop){
-				if (!($scope.containsInArray($scope.userSelectedCategories, prop.Name))) {
-					$scope.userSelectedCategories.push(prop.Name);
+				var currentCategory = prop.Name;
+				addCategoryToURLParameter(currentCategory);
+				if (!($scope.containsInArray($scope.userSelectedCategories, currentCategory))) {
+					$scope.userSelectedCategories.push(currentCategory);
 				}else{
-					removeItemFromArray($scope.userSelectedCategories, prop.Name);
+					removeItemFromArray($scope.userSelectedCategories, currentCategory);
 				}
 			};
 			$scope.setSelectedLocations = function(prop){
-				if (!($scope.containsInArray($scope.userSelectedLocations, prop.Name))) {
-					$scope.userSelectedLocations.push(prop.Name);
+				var currentLocation = prop.Name;
+				addLocationToURLParameter(currentLocation);
+				if (!($scope.containsInArray($scope.userSelectedLocations, currentLocation))) {
+					$scope.userSelectedLocations.push(currentLocation);
 				}else {
-					removeItemFromArray($scope.userSelectedLocations, prop.Name);
+					removeItemFromArray($scope.userSelectedLocations, currentLocation);
 				}
 			};
 			$scope.toggle_card_hidden = function (card) {
@@ -66,7 +81,7 @@ function showHint(str) {
 
 				function hideErrorCallback(error) {
 					//error code
-					Load("Unable to set the hidden status.");
+					customLoadDialog("Unable to set the hidden status.");
 				}
 				$http({
 					method: 'POST',
@@ -92,11 +107,13 @@ function showHint(str) {
 					//error code
 					var retVal = confirm("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
 					if( retVal == true ){
-						Load("Redirecting to Payment page!");
+						customLoadDialog("Redirecting to Payment page!");
+						window.location = "/payment";
 						return true;
 					}
 					else{
-						Load("Redirecting to home page!");
+						customLoadDialog("Redirecting to home page!");
+						window.location = "";
 						return false;
 					}
 				}
@@ -190,7 +207,7 @@ function showHint(str) {
 
 			function detailErrorCallback(error) {
 				//error code
-				Load('unable to fetch api details');
+				customLoadDialog('unable to fetch api details');
 			}
 			$http({
 				url: '/wp-json/marketplace/v1/leads/details',
@@ -209,4 +226,56 @@ function showHint(str) {
 var removeItemFromArray = function (arr, item) {
 	var i = arr.length;
 	while (i--) if (arr[i] === item) arr.splice(i, 1);
+}
+
+function addCategoryToURLParameter(category) {
+	var domURL = new Url;
+	var currentCategories = [domURL.query.catgr];
+	currentCategories.push(category);
+	delete domURL.query.catgr;
+	var categoryStr = currentCategories.toString();
+	domURL.query.catgr = categoryStr;
+	window.location = domURL.toString();
+	//alert("Current categories are : "+categoryStr+" URL: "+domURL);
+}
+
+function addLocationToURLParameter(location) {
+	var domURL = new Url;
+	var currentLocations = [domURL.query.loctn];
+	currentLocations.push(location);
+	delete domURL.query.loctn;
+	var locationStr = currentLocations.toString();
+	domURL.query.loctn = locationStr;
+	window.location = domURL.toString();
+	//alert("Current locations are : "+locationStr+" URL: "+domURL);
+}
+
+/**
+ * Generic function to modify URL parameter.
+ *
+ * @param {uri} URL to be modified
+ * @param {key} parameter's key
+ * @returns {value} parameter's value
+ */
+function updateQueryStringParameter(uri, key, value) {
+	var re = new RegExp("([?&])" + key + "=.*?(&|#|$)", "i");
+	if (value === undefined) {
+		if (uri.match(re)) {
+			return uri.replace(re, '$1$2');
+		} else {
+			return uri;
+		}
+	} else {
+		if (uri.match(re)) {
+			return uri.replace(re, '$1' + key + "=" + value + '$2');
+		} else {
+			var hash = '';
+			if (uri.indexOf('#') !== -1) {
+				hash = uri.replace(/.*#/, '#');
+				uri = uri.replace(/#.*/, '');
+			}
+			var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+			return uri + separator + key + "=" + value + hash;
+		}
+	}
 }

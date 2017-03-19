@@ -90,7 +90,7 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 	    }
 	}
 
-	function Load(msg)
+	function customLoadDialog(msg)
 	{
 	    modal.style.display = "block";
 	    document.getElementById('custom_msg').innerHTML = msg;
