@@ -1,31 +1,3 @@
-
-var modal = document.getElementById('custom_myModal');
-
-var btn = document.getElementById("custom_myBtn");
-
-var span = document.getElementsByClassName("custom_close")[0];
-
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-function Load(msg)
-{
-    modal.style.display = "block";
-    document.getElementById('custom_msg').innerHTML = msg;
-    document.getElementById('close_now').innerHTML = "&times;";
-}
-
 function showHint(str) {
     if (str.length == 0) {
         document.getElementById("rspayment").innerHTML = "0";

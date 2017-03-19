@@ -1,6 +1,19 @@
 <?php
 
 	function show_all_other_shortcodes(){ ?>
+		
+		<input type="hidden" id="custom_myBtn"/>
+
+		<!-- The Modal -->
+		<div id="custom_myModal" class="custom_modal">
+
+		  <!-- Modal content -->
+		  <div class="custom_modal-content">
+		    <span class="custom_close" id="close_now" ></span>
+		    <div class="pad"><p id="custom_msg"></p></div>
+		  </div>
+
+		</div>
 	   <div id="wrap">
           <ul class="tab">
 	          <li><a href="#" class="tablinks active" onclick="select_page('edugorilla_leads_sh')">Leads</a></li>
@@ -63,6 +76,32 @@ ul.tab li a:focus, .active {background-color: #ccc;}
  </style>
 
 <script type="text/javascript">
+	var modal = document.getElementById('custom_myModal');
+
+	var btn = document.getElementById("custom_myBtn");
+
+	var span = document.getElementsByClassName("custom_close")[0];
+
+	btn.onclick = function() {
+	    modal.style.display = "block";
+	}
+
+	span.onclick = function() {
+	    modal.style.display = "none";
+	}
+
+	window.onclick = function(event) {
+	    if (event.target == modal) {
+	        modal.style.display = "none";
+	    }
+	}
+
+	function Load(msg)
+	{
+	    modal.style.display = "block";
+	    document.getElementById('custom_msg').innerHTML = msg;
+	    document.getElementById('close_now').innerHTML = "&times;";
+	}
 
 	function select_page(edugorilla_page) {
 
