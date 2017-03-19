@@ -16,14 +16,18 @@
 		</div>
 	   <div id="wrap">
           <ul class="tab">
-	          <li><a href="#" class="tablinks active" onclick="select_page('edugorilla_leads_sh')">Leads</a></li>
-	          <li><a href="#" class="tablinks" onclick="select_page('educash_payment_sh')">Buy</a></li>
-              <li><a href="#" class="tablinks" onclick="select_page('transaction_history_sh')">Transaction History</a></li>
-              <li><a href="#" class="tablinks" onclick="select_page('client_preference_form_sh')">Manage Preferences</a></li>
+	          <li><a href="#edugorilla_leads_sh" class="tablinks active" onclick="select_page('edugorilla_leads_sh')">Leads</a>
+	          </li>
+	          <li><a href="#educash_payment_sh" class="tablinks" onclick="select_page('educash_payment_sh')">Buy</a>
+	          </li>
+	          <li><a href="#transaction_history_sh" class="tablinks" onclick="select_page('transaction_history_sh')">Transaction
+			          History</a></li>
+	          <li><a href="#client_preference_form_sh" class="tablinks"
+	                 onclick="select_page('client_preference_form_sh')">Manage Preferences</a></li>
           </ul>
       </div>
 
-			<div id="#edugorilla_content">
+		<div id="edugorilla_content">
 			<div id="edugorilla_leads_sh" class="tabcontent">
 	  			 <?php echo do_shortcode('[edugorilla_leads]');  ?>
 	  		 </div>
@@ -76,44 +80,47 @@ ul.tab li a:focus, .active {background-color: #ccc;}
  </style>
 
 <script type="text/javascript">
+
 	var modal = document.getElementById('custom_myModal');
 
 	var span = document.getElementsByClassName("custom_close")[0];
 
-	span.onclick = function() {
-	    modal.style.display = "none";
+	span.onclick = function () {
+		modal.style.display = "none";
 	}
 
-	window.onclick = function(event) {
-	    if (event.target == modal) {
-	        modal.style.display = "none";
-	    }
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
 	}
 
-	function customLoadDialog(msg)
-	{
-	    modal.style.display = "block";
-	    document.getElementById('custom_msg').innerHTML = msg;
-	    document.getElementById('close_now').innerHTML = "&times;";
+	function customLoadDialog(msg) {
+		modal.style.display = "block";
+		document.getElementById('custom_msg').innerHTML = msg;
+		document.getElementById('close_now').innerHTML = "&times;";
 	}
 
 	function select_page(edugorilla_page) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tabcontent");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
 
-    var i, tabcontent, tablinks;
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
 
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    document.getElementById(edugorilla_page).style.display = "block";
-    event.currentTarget.className += " active";
+		document.getElementById(edugorilla_page).style.display = "block";
+		event.currentTarget.className += " active";
 	}
+
+	var domURL = new Url;
+	var currentTabFromURL = domURL.hash;
+	if (currentTabFromURL != undefined && currentTabFromURL.length > 0)
+		select_page(currentTabFromURL);
 </script>
 
 <?php

@@ -108,7 +108,9 @@ function showHint(str) {
 					var retVal = confirm("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
 					if( retVal == true ){
 						customLoadDialog("Redirecting to Payment page!");
-						window.location = "/payment";
+						domURL.hash = "educash_payment_sh";
+						window.location = domURL.toString();
+						window.location.reload();
 						return true;
 					}
 					else{
