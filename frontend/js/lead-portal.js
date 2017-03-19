@@ -35,12 +35,7 @@ function showHint(str) {
 				return card.isHidden;
 			};
 			$scope.containsInArray = function(a, obj) {
-				for (var i = 0; i < a.length; i++) {
-					if (a[i] === obj) {
-						return true;
-					}
-				}
-				return false;
+				containsInArrayUtil(a, obj);
 			};
 			var domURL = new Url;
 			var locationsStringFromURL = domURL.query.loctn;
@@ -228,27 +223,58 @@ function showHint(str) {
 var removeItemFromArray = function (arr, item) {
 	var i = arr.length;
 	while (i--) if (arr[i] === item) arr.splice(i, 1);
-}
+};
+
+var containsInArrayUtil = function (a, obj) {
+	for (var i = 0; i < a.length; i++) {
+		if (a[i] === obj) {
+			return true;
+		}
+	}
+	return false;
+};
 
 function addCategoryToURLParameter(category) {
 	var domURL = new Url;
-	var currentCategories = [domURL.query.catgr];
-	currentCategories.push(category);
+	var currentCategoryString = domURL.query.catgr;
+	var currentCategories = [];
+	if (currentCategoryString != undefined && currentCategoryString.trim().length > 0) {
+		currentCategories = currentCategoryString.split(',');
+	}
+	if (containsInArrayUtil(currentCategories, category)) {
+		currentCategories = currentCategories.filter(function (item) {
+			return item !== category;
+		});
+	} else {
+		currentCategories.push(category);
+	}
 	delete domURL.query.catgr;
 	var categoryStr = currentCategories.toString();
 	domURL.query.catgr = categoryStr;
-	window.location = domURL.toString();
+	var urlAfterHostName = domURL.path + "?" + domURL.query.toString() + "#" + domURL.hash;
+	window.history.pushState("String as Data", "Manage Leads", urlAfterHostName);
 	//alert("Current categories are : "+categoryStr+" URL: "+domURL);
 }
 
 function addLocationToURLParameter(location) {
 	var domURL = new Url;
-	var currentLocations = [domURL.query.loctn];
-	currentLocations.push(location);
+	var currentLocationString = domURL.query.loctn;
+	var currentLocations = [];
+	if (currentLocationString != undefined && currentLocationString.trim().length > 0) {
+		currentLocations = currentLocationString.split(',');
+	}
+	if (containsInArrayUtil(currentLocations, location)) {
+		currentLocations = currentLocations.filter(function (item) {
+			return item !== location;
+		});
+	} else {
+		currentLocations.push(location);
+	}
 	delete domURL.query.loctn;
 	var locationStr = currentLocations.toString();
 	domURL.query.loctn = locationStr;
-	window.location = domURL.toString();
+	var urlAfterHostName = domURL.path + "?" + domURL.query.toString() + "#" + domURL.hash;
+	window.history.pushState("String as Data", "Manage Leads", urlAfterHostName);
 	//alert("Current locations are : "+locationStr+" URL: "+domURL);
 }
 

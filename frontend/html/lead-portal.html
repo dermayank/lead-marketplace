@@ -29,7 +29,7 @@
             <ul class="refine">
 	            <li ng-repeat="topCategory in topCategories">
 		            <input type="checkbox" ng-click="setSelectedCategories(topCategory)"
-		                   ng-true-value="containsInArray(userSelectedCategories,topCategory.Name)">
+		                   ng-checked="containsInArray(userSelectedCategories,topCategory.Name)">
 		            {{topCategory.Name}}<span class="ref_val">({{topCategory.Count}})</span>
 	            </li>
 	            <a href="#">
@@ -40,7 +40,7 @@
             <ul class="refine">
 	            <li ng-repeat="topLocation in topLocations">
 		            <input type="checkbox" ng-click="setSelectedLocations(topLocation)"
-		                   ng-true-value="containsInArray(userSelectedLocations,topLocation.Name)">
+		                   ng-checked="containsInArray(userSelectedLocations,topLocation.Name)">
 		            {{topLocation.Name}}<span class="ref_val">({{topLocation.Count}})</span>
 	            </li>
 	            <a href="#">
