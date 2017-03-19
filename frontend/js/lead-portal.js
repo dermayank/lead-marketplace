@@ -92,11 +92,11 @@ function showHint(str) {
 					//error code
 					var retVal = confirm("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
 					if( retVal == true ){
-						Load("Redirect to Payment page!");
+						Load("Redirecting to Payment page!");
 						return true;
 					}
 					else{
-						Load("Redirect to home page!");
+						Load("Redirecting to home page!");
 						return false;
 					}
 				}
