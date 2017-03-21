@@ -1285,7 +1285,7 @@ Model dialog CSS by mayank
 */
 
 /* The Modal (background) */
-#custom_myModal {
+#custom_myModal,#custom_myModal_1 {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
@@ -1300,7 +1300,7 @@ Model dialog CSS by mayank
 }
 
 /* Modal Content */
-.custom_modal-content {
+.custom_modal-content,.custom_modal-content_1 {
     background-color: #F8F8FF;
     margin: auto;
     margin-top: 10%;
@@ -1326,10 +1326,23 @@ Model dialog CSS by mayank
     text-decoration: none;
     cursor: pointer;
 }
-.pad{
+.pad,.pad_1{
 	color: #40404;
     padding-top: 35px;
     text-align: center;
     font-size: 25px;
     font-family:sans-serif;
+}
+#confirm_button_1,#confirm_button_2 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin-top: 30px;
+    margin-left: 150px;
+    cursor: pointer;
 }
