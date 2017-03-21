@@ -1328,9 +1328,9 @@ Model dialog CSS by mayank
 }
 .pad,.pad_1{
 	color: #40404;
-    padding-top: 35px;
+    padding-top: 30px;
     text-align: center;
-    font-size: 25px;
+    font-size: 23px;
     font-family:sans-serif;
 }
 #confirm_button_1,#confirm_button_2 {
@@ -1341,8 +1341,8 @@ Model dialog CSS by mayank
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 20px;
-    margin-top: 30px;
-    margin-left: 150px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 140px;
     cursor: pointer;
 }
