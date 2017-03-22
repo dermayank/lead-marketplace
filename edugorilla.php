@@ -267,6 +267,7 @@ function edugorilla()
 			else $category = "-1";
 
 			if (empty($location_id)) $location_id = "-1";
+			if(empty($is_promotional_lead)) $is_promotional_lead = "no";
 
 			$json_results = json_decode(stripslashes($edugorilla_institute_datas));
 
@@ -274,7 +275,7 @@ function edugorilla()
 
 			$edugorilla_email_body = stripslashes($edugorilla_email['body']);
 
-
+            
 			global $wpdb;
 			$result1 = $wpdb->insert(
 				$wpdb->prefix . 'edugorilla_lead_details',
@@ -341,7 +342,7 @@ function edugorilla()
 					}
 
 					$institute_phones = explode(",", $json_result->phones);
-					include_once plugin_dir_path(__FILE__) . "api/gupshup-api.php";
+					include_once plugin_dir_path(__FILE__) . "api/gupshup.api.php";
 					foreach ($institute_phones as $institute_phone) {
 						$smsapi = get_option("smsapi");
 						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $smsapi['message']);
