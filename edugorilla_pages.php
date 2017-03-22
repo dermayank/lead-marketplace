@@ -3,17 +3,24 @@
 	function show_all_other_shortcodes(){ ?>
 
 		<input type="hidden" id="custom_myBtn"/>
-
-		<!-- The Modal -->
 		<div id="custom_myModal" class="custom_modal">
-
-		  <!-- Modal content -->
 		  <div class="custom_modal-content">
 		    <span class="custom_close" id="close_now" ></span>
 		    <div class="pad"><p id="custom_msg"></p></div>
 		  </div>
-
 		</div>
+
+
+		<input type="hidden" id="custom_myBtn_1"/>
+		<div id="custom_myModal_1" class="custom_modal_1">
+		  <div class="custom_modal-content_1" style="padding-top: 12px;">
+		    <div class="pad_1" style="padding-top: 1px;"><p id="custom_msg_1">hello</p></div>
+		    <button id="confirm_button_1">Yes</button>
+		    <button id="confirm_button_2" style="background: red; margin-left: 70px;">No</button>
+		  </div>
+		</div>
+
+
 	   <div id="wrap">
           <ul class="tab">
 	          <li><a href="#edugorilla_leads_sh" class="tablinks active" onclick="select_page('edugorilla_leads_sh')">Leads</a>
@@ -99,6 +106,33 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 		modal.style.display = "block";
 		document.getElementById('custom_msg').innerHTML = msg;
 		document.getElementById('close_now').innerHTML = "&times;";
+	}
+
+	var no_button = document.getElementById('confirm_button_2');
+	var yes_button = document.getElementById('confirm_button_1');
+	var modal1 = document.getElementById('custom_myModal_1');
+	function Load_confirm_box(msg)
+	{
+	    modal1.style.display = "block";
+		document.getElementById('custom_msg_1').innerHTML = msg;
+	}
+	yes_button.onclick = function(){
+	    modal1.style.display="none";
+		customLoadDialog("Redirecting to Payment page!");
+	    var domURL = new Url;
+		domURL.hash = "educash_payment_sh";
+		window.location = domURL.toString();
+		window.location.reload();
+		return true;
+	}
+	no_button.onclick = function(){
+	    modal1.style.display="none";
+		customLoadDialog("Redirecting to home page!");
+		var domURL = new Url;
+		domURL.hash = "";
+		window.location = domURL.toString();
+		window.location.reload();
+		return false;
 	}
 
 	function select_page(edugorilla_page) {

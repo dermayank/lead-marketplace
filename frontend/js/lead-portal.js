@@ -100,19 +100,7 @@ function showHint(str) {
 
 				function unlockErrorCallback(error) {
 					//error code
-					var retVal = confirm("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
-					if( retVal == true ){
-						customLoadDialog("Redirecting to Payment page!");
-						domURL.hash = "educash_payment_sh";
-						window.location = domURL.toString();
-						window.location.reload();
-						return true;
-					}
-					else{
-						customLoadDialog("Redirecting to home page!");
-						window.location = "";
-						return false;
-					}
+					Load_confirm_box("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
 				}
 				$http({
 					method: 'POST',
