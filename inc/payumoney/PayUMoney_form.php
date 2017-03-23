@@ -1,15 +1,3 @@
-<style>
-.payment_body{
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4);}
-</style>
 <?php
 session_start();
 // End point - change to https://secure.payu.in for LIVE mode
@@ -96,7 +84,7 @@ if(empty($posted['hash']) && sizeof($posted) > 0) {
     }
   </script>
 
-  <body class="payment_body" onload="submitPayuForm()">
+  <body onload="submitPayuForm()">
     <form action="<?php echo $action; ?>" method="post" name="payuForm">
       <input type="hidden" name="key" value="<?php echo $MERCHANT_KEY ?>" />
       <input type="hidden" name="hash" value="<?php echo $hash ?>"/>
