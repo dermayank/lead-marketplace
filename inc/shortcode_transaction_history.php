@@ -40,9 +40,9 @@
        if($current_educash<0)
           $current_educash = 0;
 
+      $user_cash = array("user_educash"=>$current_educash,"users_id"=>$current_user_id);
+      update_option("user_educash_count",$user_cash);
       ?>
-
-        <link rel="stylesheet" href="<?php //echo $url; ?>">
 
   <div class = "timeline_class">
     <section class="intro_class">
