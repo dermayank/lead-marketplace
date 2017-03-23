@@ -116,7 +116,7 @@ if(empty($posted['hash']) && sizeof($posted) > 0) {
           <input name="udf5" value="" type="hidden" />
           <input name="pg" type="hidden" value="" />
 
-          <h2>Transaction in progress, do not press refesh or back button </h2>
+          <h1>Transaction in progress, do not press refesh or back button </h1>
 
     </form>
   </body>
