@@ -24,33 +24,50 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
     $userid = $_SESSION["userid"];
     $rate = $_SESSION["rate"];
     $educash = $amount/$rate;
+    $user = get_user_by( 'id', $userid );
+
           if($status == "success"){
+
+              $eduCashHelper = new EduCash_Helper();
+              $current_count = $eduCashHelper->getEduCashForUser($userid) + $educash;
+              $user_cash = array("user_educash"=>$current_count,"users_id"=>$userid);
+              update_option("user_educash_count",$user_cash);
+
+              $url = get_home_url();
+              $url = $url."/manage-leads";
 
               $email_setting_options = get_option('edugorilla_email_setting2');
               $email_subject = stripslashes($email_setting_options['subject']);
               $email_body = stripslashes($email_setting_options['body']);
-              $email_body = str_replace("{educash}", $educash, $email_body);
+
+              $email_body = str_replace("{ReceivedCount}", $educash, $email_body);
+              $email_body = str_replace("{EduCashCount}", $current_count, $email_body);
+              $email_body = str_replace("{EduCashUrl}","$url", $email_body);
+              $email_body = str_replace("{Contact_Person}", $user->first_name, $email_body);
               $to = $email;
               $headers = array('Content-Type: text/html; charset=UTF-8');
               $value = wp_mail($to,$email_subject,$email_body,$headers);
 
 
-              $eduCashHelper = new EduCash_Helper();
               $eduCashHelper->addEduCashToUser($userid, $educash, $status);
 
-              echo "<h3>Thank You. Your order status is ". $status .".</h3>";
-              echo "<h4>Your Transaction ID for this transaction is ".$txnid.".</h4>";
-              echo "<h4>We have received a payment of Rs. " . $amount . ". Soon you will be allocated expected educash.</h4>";
+              echo "<h2>Thank You. Your order status is ". $status .".</h2>";
+              echo "<h2>Your Transaction ID for this transaction is ".$txnid.".</h2>";
+              echo "<h2>We have received a payment of Rs. " . $amount . ". Soon you will be allocated ".$educash." educash.</h2>";
 
           }
           else{
-            echo "<h3>Your order status is ". $status .".</h3>";
-            echo "<h4>Your transaction id for this transaction is ".$txnid.". You may retry making the payment.</h4>";
+            echo "<h2>Your order status is ". $status .".</h2>";
+            echo "<h2>Your transaction id for this transaction is ".$txnid.". You may retry making the payment.</h2>";
           }
   }
 }
-else{
-  echo "you are not allowed to view this page";
+else{?>
+    <div><h1>Sorry, you are not allowed to view this page</h1></div>
+    <?php
+    $redirecting_url = get_home_url();
+    echo '<script>location.href="'.$redirecting_url.'";</script>';
+
 }
 
 session_destroy();

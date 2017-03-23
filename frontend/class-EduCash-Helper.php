@@ -71,11 +71,11 @@ class EduCash_Helper
 
 	public function getEduCashForUser($userId)
 	{
-	  $current_user = $userId;
-  	  global $wpdb;
-  	  $current_educash = 0;
+	    $current_user = $userId;
+  	    global $wpdb;
+  	    $current_educash = 0;
 		$out = get_option("user_educash_count");
-	  if($out['users_id']!= $userId){
+	    if($out['users_id']!= $userId){
 		  //echo "calledthis";
 	  	  $current_user_id = $userId;
 
@@ -93,7 +93,7 @@ class EduCash_Helper
 	  			 $consumption[$i]['val'] = 0;
 	  			 $i=$i+1;
 			    $current_educash = $current_educash + ($cash->transaction);
-	  		}
+	  	  	}
 	  	  }
 
 	  	  if($current_educash<0)
@@ -101,9 +101,9 @@ class EduCash_Helper
 
 		  $user_cash = array("user_educash"=>$current_educash,"users_id"=>$current_user_id);
 	  	  update_option("user_educash_count",$user_cash);
-	  }
-	  $out = get_option("user_educash_count");
-	  return $out['user_educash'];
+	   }
+	   $out = get_option("user_educash_count");
+	   return $out['user_educash'];
 	}
 
 }

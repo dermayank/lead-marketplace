@@ -1,3 +1,15 @@
+<style>
+.payment_body{
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4);}
+</style>
 <?php
 session_start();
 // End point - change to https://secure.payu.in for LIVE mode
@@ -84,7 +96,7 @@ if(empty($posted['hash']) && sizeof($posted) > 0) {
     }
   </script>
 
-  <body onload="submitPayuForm()">
+  <body class="payment_body" onload="submitPayuForm()">
     <form action="<?php echo $action; ?>" method="post" name="payuForm">
       <input type="hidden" name="key" value="<?php echo $MERCHANT_KEY ?>" />
       <input type="hidden" name="hash" value="<?php echo $hash ?>"/>
@@ -116,7 +128,7 @@ if(empty($posted['hash']) && sizeof($posted) > 0) {
           <input name="udf5" value="" type="hidden" />
           <input name="pg" type="hidden" value="" />
 
-          <h2>Transaction in progress, do not press refesh or back button </h2>
+          <h1>Transaction in progress, do not press refesh or back button </h1>
 
     </form>
   </body>
