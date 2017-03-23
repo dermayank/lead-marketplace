@@ -41,7 +41,7 @@
                $value = wp_mail($to,$email_subject,$email_body,$headers);
                $status = "success";
                echo "<h2>Thank You. Your order status is ". $status .".</h2>";
-               echo "<h2>Soon you will be allocated".$educash." educash.</h2>";
+               echo "<h2>Soon you will be allocated ".$educash." educash.</h2>";
 
                $eduCashHelper->addEduCashToUser($user_id, $educash, $status);
             }
