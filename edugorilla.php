@@ -141,7 +141,7 @@ function create_edugorilla_menus()
 	add_submenu_page(
 		'edugorilla',
 		'Lead Marketplace | Template of Email',
-		'Template of Email',
+		'Email Templates,
 		'read',
 		'edugorilla-email-setting',
 		'edugorilla_email_setting'
@@ -150,7 +150,7 @@ function create_edugorilla_menus()
 	add_submenu_page(
 		'edugorilla',
 		'Lead Marketplace | Template of SMS',
-		'Template of SMS',
+		'SMS Templates',
 		'read',
 		'edugorilla-sms-setting',
 		'edugorilla_sms_setting'
@@ -204,7 +204,7 @@ function create_edugorilla_menus()
     add_submenu_page(
 		'edugorilla',
 		'Lead Marketplace | Third Party Settings',
-		'Third Party Settings',
+		'Settings',
 		'manage_options',
 		'edugorilla-settings',
 		'edugorilla_settings'
