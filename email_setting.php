@@ -224,32 +224,32 @@ function edugorilla_email_setting()
           </div>
             <div id="tabs-instant-email">
                 <?php
-                $email_setting_form1 = $_POST['email_setting_form1'];
-                if ($email_setting_form1 == "self") {
+                $email_setting_form_instant = $_POST['email_setting_form_instant'];
+                if ($email_setting_form_instant == "self") {
                     $errors1 = array();
-                    $edugorilla_email_subject1 = $_POST['edugorilla_subject1'];
-                    $edugorilla_email_body1 = $_POST['edugorilla_body1'];
-                    if (empty($edugorilla_email_subject1)) $errors1['edugorilla_subject1'] = "Empty";
+                    $edugorilla_email_subject_instant = $_POST['edugorilla_subject_instant'];
+                    $edugorilla_email_body_instant = $_POST['edugorilla_body_instant'];
+                    if (empty($edugorilla_email_subject_instant)) $errors1['edugorilla_subject_instant'] = "Empty";
 
-                    if (empty($edugorilla_email_body1)) $errors1['edugorilla_body1'] = "Empty";
+                    if (empty($edugorilla_email_body_instant)) $errors1['edugorilla_body_instant'] = "Empty";
 
                     if (empty($errors1)) {
-                        $edugorilla_email_setting1 = array('subject' => stripslashes($edugorilla_email_subject1), 'body' => stripslashes($edugorilla_email_body1));
+                        $edugorilla_email_setting_instant = array('subject' => stripslashes($edugorilla_email_subject_instant), 'body' => stripslashes($edugorilla_email_body_instant));
 
-                        update_option("edugorilla_email_setting1", $edugorilla_email_setting1);
+                        update_option("edugorilla_email_setting_instant", $edugorilla_email_setting_instant);
                         $success1 = "Email Settings Saved Successfully.";
-                        $email_setting_options1 = get_option('edugorilla_email_setting1');
+                        $email_setting_options_instant = get_option('edugorilla_email_setting_instant');
 
-                        $edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
+                        $edugorilla_email_subject_instant = stripslashes($email_setting_options_instant['subject']);
 
-                        $edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
+                        $edugorilla_email_body_instant = stripslashes($email_setting_options_instant['body']);
                     }
                 } else {
-                    $email_setting_options1 = get_option('edugorilla_email_setting1');
+                    $email_setting_options_instant = get_option('edugorilla_email_setting_instant');
 
-                    $edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
+                    $edugorilla_email_subject_instant = stripslashes($email_setting_options_instant['subject']);
 
-                    $edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
+                    $edugorilla_email_body_instant = stripslashes($email_setting_options_instant['body']);
 
                 }
 
@@ -266,28 +266,28 @@ function edugorilla_email_setting()
                         <tr>
                             <th>Subject <sup><font color="red">*</font></sup></th>
                             <td>
-                                <input name="edugorilla_subject1"
-                                       value="<?php echo stripslashes($edugorilla_email_subject1); ?>"
+                                <input name="edugorilla_subject_instant"
+                                       value="<?php echo stripslashes($edugorilla_email_subject_instant); ?>"
                                        placeholder="Type Email Subject here...">
-                                <font color="red"><?php echo $errors1['edugorilla_subject1']; ?></font>
+                                <font color="red"><?php echo $errors1['edugorilla_subject_instant']; ?></font>
                             </td>
                         </tr>
                         <tr>
                             <th>Body template<sup><font color="red">*</font></sup></th>
                             <td>
                                 <?php
-                                $content = $edugorilla_email_body1;
-                                $editor_id = 'edugorilla_body1';
+                                $content = $edugorilla_email_body_instant;
+                                $editor_id = 'edugorilla_body_instant';
 
                                 wp_editor($content, $editor_id);
                                 ?>
-                                <font color="red"><?php echo $errors1['edugorilla_body1']; ?></font>
+                                <font color="red"><?php echo $errors1['edugorilla_body_instant']; ?></font>
                             </td>
                         </tr>
                         <tr>
                             <th></th>
                             <td>
-                                <input type="hidden" name="email_setting_form1" value="self">
+                                <input type="hidden" name="email_setting_form_instant" value="self">
                                 <input type="submit" class="button button-primary" value="Save">
                             </td>
                         </tr>
@@ -296,32 +296,32 @@ function edugorilla_email_setting()
             </div>
             <div id="tabs-daily-digest-email">
                 <?php
-                $email_setting_form1 = $_POST['email_setting_form1'];
-                if ($email_setting_form1 == "self") {
+                $email_setting_form_daily = $_POST['email_setting_form_daily'];
+                if ($email_setting_form_daily == "self") {
                     $errors1 = array();
-                    $edugorilla_email_subject1 = $_POST['edugorilla_subject1'];
-                    $edugorilla_email_body1 = $_POST['edugorilla_body1'];
-                    if (empty($edugorilla_email_subject1)) $errors1['edugorilla_subject1'] = "Empty";
+                    $edugorilla_email_subject_daily = $_POST['edugorilla_subject_daily'];
+                    $edugorilla_email_body_daily = $_POST['edugorilla_body_daily'];
+                    if (empty($edugorilla_email_subject_daily)) $errors1['edugorilla_subject_daily'] = "Empty";
 
-                    if (empty($edugorilla_email_body1)) $errors1['edugorilla_body1'] = "Empty";
+                    if (empty($edugorilla_email_body_daily)) $errors1['edugorilla_body_daily'] = "Empty";
 
                     if (empty($errors1)) {
-                        $edugorilla_email_setting1 = array('subject' => stripslashes($edugorilla_email_subject1), 'body' => stripslashes($edugorilla_email_body1));
+                        $edugorilla_email_setting_daily = array('subject' => stripslashes($edugorilla_email_subject_daily), 'body' => stripslashes($edugorilla_email_body_daily));
 
-                        update_option("edugorilla_email_setting1", $edugorilla_email_setting1);
+                        update_option("edugorilla_email_setting_daily", $edugorilla_email_setting_daily);
                         $success1 = "Email Settings Saved Successfully.";
-                        $email_setting_options1 = get_option('edugorilla_email_setting1');
+                        $email_setting_options_daily = get_option('edugorilla_email_setting_daily');
 
-                        $edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
+                        $edugorilla_email_subject_daily = stripslashes($email_setting_options_daily['subject']);
 
-                        $edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
+                        $edugorilla_email_body_daily = stripslashes($email_setting_options_daily['body']);
                     }
                 } else {
-                    $email_setting_options1 = get_option('edugorilla_email_setting1');
+                    $email_setting_options_daily = get_option('edugorilla_email_setting_daily');
 
-                    $edugorilla_email_subject1 = stripslashes($email_setting_options1['subject']);
+                    $edugorilla_email_subject_daily = stripslashes($email_setting_options_daily['subject']);
 
-                    $edugorilla_email_body1 = stripslashes($email_setting_options1['body']);
+                    $edugorilla_email_body_daily = stripslashes($email_setting_options_daily['body']);
 
                 }
 
@@ -338,35 +338,34 @@ function edugorilla_email_setting()
                         <tr>
                             <th>Subject <sup><font color="red">*</font></sup></th>
                             <td>
-                                <input name="edugorilla_subject1"
-                                       value="<?php echo stripslashes($edugorilla_email_subject1); ?>"
+                                <input name="edugorilla_subject_daily"
+                                       value="<?php echo stripslashes($edugorilla_email_subject_daily); ?>"
                                        placeholder="Type Email Subject here...">
-                                <font color="red"><?php echo $errors1['edugorilla_subject1']; ?></font>
+                                <font color="red"><?php echo $errors1['edugorilla_subject_daily']; ?></font>
                             </td>
                         </tr>
                         <tr>
                             <th>Body template<sup><font color="red">*</font></sup></th>
                             <td>
                                 <?php
-                                $content = $edugorilla_email_body1;
-                                $editor_id = 'edugorilla_body1';
+                                $content = $edugorilla_email_body_daily;
+                                $editor_id = 'edugorilla_body_daily';
 
                                 wp_editor($content, $editor_id);
                                 ?>
-                                <font color="red"><?php echo $errors1['edugorilla_body1']; ?></font>
+                                <font color="red"><?php echo $errors1['edugorilla_body_daily']; ?></font>
                             </td>
                         </tr>
                         <tr>
                             <th></th>
                             <td>
-                                <input type="hidden" name="email_setting_form1" value="self">
+                                <input type="hidden" name="email_setting_form_daily" value="self">
                                 <input type="submit" class="button button-primary" value="Save">
                             </td>
                         </tr>
                     </table>
                 </form>
             </div>
-
              <div id="tabs-weekly-digest-email">
                 <?php
                 $email_setting_form_weekly = $_POST['email_setting_form_weekly'];
