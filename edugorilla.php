@@ -141,7 +141,7 @@ function create_edugorilla_menus()
 	add_submenu_page(
 		'edugorilla',
 		'Lead Marketplace | Template of Email',
-		'Email Templates,
+		'Email Templates',
 		'read',
 		'edugorilla-email-setting',
 		'edugorilla_email_setting'
