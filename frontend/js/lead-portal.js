@@ -35,7 +35,12 @@ function showHint(str) {
 				return card.isHidden;
 			};
 			$scope.containsInArray = function(a, obj) {
-				containsInArrayUtil(a, obj);
+				for (var i = 0; i < a.length; i++) {
+					if (a[i] === obj) {
+						return true;
+					}
+				}
+				return false;
 			};
 			var domURL = new Url;
 			var locationsStringFromURL = domURL.query.loctn;
@@ -97,7 +102,6 @@ function showHint(str) {
 					//success code
 					card.isUnlocked = !card.isUnlocked;
 				}
-
 				function unlockErrorCallback(error) {
 					//error code
 					Load_confirm_box("Looks like you do not have sufficient EduCash. Would you like to buy EduCash Now?");
@@ -127,9 +131,6 @@ function showHint(str) {
 				var allCards = $scope.cards;
 				for (var index = 0; index < allCards.length; ++index) {
 					var card = allCards[index];
-					if(!$scope.cardSelectionCriteria(card)) {
-						continue;
-					}
 					var locationCount = ++locationArray[card.locationName];
 					var catergoryCount = ++categoryArray[card.categoryName];
 					if (isNaN(locationCount)) {
@@ -137,6 +138,10 @@ function showHint(str) {
 					}
 					if (isNaN(catergoryCount)) {
 						categoryArray[card.categoryName] = catergoryCount = 1;
+					}
+					if (!$scope.cardSelectionCriteria(card)) {
+						locationCount = locationCount - 1;
+						catergoryCount = catergoryCount - 1;
 					}
 					var currentLocation = {
 						Name: card.locationName,

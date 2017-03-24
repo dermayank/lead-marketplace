@@ -6,15 +6,15 @@ function edugorilla_email_setting()
         <h1>Promotional Email Template</h1>
         <div id="tabs">
           <ul>
-              <li><a href="#tabs-lead-received">Lead Received</a></li>
+              <li><a href="#tabs-lead-received">Promotional Emails</a></li>
               <li><a href="#tabs-educash-added">EduCash Added</a></li>
               <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
               <li><a href="#tabs-instant-email">Instant Email</a></li>
               <li><a href="#tabs-daily-digest-email">Daily Digest Email</a></li>
               <li><a href="#tabs-weekly-digest-email">Weekly Digest Email</a></li>
               <li><a href="#tabs-monthly-digest-email">Monthly Digest Email</a></li>
-              <li><a href="#tabs-4">Tab 4</a></li>
-              <li><a href="#tabs-5">Tab 5</a></li>
+              <!--<li><a href="#tabs-4">Tab 4</a></li>
+              <li><a href="#tabs-5">Tab 5</a></li>-->
           </ul>
             <div id="tabs-lead-received">
             <?php

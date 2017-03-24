@@ -17,7 +17,7 @@ class EduLead_Helper
 			$eduCashHelper = new EduCash_Helper();
 			$eduCashCostForLead = $out['rate'];  // fetched from meta table
 			$query_status = $eduCashHelper->removeEduCashFromUser($client_id, $eduCashCostForLead);
-			if (!str_starts_with($query_status, "Success")) {
+			if (!$this->str_starts_with($query_status, "Success")) {
 				return new WP_Error('EduCashError', $query_status . " for $client_id");
 			}
 			$result_status_string = $query_status;
