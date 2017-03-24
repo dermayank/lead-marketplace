@@ -14,21 +14,73 @@ class EduCash_Helper
         $users_table = $wpdb->prefix.users;
 
         $client_ID = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientEmail' ");
-        $final_total = $this->get_educash($client_ID_result) + $educash;
-        if($final_total>=0){
+		$current_educash = $this->get_educash($client_ID);
+        $final_total = $current_educash + $educash;
+        if($final_total >= 0){
 			$add_to_database = new DataBase_Helper();
 			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country);
+			
+			$transaction_done = true;
 		}
+		else{
+			//echo "<center><span style='color:red;'>The total balance that the client ".$clientEmail." has
+                 //is ".$current_educash.". Your entry will leave this client with negative amount of educash which is not allowed.</span></center>";
+			$transaction_done = false;
+		}
+		
+		return $transaction_done;
 	}
-
+	
 	public function get_educash($client_ID)
 	{
 		global $wpdb;
         $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
         $users_table = $wpdb->prefix.users;
-
+	
 	    $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
 		return $total;
+	}
+	
+	public function send_email($clientName, $educash_added, $attachment)
+	{
+		$edugorilla_email_datas = get_option('edugorilla_email_setting2');
+        $edugorilla_email_datas2 = get_option('edugorilla_email_setting3');
+        $arr1 = array("{Contact_Person}", "{ReceivedCount}", "{EduCashCount}", "{EduCashUrl}");
+        $to = $clientName;
+        if($educash_added>0){
+        $positive_email_subject = $edugorilla_email_datas['subject'];
+        $subject =  $positive_email_subject;
+        $arr2 = array($client_display_name, $educash_added, $sum, "https://edugorilla.com/");
+        $positive_email_body = str_replace($arr1, $arr2, $edugorilla_email_datas['body']);
+        $message =  $positive_email_body;
+		
+		wp_mail( $to, $subject, $message, "Content-type: text/html; charset=iso-8859-1", $attachment);
+		
+		}
+        else{
+        $negative_email_subject = $edugorilla_email_datas2['subject'];
+        $subject =  $negative_email_subject;
+        $negative_educash = $educash*(-1);
+        $arr3 = array($client_display_name, $negative_educash, $sum, "https://edugorilla.com/");
+        $negative_email_body = str_replace($arr1, $arr3, $edugorilla_email_datas2['body']);
+        $message =  $negative_email_body;
+		
+		 wp_mail($to, $subject, $message, "Content-type: text/html; charset=iso-8859-1");
+        }
+	}
+
+	public function display_current_transaction($time, $clientName)
+	{
+		global $wpdb;
+        $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
+		$adminName = wp_get_current_user();
+		
+		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
+        echo "<center></p>You have made the following entry just now:</p>";
+        echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+        echo "<tr><td>" . $r->id . "</td><td>" . $adminName->user_email . "</td><td>" . $clientName . "</td><td>" . $r->transaction . "</td><td>".$r->amount."</td><td>" . $r->time . "</td><td>" . $r->comments . "</td></tr>";
+        echo "<tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
+        echo "</table></center><br/><br/>";
 	}
 
 	public function removeEduCashFromCurrentUser($amount)
