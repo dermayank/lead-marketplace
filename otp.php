@@ -60,7 +60,6 @@ function edugorilla_settings()
     <ul>
       <li><a href="#tabs-1">Gupshup Credentials</a></li>
       <li><a href="#tabs-2">PayUMoney Credentials</a></li>
-      <li><a href="#tabs-3">Conversion Tables</a></li>
     </ul>
 
     <div id="tabs-1">
