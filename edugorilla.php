@@ -319,15 +319,15 @@ function edugorilla()
 			}
 
 			foreach ($json_results as $json_result) {
-				if ($is_promotional_lead == "yes") {
-					$edugorilla_email_subject = str_replace("{category}", $json_result->contact_category, $edugorilla_email['subject']);
+				$edugorilla_email_subject = str_replace("{category}", $json_result->contact_category, $edugorilla_email['subject']);
 					$email_template_datas = array("{Contact_Person}" => $json_result->contact_person, "{category}" => $json_result->contact_category, "{location}" => $json_result->contact_location, "{listing_URL}" => $json_result->listing_url, "{name}" => $name, "{contact no}" => $contact_no, "{email address}" => $email, "{query}" => $query);
 
 					foreach ($email_template_datas as $var => $email_template_data) {
 						$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 					}
 
-					$institute_send_emails_status = send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
+				if ($is_promotional_lead == "yes") {
+					$institute_send_emails_status = send_mail_pro($edugorilla_email_subject, $edugorilla_email_body,$lead_card);
 
 					$institute_emails = explode(",", $json_result->emails);
 					foreach ($institute_emails as $institute_email) {
@@ -361,6 +361,9 @@ function edugorilla()
 						)
 					);
 
+				}else
+				{
+				$institute_send_emails_status2 = send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
 				}
 			}
 
