@@ -29,15 +29,16 @@ class DataBase_Helper
 		update_user_meta($client_ID, 'user_address_county', $state);
 		update_user_meta($client_ID, 'user_address_country', $country);
 	}
-
+	
 	public function add_educash_transaction($client_id, $educash, $adminComment)
 	{
 		global $wpdb;
 		$transaction_table = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
 		$time = current_time('mysql');
+		$adminName = wp_get_current_user();
 		$insert_status = $wpdb->insert($transaction_table, array(
 			'time' => $time,
-			'admin_id' => -1,
+			'admin_id' => $adminName->ID,
 			'client_id' => $client_id,
 			'transaction' => $educash,
 			'comments' => $adminComment
