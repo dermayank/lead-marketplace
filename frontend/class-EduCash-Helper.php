@@ -6,8 +6,7 @@ require_once __DIR__ . '/../database/class-DataBase-Helper.php';
 
 class EduCash_Helper
 {
-
-    public function add_educash($clientEmail, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country)
+    public function add_educash($clientEmail, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $phone_number, $country)
 	{
 		global $wpdb;
         $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
@@ -18,39 +17,37 @@ class EduCash_Helper
         $final_total = $current_educash + $educash;
         if($final_total >= 0){
 			$add_to_database = new DataBase_Helper();
-			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $state, $country);
-			
-			$transaction_done = true;
+			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $phone_number, $country);
+
+            $transaction_done = true;
 		}
 		else{
-			//echo "<center><span style='color:red;'>The total balance that the client ".$clientEmail." has
-                 //is ".$current_educash.". Your entry will leave this client with negative amount of educash which is not allowed.</span></center>";
 			$transaction_done = false;
 		}
-		
+
 		return $transaction_done;
 	}
-	
+
 	public function get_educash($client_ID)
 	{
 		global $wpdb;
         $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
-        $users_table = $wpdb->prefix.users;
-	
-	    $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
+        $users_table = $wpdb->prefix.'users';
+
+        $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
 		return $total;
 	}
 	
-	public function send_email($clientName, $educash_added, $attachment)
+	public function send_email($firstname, $lastname, $total, $clientName, $educash_added, $attachment)
 	{
 		$edugorilla_email_datas = get_option('edugorilla_email_setting2');
         $edugorilla_email_datas2 = get_option('edugorilla_email_setting3');
         $arr1 = array("{Contact_Person}", "{ReceivedCount}", "{EduCashCount}", "{EduCashUrl}");
         $to = $clientName;
-        if($educash_added>0){
+        if($educash_added > 0){
         $positive_email_subject = $edugorilla_email_datas['subject'];
         $subject =  $positive_email_subject;
-        $arr2 = array($client_display_name, $educash_added, $sum, "https://edugorilla.com/");
+        $arr2 = array($firstname." ".$lastname, $educash_added, $total, "https://edugorilla.com/");
         $positive_email_body = str_replace($arr1, $arr2, $edugorilla_email_datas['body']);
         $message =  $positive_email_body;
 		
@@ -60,8 +57,8 @@ class EduCash_Helper
         else{
         $negative_email_subject = $edugorilla_email_datas2['subject'];
         $subject =  $negative_email_subject;
-        $negative_educash = $educash*(-1);
-        $arr3 = array($client_display_name, $negative_educash, $sum, "https://edugorilla.com/");
+        $negative_educash = $educash_added*(-1);
+        $arr3 = array($firstname." ".$lastname, $negative_educash, $total, "https://edugorilla.com/");
         $negative_email_body = str_replace($arr1, $arr3, $edugorilla_email_datas2['body']);
         $message =  $negative_email_body;
 		
