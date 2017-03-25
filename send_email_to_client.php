@@ -31,11 +31,21 @@ function send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card
 	$location_id = $lead_card->getLocationId();
 	$category = $lead_card->getCategoryId();
 	$lead_id = $lead_card->getId();
+	$cat = array();
+	$cat = explode(',', $category);
 	$table_name = $wpdb->prefix .'edugorilla_client_preferences';
 	$client_email_addresses = $wpdb->get_results("SELECT * FROM $table_name where unlock_lead = 1");
 	$headers = array('Content-Type: text/html; charset=UTF-8');
 	foreach ($client_email_addresses as $cea) {
-		if (preg_match('/Instant_Notifications/', $cea->preferences) AND preg_match('/' . $category . '/', $cea->category) AND preg_match('/' . $location_id . '/', $cea->location)) {
+		$check = 0;
+		foreach ($cat as $val) {
+		# code...
+		if (preg_match('/'.$val.'/', $cea->category)) {
+			# code...
+			$check = 1;
+			}
+		}
+		if (preg_match('/Instant_Notifications/', $cea->preferences) AND $check == 1 AND preg_match('/' . $location_id . '/', $cea->location)) {
 			echo $cea->client_name;
 			$lead_card->setUnlocked(true);
 			$eduLeadHelper = new EduLead_Helper();
@@ -46,9 +56,45 @@ function send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card
 		}
 	}
 
+	if ($institute_emails_status) {
+		# code...
+		echo "Mail send";
+	}
 	return $institute_emails_status;
 }
 
+function send_mail_pro($edugorilla_email_subject , $edugorilla_email_body, $lead_card){
+	global $wpdb;
+	$e_subject = $edugorilla_email_subject;
+	$e_body = $edugorilla_email_body;
+	$location_id = $lead_card->getLocationId();
+	$category = $lead_card->getCategoryId();
+	$cat = array();
+	$cat = explode(',', $category);
+	$table_name = $wpdb->prefix .'edugorilla_client_preferences';
+	$client_email_addresses = $wpdb->get_results( "SELECT * FROM $table_name");
+	$headers = array('Content-Type: text/html; charset=UTF-8');
+	foreach ($client_email_addresses as $cea) {
+		$check = 0;
+		foreach ($cat as $val) {
+		# code...
+		if (preg_match('/'.$val.'/', $cea->category)) {
+			# code...
+			$check = 1;
+			}
+		}
+		if (preg_match('/Instant_Notifications/',$cea->preferences) AND $check == 1 AND preg_match('/'.$location_id.'/', $cea->location)) {
+			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
+			$institute_emails_status = wp_mail($cea->email_id , $e_subject , ucwords($e_body),$headers);
+			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type'); 
+		}
+	}
+	if ($institute_emails_status) {
+		# code...
+		echo "mail send";
+	}
+	return $institute_emails_status;
+}
 //function to display client preferences form
 function edugorilla_client(){
 

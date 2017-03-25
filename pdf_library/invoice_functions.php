@@ -35,20 +35,28 @@ function sizeOfText( $texte, $largeur )
 function addCompanyAddress( $address )
 {
     $this->SetFont("Arial", "", 12);
-    $this->SetXY(7, 100);
-    $this->MultiCell( 60, 4, $address);
+    $this->SetXY(7, 248);
+    $this->MultiCell( 200, 4, $address);
 }
 
 function addClientAddress( $address )
 {
     $this->SetFont("Arial", "", 12);
-    $this->SetXY(150, 100);
-    $this->MultiCell(60, 4, $address);
+    $this->SetXY(7, 98);
+    $this->MultiCell(160, 4, $address);
 }
 
 function right_blocks($x1, $y1, $f, $content)
 {
     $this->SetFont( "Arial", "", $f);
+    $this->SetXY( $x1, $y1);
+    $this->Cell(40,4, $content , '', '', "L");
+}
+
+
+function right_blocks_bold($x1, $y1, $f, $content)
+{
+    $this->SetFont( "Arial", "B", $f);
     $this->SetXY( $x1, $y1);
     $this->Cell(40,4, $content , '', '', "L");
 }
@@ -59,7 +67,7 @@ function addCols( $tab )
     $this->SetFont( "Arial", "", 12);
     $r1  = 10;
     $r2  = $this->w - ($r1 * 2) ;
-    $y1  = 168;
+    $y1  = 153;
     $this->SetXY( $r1, $y1 );
     $this->Line( $r1, $y1+6, $r1+$r2, $y1+6);
     $colX = $r1;

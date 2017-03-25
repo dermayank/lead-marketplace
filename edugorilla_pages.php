@@ -148,7 +148,9 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 		}
 
 		document.getElementById(edugorilla_page).style.display = "block";
-		event.currentTarget.className += " active";
+		if (event != undefined) {
+			event.currentTarget.className += " active";
+		}
 	}
 
 	var domURL = new Url;
