@@ -8,6 +8,9 @@ $educash_helper_path = explode('/inc/',dirname(__FILE__));
 include_once(str_replace('/inc','',$educash_helper_path[0].'/frontend/class-EduCash-Helper.php'));
 
 
+$sms_code = explode('/inc/',dirname(__FILE__));
+include_once(str_replace('/inc','',$sms_code[0].'/api/gupshup.api.php'));
+
 global $wpdb;
 
 
@@ -25,13 +28,14 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
     $rate = $_SESSION["rate"];
     $educash = $amount/$rate;
     $user = get_user_by( 'id', $userid );
-
+    $mobile_no = get_user_meta($user_id,'user_general_phone',true);
           if($status == "success"){
 
               $eduCashHelper = new EduCash_Helper();
               $current_count = $eduCashHelper->getEduCashForUser($userid) + $educash;
               $user_cash = array("user_educash"=>$current_count,"users_id"=>$userid);
               update_option("user_educash_count",$user_cash);
+              $smsapi = get_option("smsapi");
 
               $url = get_home_url();
               $url = $url."/manage-leads";
@@ -48,8 +52,11 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
               $headers = array('Content-Type: text/html; charset=UTF-8');
               $value = wp_mail($to,$email_subject,$email_body,$headers);
 
+              $sms_setting_options2 = get_option('edugorilla_sms_setting2');
+              $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
 
               $eduCashHelper->addEduCashToUser($userid, $educash, $status);
+              $value = send_sms($smsapi['username'],$smsapi['password'],$mobile_no, $edugorilla_sms_body2);
 
               echo "<h2>Thank You. Your order status is ". $status .".</h2>";
               echo "<h2>Your Transaction ID for this transaction is ".$txnid.".</h2>";
