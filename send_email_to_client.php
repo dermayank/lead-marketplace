@@ -108,6 +108,15 @@ function edugorilla_client(){
 			foreach ($notification_all as $value) {
 				# code...
 				$notification = $value . ", " . $notification;
+				if($value == "Instant_Notifications")
+					$in_val = "checked";
+				else if($value == "Daily_Digest")
+					$dd_val = "checked";
+				else if($value == "Weekly_Digest")
+					$wd_val = "checked";
+				else if($value == "Monthly_Digest")
+					$md_val = "checked";
+
 			}
 		}
 		$category_count = $_POST['category_count'];
@@ -115,15 +124,28 @@ function edugorilla_client(){
 
 		$category = array();
 		$location = array();
+		$more_category_count = $category_count;
 		for ($i = 0; $i < $category_count; $i++) {
 			# code...
 			$category_name = "category".$i;
+			if ($more_category_count>1) {
+				# code...
+				$more_category = $more_category.'<br/><input list="location_list" name="'.$category_name.'" size="30" value="'.$_POST[$category_name].'">';
+				$more_category_count = $more_category_count-1;
+			}else
+				$category_select_val = $_POST[$category_name];
 			array_push($category, $_POST[$category_name]);
 		}
-
+		$more_location_count = $location_count;
 		for ($i = 0; $i < $location_count; $i++) {
 			# code...
 			$location_name = "location".$i;
+			if ($more_location_count>1) {
+				# code...
+				$more_location = $more_location.'<br/><input list="location_list" name="'.$location_name.'" size="30" value="'.$_POST[$location_name].'">';
+				$more_location_count = $more_location_count-1;
+			}else
+			$location_select_val = $_POST[$location_name];
 			array_push($location, $_POST[$location_name]);
 		}
 
@@ -153,8 +175,10 @@ function edugorilla_client(){
 
 		if ($unlock_lead_ != 1) {
 			# code...
+			$unlock_val = "";
 			$unlock_lead_ = 0;
-		}
+		}else
+			$unlock_val = "checked";
 
 		/** Error Checking **/
 		$c_errors = array();
@@ -165,6 +189,7 @@ function edugorilla_client(){
 
 		if (empty($category)) $c_errors['category'] = "Empty";
 		//elseif (!preg_match("/([A-Za-z]+)/", $category)) $c_errors['category'] = "Invalid Name";
+
 
 		$user_id = get_current_user_id();
 		$user_detail = get_user_meta($user_id);
@@ -262,21 +287,21 @@ function edugorilla_client(){
 			<tr>
 				<td rowspan="4">Notification Preferences<sup><font color="red">*</font></sup> :</td>
 				<td colspan="2"><input type="checkbox" name="notification[]" id="notification"
-				                       value="Instant_Notifications">Instant Notification
+				                       value="Instant_Notifications" <?php echo $in_val ?>>Instant Notification
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Daily_Digest">Daily
+				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Daily_Digest" <?php echo $dd_val ?>>Daily
 					Digest
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Weekly_Digest">Weekly
+				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Weekly_Digest" <?php echo $wd_val ?> >Weekly
 					Digest
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Monthly_Digest">Monthly
+				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Monthly_Digest" <?php echo $md_val ?>>Monthly
 					Digest<br/>
 					<font color="red"><?php echo $c_errors['notification']; ?></font>
 				</td>
@@ -298,7 +323,8 @@ function edugorilla_client(){
 							<?php } ?>
 					</datalist>
 					<div id="get_location">
-						<input list="location_list" name="location0" size="30">
+						<input list="location_list" name="location0" size="30" value="<?php echo $location_select_val?>">
+						<?php echo $more_location ?>
 					</div>
 					<input type="text" hidden name="location_count" id="location_count" value="1">
 					<font color="red"><?php echo $c_errors['location']; ?></font></td>
@@ -313,15 +339,16 @@ function edugorilla_client(){
 							<?php } ?>
 					</datalist>
 					<div id="get_category">
-						<input list="categories_list" name="category0" size="30"><input type="button" value="  +  "
-						                                                                onclick="add()">
+						<input list="categories_list" name="category0" size="30" value="<?php echo $category_select_val?>">
+						<?php echo $more_category ?>
+						<input type="button" value="  +  " onclick="add()">
 					</div>
 					<input type="text" hidden name="category_count" id="category_count" value="1">
 					<font color="red"><?php echo $c_errors['category']; ?></font></td>
 			</tr>
 			<tr>
 				<td>Automatically Unlock the Lead :</td>
-				<td><input type="checkbox" name="unlock_lead" value="1" checked=""></td>
+				<td><input type="checkbox" name="unlock_lead" value="1" <?php echo $unlock_val ?>></td>
 			</tr>
 			<tr><td><input type="submit" name="submit_client_pref"/></td></tr>
 		</table>
