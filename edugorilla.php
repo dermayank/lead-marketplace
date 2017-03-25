@@ -192,6 +192,15 @@ function create_edugorilla_menus()
 		'transaction_history_form_page'
 	);
 
+    add_submenu_page(
+		'edugorilla',
+		'Lead Marketplace | Client Preferences',
+		'Client Preferences',
+		'read',
+		'client_preferences_page',
+		'client_preferences_page'
+	);
+
 	add_submenu_page(
 		'edugorilla',
 		'Lead Marketplace | Conversion Tables',
@@ -216,6 +225,7 @@ include_once plugin_dir_path(__FILE__) . "edit.php";
 include_once plugin_dir_path(__FILE__) . "otp.php";
 include_once plugin_dir_path(__FILE__) . "sms_setting.php";
 include_once plugin_dir_path(__FILE__) . "educash_allotment_and_history.php";
+include_once plugin_dir_path(__FILE__) . "backend_client_preferences.php";
 include_once plugin_dir_path(__FILE__) . 'frontend/class-Lead-Card.php'; /*Cards used for displaying leads */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-Custom-Lead-API.php'; /*API to be used for displaying leads */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduCash-Helper.php'; /*Utility class used for dealing with EduCash */
