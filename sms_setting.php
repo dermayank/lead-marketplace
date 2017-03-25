@@ -9,7 +9,7 @@ function edugorilla_sms_setting()
               <li><a href="#tabs-lead-received">Promotional SMS</a></li>
               <li><a href="#tabs-educash-added">EduCash Added</a></li>
               <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
-              <li><a href="#tabs-instant-sms">Instant SMS</a></li>
+              <li><a href="#tabs-instant-sms">Non promotional instant SMS</a></li>
               <li><a href="#tabs-daily-digest-sms">Daily Digest SMS</a></li>
               <li><a href="#tabs-weekly-digest-sms">Weekly Digest SMS</a></li>
               <li><a href="#tabs-monthly-digest-sms">Monthly Digest SMS</a></li>

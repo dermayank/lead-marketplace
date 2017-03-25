@@ -9,7 +9,7 @@ function edugorilla_email_setting()
               <li><a href="#tabs-lead-received">Promotional Emails</a></li>
               <li><a href="#tabs-educash-added">EduCash Added</a></li>
               <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
-              <li><a href="#tabs-instant-email">Instant Email</a></li>
+              <li><a href="#tabs-instant-email">Non promotional instant Email</a></li>
               <li><a href="#tabs-daily-digest-email">Daily Digest Email</a></li>
               <li><a href="#tabs-weekly-digest-email">Weekly Digest Email</a></li>
               <li><a href="#tabs-monthly-digest-email">Monthly Digest Email</a></li>
