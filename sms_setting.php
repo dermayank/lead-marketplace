@@ -3,16 +3,16 @@ function edugorilla_sms_setting()
 {
 ?>
     <div class="wrap">
-        <h1>Promotional sms Template</h1>
+        <h1>SMS Template</h1>
         <div id="tabs">
           <ul>
-              <li><a href="#tabs-lead-received">Promotional sms</a></li>
+              <li><a href="#tabs-lead-received">Promotional SMS</a></li>
               <li><a href="#tabs-educash-added">EduCash Added</a></li>
               <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
-              <li><a href="#tabs-instant-sms">Instant sms</a></li>
-              <li><a href="#tabs-daily-digest-sms">Daily Digest sms</a></li>
-              <li><a href="#tabs-weekly-digest-sms">Weekly Digest sms</a></li>
-              <li><a href="#tabs-monthly-digest-sms">Monthly Digest sms</a></li>
+              <li><a href="#tabs-instant-sms">Instant SMS</a></li>
+              <li><a href="#tabs-daily-digest-sms">Daily Digest SMS</a></li>
+              <li><a href="#tabs-weekly-digest-sms">Weekly Digest SMS</a></li>
+              <li><a href="#tabs-monthly-digest-sms">Monthly Digest SMS</a></li>
               <!--<li><a href="#tabs-4">Tab 4</a></li>
               <li><a href="#tabs-5">Tab 5</a></li>-->
           </ul>
@@ -53,14 +53,12 @@ function edugorilla_sms_setting()
                 <form method="post">
                     <table class="form-table">
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                <?php
 									$content = $edugorilla_sms_body1;
-									$editor_id = 'edugorilla_body1';
 
-									wp_editor( $content, $editor_id );
-								?>
+									?><textarea name = "edugorilla_body1" rows="15" cols="100" ><?php echo $content;?></textarea>
                                 <font color="red"><?php echo $errors1['edugorilla_body1']; ?></font>
                             </td>
                         </tr>
@@ -74,7 +72,7 @@ function edugorilla_sms_setting()
                     </table>
                 </form>
           </div>
-            <div id="tabs-educash-added">
+          <div id="tabs-educash-added">
             <?php
 
                 $sms_setting_form2 = $_POST['sms_setting_form2'];
@@ -110,14 +108,11 @@ function edugorilla_sms_setting()
                 <form method="post">
                     <table class="form-table">
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                  <?php
 									$content = $edugorilla_sms_body2;
-									$editor_id = 'edugorilla_body2';
-
-									wp_editor( $content, $editor_id );
-								?>
+									?><textarea name = "edugorilla_body2"rows="15" cols="100" ><?php echo $content;?></textarea>
                                 <font color="red"><?php echo $errors2['edugorilla_body2']; ?></font>
                             </td>
                         </tr>
@@ -131,7 +126,7 @@ function edugorilla_sms_setting()
                     </table>
                 </form>
           </div>
-            <div id="tabs-educash-deducted">
+          <div id="tabs-educash-deducted">
             <?php
                 $sms_setting_form3 = $_POST['sms_setting_form3'];
                 if ($sms_setting_form3 == "self") {
@@ -165,13 +160,11 @@ function edugorilla_sms_setting()
                 <form method="post">
                     <table class="form-table">
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                  <?php
-									$content = $edugorilla_sms_body3;
-									$editor_id = 'edugorilla_body3';
-									wp_editor( $content, $editor_id );
-								?>
+									$content = $edugorilla_sms_body3; ?>
+                                    <textarea name = "edugorilla_body3"rows="15" cols="100" ><?php echo $content;?></textarea>
                                 <font color="red"><?php echo $errors3['edugorilla_body3']; ?></font>
                             </td>
                         </tr>
@@ -185,7 +178,7 @@ function edugorilla_sms_setting()
                     </table>
                 </form>
           </div>
-            <div id="tabs-instant-sms">
+          <div id="tabs-instant-sms">
                 <?php
                 $sms_setting_form_instant = $_POST['sms_setting_form_instant'];
                 if ($sms_setting_form_instant == "self") {
@@ -221,14 +214,11 @@ function edugorilla_sms_setting()
                 <form method="post">
                     <table class="form-table">
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                 <?php
-                                $content = $edugorilla_sms_body_instant;
-                                $editor_id = 'edugorilla_body_instant';
-
-                                wp_editor($content, $editor_id);
-                                ?>
+                                $content = $edugorilla_sms_body_instant;?>
+                                <textarea name = "edugorilla_body_instant" rows="15" cols="100" ><?php echo $content;?></textarea>
                                 <font color="red"><?php echo $errors1['edugorilla_body_instant']; ?></font>
                             </td>
                         </tr>
@@ -279,14 +269,11 @@ function edugorilla_sms_setting()
                 <form method="post">
                     <table class="form-table">
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                 <?php
-                                $content = $edugorilla_sms_body_daily;
-                                $editor_id = 'edugorilla_body_daily';
-
-                                wp_editor($content, $editor_id);
-                                ?>
+                                $content = $edugorilla_sms_body_daily;?>
+                                <textarea name = "edugorilla_body_daily" rows="15" cols="100" ><?php echo $content;?></textarea>
                                 <font color="red"><?php echo $errors1['edugorilla_body_daily']; ?></font>
                             </td>
                         </tr>
@@ -300,7 +287,8 @@ function edugorilla_sms_setting()
                     </table>
                 </form>
             </div>
-             <div id="tabs-weekly-digest-sms">
+
+            <div id="tabs-weekly-digest-sms">
                 <?php
                 $sms_setting_form_weekly = $_POST['sms_setting_form_weekly'];
                 if ($sms_setting_form_weekly == "self") {
@@ -310,7 +298,7 @@ function edugorilla_sms_setting()
 
                     if (empty($edugorilla_sms_body_weekly)) $errors1['edugorilla_body_weekly'] = "Empty";
                     if (empty($errors1)) {
-
+                        $edugorilla_sms_setting_weekly = array('body' => stripslashes($edugorilla_sms_body_weekly));
                         update_option("edugorilla_sms_setting_weekly", $edugorilla_sms_setting_weekly);
                         $success1 = "sms Settings Saved Successfully.";
                         $sms_setting_options_weekly = get_option('edugorilla_sms_setting_weekly');
@@ -334,13 +322,13 @@ function edugorilla_sms_setting()
                     <table class="form-table">
 
                         <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
+                            <th>SMS Body<sup><font color="red">*</font></sup></th>
                             <td>
                                 <?php
-                                $content = $edugorilla_sms_body_weekly;
-                                $editor_id = 'edugorilla_body_weekly';
-                                wp_editor($content, $editor_id);
-                                ?>
+                                $content = $edugorilla_sms_body_weekly;?>
+
+                                 <textarea name="edugorilla_body_weekly" rows="15" cols="100" ><?php echo $content;?></textarea>
+
                                 <font color="red"><?php echo $errors1['edugorilla_body_weekly']; ?></font>
                             </td>
                         </tr>
@@ -355,184 +343,60 @@ function edugorilla_sms_setting()
                 </form>
             </div>
 
-             <div id="tabs-monthly-digest-sms">
-                <?php
-                $sms_setting_form_monthly = $_POST['sms_setting_form_monthly'];
-                if ($sms_setting_form_monthly == "self") {
-                    $errors1 = array();
 
-                    $edugorilla_sms_body_monthly = $_POST['edugorilla_body_monthly'];
+            <div id="tabs-monthly-digest-sms">
+               <?php
+               $sms_setting_form_monthly = $_POST['sms_setting_form_monthly'];
+               if ($sms_setting_form_monthly == "self") {
+                   $errors1 = array();
 
-                    if (empty($edugorilla_sms_body_monthly)) $errors1['edugorilla_body_monthly'] = "Empty";
-                    if (empty($errors1)) {
-                        $edugorilla_sms_setting_monthly = array('body' => stripslashes($edugorilla_sms_body_monthly));
-                        update_option("sms_setting_form_monthly", $edugorilla_sms_setting_monthly);
-                        $success1 = "sms Settings Saved Successfully.";
-                        $sms_setting_options_monthly = get_option('sms_setting_form_monthly');
+                   $edugorilla_sms_body_monthly = $_POST['edugorilla_body_monthly'];
 
-                        $edugorilla_sms_body_monthly = stripslashes($sms_setting_options_monthly['body']);
-                    }
-                } else {
-                    $sms_setting_options_monthly = get_option('sms_setting_form_monthly');
+                   if (empty($edugorilla_sms_body_monthly)) $errors1['edugorilla_body_monthly'] = "Empty";
+                   if (empty($errors1)) {
+                       $edugorilla_sms_setting_monthly = array('body' => stripslashes($edugorilla_sms_body_monthly));
+                       update_option("sms_setting_form_monthly", $edugorilla_sms_setting_monthly);
+                       $success1 = "sms Settings Saved Successfully.";
+                       $sms_setting_options_monthly = get_option('sms_setting_form_monthly');
 
-                    $edugorilla_sms_body_monthly = stripslashes($sms_setting_options_monthly['body']);
-                }
-                if ($success1) {
-                    ?>
-                    <div class="updated notice">
-                        <p><?php echo $success1; ?></p>
-                    </div>
-                    <?php
-                }
-                ?>
-                <form method="post">
-                    <table class="form-table">
+                       $edugorilla_sms_body_monthly = stripslashes($sms_setting_options_monthly['body']);
+                   }
+               } else {
+                   $sms_setting_options_monthly = get_option('sms_setting_form_monthly');
 
-                        <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
-                            <td>
-                                <?php
-                                $content = $edugorilla_sms_body_monthly;
-                                $editor_id = 'edugorilla_body_monthly';
-                                wp_editor($content, $editor_id);
-                                ?>
-                                <font color="red"><?php echo $errors1['edugorilla_body_monthly']; ?></font>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td>
-                                <input type="hidden" name="sms_setting_form_monthly" value="self">
-                                <input type="submit" class="button button-primary" value="Save">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+                   $edugorilla_sms_body_monthly = stripslashes($sms_setting_options_monthly['body']);
+               }
+               if ($success1) {
+                   ?>
+                   <div class="updated notice">
+                       <p><?php echo $success1; ?></p>
+                   </div>
+                   <?php
+               }
+               ?>
+               <form method="post">
+                   <table class="form-table">
 
-         <div id="tabs-4">
-            <?php
-                $sms_setting_form4 = $_POST['sms_setting_form4'];
-                if ($sms_setting_form4 == "self") {
-                    $errors4 = array();
-
-                    $edugorilla_sms_body4 = $_POST['edugorilla_body4'];
-
-
-                    if (empty($edugorilla_sms_body4)) $errors4['edugorilla_body4'] = "Empty";
-
-                    if (empty($errors4)) {
-
-
-                        update_option("edugorilla_sms_setting4", $edugorilla_sms_setting4);
-                        $success4 = "sms Settings Saved Successfully.";
-                    	$sms_setting_options4 = get_option('edugorilla_sms_setting4');
-
-                    	$edugorilla_sms_body4 = stripslashes($sms_setting_options4['body']);
-                    }
-                } else {
-                    $sms_setting_options4 = get_option('edugorilla_sms_setting4');
-
-                    $edugorilla_sms_body4 = stripslashes($sms_setting_options4['body']);
-
-                }
-
-                if ($success4) {
-                    ?>
-                    <div class="updated notice">
-                        <p><?php echo $success4; ?></p>
-                    </div>
-                    <?php
-                }
-            ?>
-                <form method="post">
-                    <table class="form-table">
-
-                        <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
-                            <td>
+                       <tr>
+                           <th>SMS Body<sup><font color="red">*</font></sup></th>
+                           <td>
                                <?php
-									$content = $edugorilla_sms_body4;
-									$editor_id = 'edugorilla_body4';
-									wp_editor( $content, $editor_id );
-								?>
-                                <font color="red"><?php echo $errors4['edugorilla_body4']; ?></font>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td>
-                                <input type="hidden" name="sms_setting_form4" value="self">
-                                <input type="submit" class="button button-primary" value="Save">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-          </div>
-
-        <div id="tabs-5">
-            <?php
-                $sms_setting_form5 = $_POST['sms_setting_form5'];
-                if ($sms_setting_form5 == "self") {
-                    $errors5 = array();
-
-                    $edugorilla_sms_body5 = $_POST['edugorilla_body5'];
-
-
-                    if (empty($edugorilla_sms_body5)) $errors5['edugorilla_body5'] = "Empty";
-
-                    if (empty($errors5)) {
-                        $edugorilla_sms_setting5 = array('body' => stripslashes($edugorilla_sms_body5));
-
-                        update_option("edugorilla_sms_setting5", $edugorilla_sms_setting5);
-                        $success5 = "sms Settings Saved Successfully.";
-
-                    	 $sms_setting_options5 = get_option('edugorilla_sms_setting5');
-
-                    	 $edugorilla_sms_body5 = stripslashes($sms_setting_options5['body']);
-                    }
-                } else {
-                    $sms_setting_options5 = get_option('edugorilla_sms_setting5');
-
-                    $edugorilla_sms_body5 = stripslashes($sms_setting_options5['body']);
-
-                }
-
-                if ($success5) {
-                    ?>
-                    <div class="updated notice">
-                        <p><?php echo $success5; ?></p>
-                    </div>
-                    <?php
-                }
-            ?>
-                <form method="post">
-                    <table class="form-table">
-
-                        <tr>
-                            <th>sms body<sup><font color="red">*</font></sup></th>
-                            <td>
-                               <?php
-									$content = $edugorilla_sms_body5;
-									$editor_id = 'edugorilla_body5';
-									wp_editor( $content, $editor_id );
-								?>
-                                <font color="red"><?php echo $errors5['edugorilla_body5']; ?></font>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td>
-                                <input type="hidden" name="sms_setting_form5" value="self">
-                                <input type="submit" class="button button-primary" value="Save">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-          </div>
-        </div>
-
-    </div>
+                               $content = $edugorilla_sms_body_monthly;
+                               $editor_id = 'edugorilla_body_monthly';?>
+                               <textarea name="edugorilla_body_monthly" rows="15" cols="100" ><?php echo $content;?></textarea>
+                               <font color="red"><?php echo $errors1['edugorilla_body_monthly']; ?></font>
+                           </td>
+                       </tr>
+                       <tr>
+                           <th></th>
+                           <td>
+                               <input type="hidden" name="sms_setting_form_monthly" value="self">
+                               <input type="submit" class="button button-primary" value="Save">
+                           </td>
+                       </tr>
+                   </table>
+               </form>
+           </div>
     <?php
 }
 

@@ -35,7 +35,7 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
               $current_count = $eduCashHelper->getEduCashForUser($userid) + $educash;
               $user_cash = array("user_educash"=>$current_count,"users_id"=>$userid);
               update_option("user_educash_count",$user_cash);
-              $smsapi = get_option("smsapi");
+              $credentials = get_option("ghupshup_credentials");
 
               $url = get_home_url();
               $url = $url."/manage-leads";
@@ -56,7 +56,7 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
               $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
 
               $eduCashHelper->addEduCashToUser($userid, $educash, $status);
-              $value = send_sms($smsapi['username'],$smsapi['password'],$mobile_no, $edugorilla_sms_body2);
+              $value = send_sms($credentials['user_id'],$credentials['password'],$mobile_no, $edugorilla_sms_body2);
 
               echo "<h2>Thank You. Your order status is ". $status .".</h2>";
               echo "<h2>Your Transaction ID for this transaction is ".$txnid.".</h2>";

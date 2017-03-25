@@ -26,8 +26,8 @@
                $current_count = $eduCashHelper->getEduCashForUser($user_id) + $educash;
                $user_cash = array("user_educash"=>$current_count,"users_id"=>$user_id);
                update_option("user_educash_count",$user_cash);
-               $smsapi = get_option("smsapi");
 
+               $credentials = get_option("ghupshup_credentials");
                $url = get_home_url();
                $url = $url."/manage-leads";
 
@@ -54,7 +54,7 @@
                echo "<h2>Soon you will be allocated ".$educash." educash.</h2>";
 
                $eduCashHelper->addEduCashToUser($user_id, $educash, $status);
-               $value = send_sms($smsapi['username'],$smsapi['password'],$mobile_no, $edugorilla_sms_body2);
+               $value2 = send_sms($credentials['user_id'],$credentials['password'],$mobile_no, $edugorilla_sms_body2);
 
             }
             else{

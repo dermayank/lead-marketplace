@@ -112,9 +112,12 @@ function edugorilla_lead_edit(){
 					$institute_phones = explode(",", $json_result->phones);
 					include_once plugin_dir_path(__FILE__) . "api/gupshup-api.php";
 					foreach ($institute_phones as $institute_phone) {
-						$smsapi = get_option("smsapi");
-						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $smsapi['message']);
-						$institute_sms_status[$institute_phone] = send_sms($smsapi['username'],$smsapi['password'],$institute_phone,$msg);
+                        $sms_setting_options2 = get_option('edugorilla_sms_setting2');
+                        $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
+
+                        $credentials = get_option("ghupshup_credentials");
+						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $edugorilla_sms_body2);
+						$institute_sms_status[$institute_phone] = send_sms($credentials['user_id'],$credentials['password'],$institute_phone,$msg);
 					}
 
 					$contact_log_id = $wpdb->insert_id;
@@ -128,7 +131,7 @@ function edugorilla_lead_edit(){
 							'date_time' => current_time('mysql')
 						),
 						array( 'contact_log_id' => $contact_log_id, )
-						
+
 					);
 
 				}
@@ -146,10 +149,10 @@ function edugorilla_lead_edit(){
 	{
 		global $wpdb;
 		$q = "select * from edugorilla_lead_details where id=$iid";
-		$lead_details = $wpdb->get_results($q, ARRAY_A); 
-		
+		$lead_details = $wpdb->get_results($q, ARRAY_A);
+
 		foreach($lead_details as $lead_detail);
-		
+
 		$name = $lead_detail['name'];
 		$contact_no = $lead_detail['contact_no'];
 		$email = $lead_detail['email'];
@@ -159,7 +162,7 @@ function edugorilla_lead_edit(){
 		$category_ids = explode(",",$lead_detail['category_id']);
 		$keyword = $lead_detail['keyword'];
 		$location = $lead_detail['location_id'];
-		
+
 	}
 	?>
 	<style>
