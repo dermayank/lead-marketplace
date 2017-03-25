@@ -338,13 +338,23 @@ function edugorilla()
 					}
 
 				if ($is_promotional_lead == "yes") {
-					$institute_send_emails_status = send_mail_pro($edugorilla_email_subject, $edugorilla_email_body,$lead_card);
+					$institute_send_emails_status = send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
+
+					$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
+					$client_email_addresses = $wpdb->get_results("SELECT * FROM $table_name");
 
 					$institute_emails = explode(",", $json_result->emails);
 					foreach ($institute_emails as $institute_email) {
 						add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 
-						if (!empty($institute_email))
+						$is_email_sending_required = 1;
+						foreach ($client_email_addresses as $cea) {
+							if ($cea->email_id == $institute_email) {
+								$is_email_sending_required = 0;
+							}
+						}
+
+						if (!empty($institute_email) && $is_email_sending_required == 1)
 							$institute_emails_status[$institute_email] = wp_mail($institute_email, $edugorilla_email_subject, ucwords($edugorilla_email_body));
 
 						remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
@@ -372,9 +382,8 @@ function edugorilla()
 						)
 					);
 
-				}else
-				{
-				$institute_send_emails_status2 = send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
+				} else {
+					$institute_send_emails_status2 = send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
 				}
 			}
 

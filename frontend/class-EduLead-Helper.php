@@ -58,6 +58,7 @@ class EduLead_Helper
 			$lead_category = $leads_detail['category_id'];
 			$lead_location = $leads_detail['location_id'];
 			$lead_date_time = $leads_detail['date_time'];
+			$lead_is_promotional = $leads_detail['is_promotional'];
 			$mapping_query = "select * from $lead_table WHERE lead_id=$lead_id";
 			$leads_mapping_details = $wpdb->get_results($mapping_query, 'ARRAY_A');
 			$lead_is_unlocked = "unknown";
@@ -68,15 +69,20 @@ class EduLead_Helper
 			}
 			if ($lead_is_unlocked == "unknown" || $lead_is_hidden == "unknown") {
 				//Seems like a new client, so creating this new row.
+				$card_unlock_status = 0;
+				if ($lead_is_promotional == "yes") {
+					$card_unlock_status = 1;
+				}
 				$result1 = $wpdb->insert(
 					$lead_table,
 					array(
 						'client_id' => $client_id,
-						'lead_id' => $lead_id
+						'lead_id' => $lead_id,
+						'is_unlocked' => $card_unlock_status
 					)
 				);
 
-				$lead_is_unlocked = 0;
+				$lead_is_unlocked = $card_unlock_status;
 				$lead_is_hidden = 0;
 			}
 			$db_card = new Lead_Card($lead_id, $lead_name, $lead_email, $lead_contact_no, $lead_query, $lead_category, $lead_location, $lead_date_time, $lead_is_unlocked, $lead_is_hidden);

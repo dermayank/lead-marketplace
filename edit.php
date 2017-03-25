@@ -96,7 +96,7 @@ function edugorilla_lead_edit(){
 						$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 					}
 
-					$institute_send_emails_status = send_mail($edugorilla_email_subject, $edugorilla_email_body);
+					$institute_send_emails_status = send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body);
 
 					$institute_emails = explode(",", $json_result->emails);
 					foreach ($institute_emails as $institute_email) {

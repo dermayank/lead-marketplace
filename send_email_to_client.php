@@ -25,37 +25,42 @@ function table_for_client()
 
 //end pluginUninstall function
 
-function send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card)
+function send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card)
 {
 	global $wpdb;
-	$location_id = $lead_card->getLocationId();
+	$location_ids = $lead_card->getLocationId();
 	$category = $lead_card->getCategoryId();
 	$lead_id = $lead_card->getId();
-	$cat = array();
-	$cat = explode(',', $category);
+	$categoryArray = explode(',', $category);
+	$locationArray = explode(',', $location_ids);
 	$table_name = $wpdb->prefix .'edugorilla_client_preferences';
-	$client_email_addresses = $wpdb->get_results("SELECT * FROM $table_name where unlock_lead = 1");
+	$client_email_addresses = $wpdb->get_results("SELECT * FROM $table_name");
 	$headers = array('Content-Type: text/html; charset=UTF-8');
 	foreach ($client_email_addresses as $cea) {
-		$check = 0;
-		foreach ($cat as $val) {
-		# code...
-		if (preg_match('/'.$val.'/', $cea->category)) {
-			# code...
-			$check = 1;
+		$categoryCheck = 0;
+		$locationCheck = 0;
+		foreach ($categoryArray as $currentCategory) {
+			if (preg_match('/' . $currentCategory . '/', $cea->category)) {
+				$categoryCheck = 1;
 			}
 		}
-		if (preg_match('/Instant_Notifications/', $cea->preferences) AND $check == 1 AND preg_match('/' . $location_id . '/', $cea->location)) {
+		foreach ($locationArray as $currentLocation) {
+			if (preg_match('/' . $currentLocation . '/', $cea->location)) {
+				$locationCheck = 1;
+			}
+		}
+		if (preg_match('/Instant_Notifications/', $cea->preferences) AND $categoryCheck == 1 AND $locationCheck == 1) {
 			echo $cea->client_name;
-			$lead_card->setUnlocked(true);
 			$eduLeadHelper = new EduLead_Helper();
-			$eduLeadHelper->set_card_unlock_status_to_db($cea->email_id, $lead_id, 1);
-			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
-			$institute_emails_status = wp_mail($cea->email_id , $edugorilla_email_subject , ucwords($edugorilla_email_body),$headers);
-			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
+			$query_status = $eduLeadHelper->set_card_unlock_status_to_db($cea->email_id, $lead_id, 1);
+			if (str_starts_with($query_status, "Success")) {
+				$lead_card->setUnlocked(true);
+				add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
+				$institute_emails_status = wp_mail($cea->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
+				remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
+			}
 		}
 	}
-
 	if ($institute_emails_status) {
 		# code...
 		echo "Mail send";
@@ -63,38 +68,11 @@ function send_mail($edugorilla_email_subject, $edugorilla_email_body, $lead_card
 	return $institute_emails_status;
 }
 
-function send_mail_pro($edugorilla_email_subject , $edugorilla_email_body, $lead_card){
-	global $wpdb;
-	$e_subject = $edugorilla_email_subject;
-	$e_body = $edugorilla_email_body;
-	$location_id = $lead_card->getLocationId();
-	$category = $lead_card->getCategoryId();
-	$cat = array();
-	$cat = explode(',', $category);
-	$table_name = $wpdb->prefix .'edugorilla_client_preferences';
-	$client_email_addresses = $wpdb->get_results( "SELECT * FROM $table_name");
-	$headers = array('Content-Type: text/html; charset=UTF-8');
-	foreach ($client_email_addresses as $cea) {
-		$check = 0;
-		foreach ($cat as $val) {
-		# code...
-		if (preg_match('/'.$val.'/', $cea->category)) {
-			# code...
-			$check = 1;
-			}
-		}
-		if (preg_match('/Instant_Notifications/',$cea->preferences) AND $check == 1 AND preg_match('/'.$location_id.'/', $cea->location)) {
-			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
-			$institute_emails_status = wp_mail($cea->email_id , $e_subject , ucwords($e_body),$headers);
-			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type'); 
-		}
-	}
-	if ($institute_emails_status) {
-		# code...
-		echo "mail send";
-	}
-	return $institute_emails_status;
+function str_starts_with($haystack, $needle)
+{
+	return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
 }
+
 //function to display client preferences form
 function edugorilla_client(){
 
