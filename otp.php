@@ -164,13 +164,13 @@ function edugorilla_settings()
 
 function conversion_tables(){?>
     <div class="wrap">
-     <h1>Conversion Rate - Rs to educash</h1><br>
+     <h1>Conversion Rate - Rs to EduCash</h1><br>
         <form method="post" action="">
             <table>
                 <tr>
                 <th>New Rate</th>
                     <td>
-                        <input type="number" name="rate"/> rs</br></br>
+                        <input type="number" name="rate"/> Rs</br></br>
                     </td>
                 </tr>
                 <tr>
@@ -194,14 +194,14 @@ function conversion_tables(){?>
       <table>
         <tr>
           <th>Current Rate = </th>
-            <td>1 educash for <?php
+            <td>1 EduCash for <?php
              $out = get_option("current_rate");
             echo $out['rate']; ?> Rs</td>
         </tr>
     </table><br></br>
 
     <div class="wrap">
-      <h1>Conversion Rate - Karma to educash</h1><br>
+      <h1>Conversion Rate - Karma to EduCash</h1><br>
         <form method="post" action="">
             <table>
                 <tr>
@@ -230,7 +230,7 @@ function conversion_tables(){?>
       <table>
         <tr>
           <th>Current Rate = </th>
-            <td>1 educash for <?php
+            <td>1 EduCash for <?php
              $out = get_option("karma_rate");
             echo $out['rate']; ?> karmas</td>
         </tr>
@@ -238,13 +238,13 @@ function conversion_tables(){?>
 
 
     <div class="wrap">
-    <h1>Conversion Rate - Educash to leads</h1><br>
+    <h1>Conversion Rate - EduCash to leads</h1><br>
       <form method="post" action="">
           <table>
               <tr>
                   <th>New Rate</th>
                   <td>
-                      <input type="number" name="educash_to_lead"/> educash.</br></br>
+                      <input type="number" name="educash_to_lead"/> EduCash.</br></br>
                   </td>
               </tr>
               <tr>
@@ -269,7 +269,7 @@ function conversion_tables(){?>
         <th>Current Rate = </th>
           <td>1 lead for <?php
            $out = get_option("educashtolead_rate");
-          echo $out['rate']; ?> educash</td>
+          echo $out['rate']; ?> EduCash</td>
       </tr>
     </table>
 <?php

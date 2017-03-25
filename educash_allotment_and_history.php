@@ -267,7 +267,7 @@ function allocate_educash_form_page()
 						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
-					<th>EduCash (Enter educash to be allotted)<sup><font color="red">*</font></sup></th>
+					<th>EduCash (Enter EduCash to be allotted)<sup><font color="red">*</font></sup></th>
 					<td>
 						<input type='number' id='educash22' class='popup_input_field' name='educash' min='-100000000' value = "<?php echo $_POST['educash1']; ?>" max='100000000'>
 						<span style='color:red;' id='errmsgf2'></span>
@@ -310,7 +310,7 @@ function allocate_educash_form_page()
 					</td>
 				</tr>
 				<tr>
-					<th>EduCash (Enter educash to be allotted)<sup><font color="red">*</font></sup></th>
+					<th>EduCash (Enter EduCash to be allotted)<sup><font color="red">*</font></sup></th>
 					<td>
 						<input type='number' id='educash11' name='educash1' min='-100000000' value = "<?php echo $_POST['educash1']; ?>" max='100000000'>
 						<span><?php echo $educasherr;?> </span>
