@@ -112,11 +112,11 @@ function edugorilla_lead_edit(){
 					$institute_phones = explode(",", $json_result->phones);
 					include_once plugin_dir_path(__FILE__) . "api/gupshup-api.php";
 					foreach ($institute_phones as $institute_phone) {
-                        $sms_setting_options2 = get_option('edugorilla_sms_setting2');
-                        $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
+                        $sms_setting_options1 = get_option('edugorilla_sms_setting1');
+                        $edugorilla_sms_body1 = stripslashes($sms_setting_options1['body']);
 
                         $credentials = get_option("ghupshup_credentials");
-						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $edugorilla_sms_body2);
+						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $edugorilla_sms_body1);
 						$institute_sms_status[$institute_phone] = send_sms($credentials['user_id'],$credentials['password'],$institute_phone,$msg);
 					}
 
