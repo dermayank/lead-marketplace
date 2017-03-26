@@ -8,6 +8,8 @@
     $sms_code = explode('/inc/',dirname(__FILE__));
     include_once(str_replace('/inc','',$sms_code[0].'/api/gupshup.api.php'));
 
+    include_once plugin_dir_path(__FILE__) . "url_shortner.php";
+
     if(isset($_POST['amount'])&& isset($_POST['userid']) && isset($_POST['conversion_karmas']) && isset($_POST['email']) && isset($_SESSION['stop_reload']))
     {
         if(!empty($_POST['amount']) && !empty($_POST['userid']) && !empty($_POST['conversion_karmas']) && !empty($_POST['email']) && !empty($_SESSION['stop_reload']))
@@ -28,8 +30,7 @@
                update_option("user_educash_count",$user_cash);
 
                $credentials = get_option("ghupshup_credentials");
-               $url = get_home_url();
-               $url = $url."/manage-leads";
+               $url = get_home_url(); /* replace it with url to send */
 
                mycred_subtract( 'Deduction',$current_user->id , $karmas, $karmas.' karmas are deducted from your account for the purchase of '.$educash.'educash', date( 'W' ) );
                $new_balance = mycred_get_users_cred($user_id);
@@ -39,7 +40,7 @@
 
                $email_body = str_replace("{ReceivedCount}", $educash, $email_body);
                $email_body = str_replace("{EduCashCount}", $current_count, $email_body);
-               $email_body = str_replace("{EduCashUrl}","$url", $email_body);
+               $email_body = str_replace("{EduCashUrl}",$url, $email_body);
                $email_body = str_replace("{Contact_Person}", $user->first_name, $email_body);
 
                $to = $email;
@@ -48,6 +49,13 @@
 
                $sms_setting_options2 = get_option('edugorilla_sms_setting2');
                $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
+
+               $short_url= shorten_url($url);
+
+               $edugorilla_sms_body2 = str_replace("{ReceivedCount}", $educash, $edugorilla_sms_body2);
+               $edugorilla_sms_body2 = str_replace("{EduCashCount}", $current_count, $edugorilla_sms_body2);
+               $edugorilla_sms_body2 = str_replace("{EduCashUrl}",$short_url, $edugorilla_sms_body2);
+               $edugorilla_sms_body2 = str_replace("{Contact_Person}", $user->first_name, $edugorilla_sms_body2);
 
                $status = "success";
                echo "<h2>Thank You. Your order status is ". $status .".</h2>";

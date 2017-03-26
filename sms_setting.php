@@ -7,12 +7,13 @@ function edugorilla_sms_setting()
         <div id="tabs">
           <ul>
               <li><a href="#tabs-lead-received">Promotional SMS</a></li>
-              <li><a href="#tabs-educash-added">EduCash Added</a></li>
-              <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
               <li><a href="#tabs-instant-sms">Non promotional instant SMS</a></li>
+              <li><a href="#tabs-leads-unlocked">Leads Unlocked SMS</a></li>
               <li><a href="#tabs-daily-digest-sms">Daily Digest SMS</a></li>
               <li><a href="#tabs-weekly-digest-sms">Weekly Digest SMS</a></li>
               <li><a href="#tabs-monthly-digest-sms">Monthly Digest SMS</a></li>
+              <li><a href="#tabs-educash-added">EduCash Added</a></li>
+              <li><a href="#tabs-educash-deducted">EduCash Deducted</a></li>
               <!--<li><a href="#tabs-4">Tab 4</a></li>
               <li><a href="#tabs-5">Tab 5</a></li>-->
           </ul>
@@ -72,6 +73,65 @@ function edugorilla_sms_setting()
                     </table>
                 </form>
           </div>
+
+          <div id="tabs-leads-unlocked">
+          <?php
+              $sms_setting_form4 = $_POST['sms_setting_form4'];
+              if ($sms_setting_form4 == "self") {
+                  $errors1 = array();
+                  $edugorilla_sms_body4 = $_POST['edugorilla_body4'];
+
+                  if (empty($edugorilla_sms_body4)) $errors1['edugorilla_body4'] = "Empty";
+
+                  if (empty($errors1)) {
+                      $edugorilla_sms_setting4 = array('body' => stripslashes($edugorilla_sms_body4));
+
+                      update_option("edugorilla_sms_setting4", $edugorilla_sms_setting4);
+                      $success1 = "sms Settings Saved Successfully.";
+                      $sms_setting_options4 = get_option('edugorilla_sms_setting4');
+
+
+                      $edugorilla_sms_body4 = stripslashes($sms_setting_options4['body']);
+                  }
+              } else {
+                  $sms_setting_options4 = get_option('edugorilla_sms_setting4');
+
+                  $edugorilla_sms_body4 = stripslashes($sms_setting_options4['body']);
+
+              }
+
+              if ($success1) {
+                  ?>
+                  <div class="updated notice">
+                      <p><?php echo $success1; ?></p>
+                  </div>
+                  <?php
+              }
+          ?>
+              <form method="post">
+                  <table class="form-table">
+                      <tr>
+                          <th>SMS Body<sup><font color="red">*</font></sup></th>
+                          <td>
+                             <?php
+                                  $content = $edugorilla_sms_body4;
+
+                                  ?><textarea name = "edugorilla_body4" rows="15" cols="100" ><?php echo $content;?></textarea>
+                              <font color="red"><?php echo $errors1['edugorilla_body4']; ?></font>
+                          </td>
+                      </tr>
+                      <tr>
+                          <th></th>
+                          <td>
+                              <input type="hidden" name="sms_setting_form4" value="self">
+                              <input type="submit" class="button button-primary" value="Save">
+                          </td>
+                      </tr>
+                  </table>
+              </form>
+        </div>
+
+
           <div id="tabs-educash-added">
             <?php
 
