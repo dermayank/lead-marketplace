@@ -18,7 +18,6 @@ class EduCash_Helper
         if($final_total >= 0){
 			$add_to_database = new DataBase_Helper();
 			$add_to_database->addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $phone_number, $country);
-
             $transaction_done = true;
 		}
 		else{

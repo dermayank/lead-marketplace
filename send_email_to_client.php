@@ -12,6 +12,8 @@ function table_for_client()
 											preferences varchar(100) NOT NULL,
 											location varchar(100) NOT NULL,
 											category varchar(100) NOT NULL,
+											unsubscribe_sms boolean DEFAULT 0,
+											unsubscribe_email boolean DEFAULT 0,
 											unlock_lead boolean DEFAULT 0,
 											PRIMARY KEY id (id)
 				  					    ) $charset_collate;";
@@ -94,6 +96,10 @@ function edugorilla_client(){
 					$wd_val = "checked";
 				else if($value == "Monthly_Digest")
 					$md_val = "checked";
+				else if ($value == "Unsubscribe_Email")
+					$unsub_email_val = "checked";
+				else if ($value == "Unsubscribe_SMS")
+					$unsub_sms_val = "checked";
 
 			}
 		}
@@ -280,7 +286,19 @@ function edugorilla_client(){
 			</tr>
 			<tr>
 				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Monthly_Digest" <?php echo $md_val ?>>Monthly
-					Digest<br/>
+					Digest
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="checkbox" id="notification" name="notification[]"
+				                       value="Unsubscribe_Email" <?php echo $unsub_email_val ?>>Unsubscribe
+					Email
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="checkbox" id="notification" name="notification[]"
+				                       value="Unsubscribe_SMS" <?php echo $unsub_sms_val ?>>Unsubscribe
+					SMS<br/>
 					<font color="red"><?php echo $c_errors['notification']; ?></font>
 				</td>
 			</tr>
