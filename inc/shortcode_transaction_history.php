@@ -87,7 +87,7 @@
                     <time>
                       <tl class="tl">You</tl>
                       <tl class="tl">spent</tl>
-                      <tl class="tl"><?php echo $value['spent']; ?></tl>
+                      <tl class="tl"><?php echo abs($value['spent']); ?></tl>
                       <tl class="tl">educash
                         <tl class="tl">on</tl>
                         <tl class="tl"><?php echo $date; ?></tl>
