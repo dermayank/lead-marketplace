@@ -5,10 +5,8 @@ require_once __DIR__ . '/frontend/class-EduCash-Helper.php';
 function allocate_educash_form_page()
 {
     global $wpdb;
-	global $table_name3;
     $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
-    global $users_table;
-    $users_table = $wpdb->prefix.users;
+    $users_table = $wpdb->prefix.'users';
 
 //Checking if the admin has filled adequate information to submit the form to allot educash and inserting the legal values in table
 
@@ -38,20 +36,11 @@ function allocate_educash_form_page()
 				$street = $_POST['client_street'];
 				$city = $_POST['client_city'];
 				$postalcode = $_POST['client_postalcode'];
-				$state = $_POST['client_state'];
+				$phone_number = $_POST['client_phone_number'];
 				$country = $_POST['client_country'];
 				
 				$initiate_transaction = new EduCash_Helper();
-				$make_transaction = $initiate_transaction->add_educash($clientName, $educash_added, $money, $adminComment, $firstname, $lastname, $street, $money, $postalcode, $state, $country);
-			
-			$all_meta_for_user = get_user_meta( $client_ID_result );
-	        $client_firstname = $all_meta_for_user['user_general_first_name'][0];
-	        $client_lastname = $all_meta_for_user['user_general_last_name'][0];
-	        $client_street = $all_meta_for_user['user_address_street_and_number'][0];
-	        $client_city = $all_meta_for_user['user_address_city'][0];
-	        $client_postal_code = $all_meta_for_user['user_address_postal_code'][0];
-	        $client_state = $all_meta_for_user['user_address_county'][0];
-	        $client_country = $all_meta_for_user['user_address_country'][0];
+				$make_transaction = $initiate_transaction->add_educash($clientName, $educash_added, $money, $adminComment, $firstname, $lastname, $street, $city, $postalcode, $phone_number, $country);
            }
         }
 		}
@@ -72,7 +61,6 @@ function allocate_educash_form_page()
              }
              else {
 			 $educash_added = $_POST['educash1'];
-			 //$total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID_result' ");
 			 $client_ID_result = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientName' ");
 			 $check_transaction = new EduCash_Helper();
 			 $total = $check_transaction->get_educash($client_ID_result);
@@ -84,7 +72,7 @@ function allocate_educash_form_page()
 	           $client_street = $all_meta_for_user['user_address_street_and_number'][0];
 	           $client_city = $all_meta_for_user['user_address_city'][0];
 	           $client_postal_code = $all_meta_for_user['user_address_postal_code'][0];
-	           $client_state = $all_meta_for_user['user_address_county'][0];
+	           $client_phone_number = $all_meta_for_user['user_general_phone'][0];
 	           $client_country = $all_meta_for_user['user_address_country'][0];
                }
 		}
@@ -210,85 +198,86 @@ function allocate_educash_form_page()
 		}
 }
 </script>
-<div id='myModalbg' class="modalbg">
-    <div class="modal-contentbg">
-    <div class="modal-headerbg">
-      <span class="closebg">&times;</span>
+<div id = 'myModalbg' class = "modalbg">
+    <div class = "modal-contentbg">
+    <div class = "modal-headerbg">
+      <span class = "closebg">&times;</span>
       <center><h2>You are about to make the follwing entry:</h2></center>
     </div>
-    <div class="modal-bodybg">
-<div class="wrap">
-<form name="myForm" method='post' onsubmit="return validate_final_allotment_form()" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-<table class="form-table">
+    <div class = "modal-bodybg">
+<div class = "wrap">
+<form name = "myForm" method = 'post' onsubmit = "return validate_final_allotment_form()" action = "<?php echo $_SERVER['REQUEST_URI'];?>">
+<table class = "form-table">
 
 				<tr>
 					<th>Street and number<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_street' class = 'compulsory_popup_field' value = "<?php echo $client_street; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text' name = 'client_street' class = 'compulsory_popup_field' value = "<?php echo $client_street; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
 					<th>Client Firstname<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_firstname' class = 'compulsory_popup_field' value = "<?php echo $client_firstname;?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text' name = 'client_firstname' class = 'compulsory_popup_field' value = "<?php echo $client_firstname;?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 				</tr>
 				<tr>
 					<th>Postal code<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text'  name = 'client_postalcode' class = 'compulsory_popup_field' value = "<?php echo $client_postal_code; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text'  name = 'client_postalcode' class = 'compulsory_popup_field' value = "<?php echo $client_postal_code; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
 					<th>Client Lastname<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_lastname' class = 'compulsory_popup_field' value = "<?php echo $client_lastname; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text' name = 'client_lastname' class = 'compulsory_popup_field' value = "<?php echo $client_lastname; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 				</tr>
 				<tr>
 					<th>City<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_city' class = 'compulsory_popup_field' value = "<?php echo $client_city; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text' name = 'client_city' class = 'compulsory_popup_field' value = "<?php echo $client_city; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
 					<th>Client Email<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' id='clientName22' class='popup_input_field' name='clientName' value = "<?php echo $_POST['clientName1']; ?>" maxlength='100'>
-						<span style='color:red;' id='errmsgf1'></span>
+						<input type = 'text' id = 'clientName22' class = 'popup_input_field' name = 'clientName' value = "<?php echo $_POST['clientName1']; ?>" maxlength = '100'>
+						<span style = 'color:red;' id = 'errmsgf1'></span>
 					</td>
 				</tr>
 				<tr>
-					<th>State / County<sup><font color="red">*</font></sup></th>
+					<th>Phone No.<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_state' class = 'compulsory_popup_field' value = "<?php echo $client_state; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'number' name = 'client_phone_number' class = 'compulsory_popup_field' value = "<?php echo $client_phone_number; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
 					<th>EduCash (Enter EduCash to be allotted)<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='number' id='educash22' class='popup_input_field' name='educash' min='-100000000' value = "<?php echo $_POST['educash1']; ?>" max='100000000'>
-						<span style='color:red;' id='errmsgf2'></span>
+						<input type = 'number' id = 'educash22' class = 'popup_input_field' name = 'educash' min = '-100000000' value = "<?php echo $_POST['educash1']; ?>" max = '100000000'>
+						<span style = 'color:red;' id = 'errmsgf2'></span>
 					</td>
 				</tr>
 				<tr>
 					<th>Country<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' name = 'client_country' class = 'compulsory_popup_field' value = "<?php echo $client_country; ?>" maxlength='100'>
-						<span style='color:red;' class = 'compulsory_popup_field_error'></span>
+						<input type = 'text' name = 'client_country' class = 'compulsory_popup_field' value = "<?php echo $client_country; ?>" maxlength = '100'>
+						<span style = 'color:red;' class = 'compulsory_popup_field_error'></span>
 					</td>
 					<td></td>
 					<th>Amount (Amount paid by client)</th>
 					<td>
-						<input type='number' id='money22' class='popup_input_field' name='money' min='0' value = "<?php $educash_rate = get_option("current_rate"); echo $educash_rate['rate']*$_POST['educash1']; ?>" max='100000000'>
-						<span style='color:red;' id='errmsgf3'></span>
+						<input type = 'number' id = 'money22' class = 'popup_input_field' name = 'money' min = '0' value = "<?php if($_POST['educash1'] >= 0){$educash_rate = get_option("current_rate"); echo $educash_rate['rate']*$_POST['educash1'];}
+                                               else{echo "0";} ?>" max = '100000000'>
+						<span style = 'color:red;' id = 'errmsgf3'></span>
 					</td>
 				</tr>
 </table><br/>
-<center><b>Comments (optional)</b><br/><textarea rows='4' cols='60' id='adminComment22' class='popup_input_field' name='adminComment' maxlength='500'><?php echo $_POST['adminComment1']; ?></textarea><br/><br/>
-						<input type='submit' name='submit'><br/><br/></center>
+<center><b>Comments (optional)</b><br/><textarea rows = '4' cols = '60' id = 'adminComment22' class = 'popup_input_field' name = 'adminComment' maxlength = '500'><?php echo $_POST['adminComment1']; ?></textarea><br/><br/>
+						<input type = 'submit' name = 'submit'><br/><br/></center>
 
 			
 </form>
@@ -296,44 +285,45 @@ function allocate_educash_form_page()
     </div>
     </div>
 </div>
-        <div class="wrap">
+        <div class = "wrap">
 		<h1>Use this form to allocate educash to a client</h1>
 		
-		<form method='post' onsubmit = "return validate_allotment_form()" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-			<table class="form-table">
+		<form method = 'post' onsubmit = "return validate_allotment_form()" action = "<?php echo $_SERVER['REQUEST_URI'];?>">
+			<table class = "form-table">
 				<tr>
 					<th>Client Email<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='text' id='clientName11' name='clientName1' value= "<?php echo $_POST['clientName1']; ?>" placeholder = 'Type email here...' maxlength='100'>
-						<span style='color:red;' id='errmsg1'></span>
+						<input type = 'text' id = 'clientName11' name = 'clientName1' value = "<?php echo $_POST['clientName1']; ?>" placeholder = 'Type email here...' maxlength = '100'>
+						<span style = 'color:red;' id = 'errmsg1'></span>
 						<span><?php echo $clientnamerr; echo $invalid_client;?></span>
 					</td>
 				</tr>
 				<tr>
 					<th>EduCash (Enter EduCash to be allotted)<sup><font color="red">*</font></sup></th>
 					<td>
-						<input type='number' id='educash11' name='educash1' min='-100000000' value = "<?php echo $_POST['educash1']; ?>" max='100000000'>
+						<input type = 'number' id = 'educash11' name = 'educash1' min = '-100000000' value = "<?php echo $_POST['educash1']; ?>" max = '100000000'>
 						<span><?php echo $educasherr;?> </span>
-                        <span style='color:red;' id='errmsg2'></span>
+                        <span style = 'color:red;' id = 'errmsg2'></span>
 					</td>
 				</tr>
 				<tr>
 					<th>Comments (optional)</th>
 					<td>
-                        <textarea rows='4' cols='60' id='adminComment11' name='adminComment1' maxlength='500'><?php echo $_POST['adminComment1']; ?></textarea>
+                        <textarea rows = '4' cols = '60' id = 'adminComment11' name = 'adminComment1' maxlength = '500'><?php echo $_POST['adminComment1']; ?></textarea>
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<input type="hidden">
+						<input type = "hidden">
 					</th>
 					<td>
-						<input type='submit' name='SUBMIT'>
+						<input type = 'submit' name = 'SUBMIT'>
 					</td>
 				</tr>
 			</table>
             </form>
 			</div>
+
 <?php
       if ($_POST['SUBMIT']) {
         if ((!empty($_POST['clientName1'])) && (!empty($_POST['educash1'])) && (!($check_client == 0)) && $final_total >= 0) {
@@ -375,8 +365,8 @@ function allocate_educash_form_page()
 		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
 		
 		$pdf->right_blocks(80, 10, 30, "INVOICE");
-		$pdf->right_blocks(140, 93, 12, "Date: ".date("d/m/Y"));
-		$pdf->right_blocks(140, 100, 12, "Transaction id: ".$r->id);
+		$pdf->right_blocks(145, 93, 12, "Date: ".date("d/m/Y"));
+		$pdf->right_blocks(145, 100, 12, "Transaction id: ".$r->id);
 		$pdf->right_blocks_bold(7, 93, 12, "Billed to: ");
 		$pdf->right_blocks(100, 205, 18, "PAYMENT MADE: ");
 		$pdf->right_blocks(7, 230, 18, "THANKS FOR YOUR BUSINESS");
@@ -388,7 +378,7 @@ function allocate_educash_form_page()
         $pdf->addClientAddress(ucwords("\n".$firstname.' '.$lastname."\n\n".
 		                       $street.", ".
                                $city.' - '.$postalcode.", " .
-                               $country)."\n\n".$clientName);
+                               $country)."\n\n".$clientName."\n\n".$phone_number);
 
 		$cols=array( "Item"      => 61,
                      "Rate"      => 43,
@@ -414,9 +404,13 @@ function allocate_educash_form_page()
 		$file_name.= "/invoice.pdf";
 		$pdf->Output($file_name , "F");
 		$attachment = array($file_name);
-		
+
+		$client_ID_result = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientName' ");
+	    $total_educash = new EduCash_Helper();
+		$total = $total_educash->get_educash($client_ID_result);
+
 		$send_email_for_transaction = new EduCash_Helper();
-		$send_email_for_transaction->send_email($clientName, $educash_added, $attachment);
+		$send_email_for_transaction->send_email($firstname, $lastname, $total, $clientName, $educash_added, $attachment);
 		
 		$display_transaction = new EduCash_Helper();
 		$display_transaction->display_current_transaction($time, $clientName);
@@ -450,44 +444,44 @@ function transaction_history_form_page()
 ?>
     <div class = "wrap">
     <h1>Use this form to know the history of educash transactions</h1>
-    <p style='color:green;'>Fill atleast one field<p>
-    <form method='post' action="<?php echo $_SERVER['REQUEST_URI'];?>">
-             <table class="form-table">
+    <p style = 'color:green;'>Fill atleast one field<p>
+    <form method = 'post' action = "<?php echo $_SERVER['REQUEST_URI'];?>">
+             <table class = "form-table">
 				<tr>
 					<th>Admin Email</th>
 					<td>
-						<input type='text' name='admin_Name' placeholder = 'Type admin email here...' maxlength='100'>
+						<input type = 'text' name = 'admin_Name' placeholder = 'Type admin email here...' maxlength = '100'>
 					</td>
 				</tr>
 				<tr>
 					<th>Client Email</th>
 					<td>
-						<input type='text' name='client_Name' placeholder = 'Type client email here...' max='100'>
+						<input type = 'text' name = 'client_Name' placeholder = 'Type client email here...' max = '100'>
 					</td>
 				</tr>
 				<tr>
 					<th>Date From: </th>
 					<td>
-						<input type='date' name='date' min='1990-12-31' max='2050-12-31'>
+						<input type = 'date' name = 'date' min = '1990-12-31' max = '2050-12-31'>
 					</td>
 				</tr>
 				<tr>
 					<th>Date To: </th>
 					<td>
-						<input type='date' name='date2' min='1990-12-31' max='2050-12-31'>
+						<input type = 'date' name = 'date2' min = '1990-12-31' max = '2050-12-31'>
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<input type="hidden">
+						<input type = "hidden">
 					</th>
 					<td>
-						<input type='submit' name='Submit'>
+						<input type = 'submit' name = 'Submit'>
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<input type="hidden">
+						<input type = "hidden">
 					</th>
 					<td>
 						<?php echo $all_four_error;?>
