@@ -8,7 +8,7 @@
     $sms_code = explode('/inc/',dirname(__FILE__));
     include_once(str_replace('/inc','',$sms_code[0].'/api/gupshup.api.php'));
 
-    include_once plugin_dir_path(__FILE__) . "url_shortner.php";
+    include_once plugin_dir_path(__FILE__) . "payumoney/url_shortner.php";
 
     if(isset($_POST['amount'])&& isset($_POST['userid']) && isset($_POST['conversion_karmas']) && isset($_POST['email']) && isset($_SESSION['stop_reload']))
     {
