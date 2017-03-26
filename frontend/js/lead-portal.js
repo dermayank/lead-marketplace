@@ -22,10 +22,10 @@ function showHint(str) {
 				if ($scope.user_purchased && !card.isUnlocked) {
 					return false;
 				}
-				if ($scope.userSelectedLocations != 0 && !($scope.containsInArray($scope.userSelectedLocations, card.locationName))) {
+				if ($scope.userSelectedLocations != 0 && !($scope.locContainsInArray($scope.userSelectedLocations, card.locationDetails))) {
 					return false;
 				}
-				if ($scope.userSelectedCategories != 0 && !($scope.containsInArray($scope.userSelectedCategories, card.categoryName))) {
+				if ($scope.userSelectedCategories != 0 && !($scope.catContainsInArray($scope.userSelectedCategories, card.categoryDetails))) {
 					return false;
 				}
 				$scope.cardsNotEmptyVariable = true;
@@ -34,10 +34,28 @@ function showHint(str) {
 			$scope.cardHiddenStatus = function (card) {
 				return card.isHidden;
 			};
-			$scope.containsInArray = function(a, obj) {
-				for (var i = 0; i < a.length; i++) {
-					if (a[i] === obj) {
-						return true;
+			$scope.catContainsInArray = function (userCategories, cardCategories) {
+				for (var i = 0; i < userCategories.length; i++) {
+					var userCategory = userCategories[i];
+					for (var j = 0; j < cardCategories.length; j++) {
+						var cardCategory = cardCategories[j];
+						var cardCategoryName = cardCategory.cat_name;
+						if (userCategory == cardCategoryName) {
+							return true;
+						}
+					}
+				}
+				return false;
+			};
+			$scope.locContainsInArray = function (userLocations, cardLocations) {
+				for (var i = 0; i < userLocations.length; i++) {
+					var userLocation = userLocations[i];
+					for (var j = 0; j < cardLocations.length; j++) {
+						var cardLocation = cardLocations[j];
+						var cardLocationName = cardLocation.loc_name;
+						if (userLocation == cardLocationName) {
+							return true;
+						}
 					}
 				}
 				return false;
@@ -56,21 +74,27 @@ function showHint(str) {
 				$scope.userSelectedCategories = [];
 			}
 			$scope.setSelectedCategories = function(prop){
-				var currentCategory = prop.catId;
-				addCategoryToURLParameter(currentCategory);
-				if (!($scope.containsInArray($scope.userSelectedCategories, currentCategory))) {
-					$scope.userSelectedCategories.push(currentCategory);
+				var currentCategoryName = prop.Name;
+				var dummyList = [
+					{cat_name: currentCategoryName}
+				];
+				addCategoryToURLParameter(currentCategoryName);
+				if (!($scope.catContainsInArray($scope.userSelectedCategories, dummyList))) {
+					$scope.userSelectedCategories.push(currentCategoryName);
 				}else{
-					removeItemFromArray($scope.userSelectedCategories, currentCategory);
+					removeItemFromArray($scope.userSelectedCategories, currentCategoryName);
 				}
 			};
 			$scope.setSelectedLocations = function(prop){
-				var currentLocation = prop.locId;
-				addLocationToURLParameter(currentLocation);
-				if (!($scope.containsInArray($scope.userSelectedLocations, currentLocation))) {
-					$scope.userSelectedLocations.push(currentLocation);
+				var currentLocationName = prop.Name;
+				var dummyList = [
+					{loc_name: currentLocationName}
+				];
+				addLocationToURLParameter(currentLocationName);
+				if (!($scope.locContainsInArray($scope.userSelectedLocations, dummyList))) {
+					$scope.userSelectedLocations.push(currentLocationName);
 				}else {
-					removeItemFromArray($scope.userSelectedLocations, currentLocation);
+					removeItemFromArray($scope.userSelectedLocations, currentLocationName);
 				}
 			};
 			$scope.toggle_card_hidden = function (card) {
@@ -131,60 +155,68 @@ function showHint(str) {
 				var allCards = $scope.cards;
 				for (var index = 0; index < allCards.length; ++index) {
 					var card = allCards[index];
-					var locationCount = ++locationArray[card.locationName];
-					var catergoryCount = ++categoryArray[card.categoryName];
-					if (isNaN(locationCount)) {
-						locationArray[card.locationName] = locationCount = 1;
-					}
-					if (isNaN(catergoryCount)) {
-						categoryArray[card.categoryName] = catergoryCount = 1;
-					}
-					if (!$scope.cardSelectionCriteria(card)) {
-						locationCount = locationCount - 1;
-						catergoryCount = catergoryCount - 1;
-					}
-					var currentLocation = {
-						Name: card.locationName,
-						locId: card.locationId,
-						Count: locationCount
-					};
-					var currentCategory = {
-						Name: card.categoryName,
-						catId: card.categoryId,
-						Count: catergoryCount
-					};
+					var locationDetails = card.locationDetails;
+					var categoryDetails = card.categoryDetails;
+					for (var locIndex = 0; locIndex < locationDetails.length; ++locIndex) {
+						var locationDetail = locationDetails[locIndex];
+						var locationName = locationDetail.loc_name;
+						var locationId = locationDetail.loc_id;
 
-					var isExistingLocation = false;
-					var isExistingCategory = false;
-					for (var i = 0; i < $scope.topLocations.length; i++) {
-						if ($scope.topLocations[i].locId == currentLocation.locId) {
-							isExistingLocation = true;
-							$scope.topLocations[i].Count = locationCount;
+						var locationCount = ++locationArray[locationName];
+						if (isNaN(locationCount)) {
+							locationArray[locationName] = locationCount = 1;
+						}
+						if (!$scope.cardSelectionCriteria(card)) {
+							locationCount = locationCount - 1;
+						}
+						var currentLocation = {
+							Name: locationName,
+							locId: locationId,
+							Count: locationCount
+						};
+						var isExistingLocation = false;
+						for (var topLocationIndex = 0; topLocationIndex < $scope.topLocations.length; topLocationIndex++) {
+							if ($scope.topLocations[topLocationIndex].locId == currentLocation.locId) {
+								isExistingLocation = true;
+								$scope.topLocations[topLocationIndex].Count = locationCount;
+							}
+						}
+						if (!isExistingLocation) {
+							$scope.topLocations.push(currentLocation);
 						}
 					}
-					for (var i = 0; i < $scope.topCategories.length; i++) {
-						if ($scope.topCategories[i].catId == currentCategory.catId) {
-							isExistingCategory = true;
-							$scope.topCategories[i].Count = catergoryCount;
+					for (var catIndex = 0; catIndex < categoryDetails.length; ++catIndex) {
+						var categoryDetail = categoryDetails[catIndex];
+						var categoryName = categoryDetail.cat_name;
+						var categoryId = categoryDetail.cat_id;
+						var catergoryCount = ++categoryArray[categoryName];
+						if (isNaN(catergoryCount)) {
+							categoryArray[categoryName] = catergoryCount = 1;
 						}
-					}
-					if (!isExistingLocation) {
-						$scope.topLocations.push(currentLocation);
-					}
-					if (!isExistingCategory) {
-						$scope.topCategories.push(currentCategory);
+						if (!$scope.cardSelectionCriteria(card)) {
+							catergoryCount = catergoryCount - 1;
+						}
+						var currentCategory = {
+							Name: categoryName,
+							catId: categoryId,
+							Count: catergoryCount
+						};
+						var isExistingCategory = false;
+						for (var topCategoryIndex = 0; topCategoryIndex < $scope.topCategories.length; topCategoryIndex++) {
+							if ($scope.topCategories[topCategoryIndex].catId == currentCategory.catId) {
+								isExistingCategory = true;
+								$scope.topCategories[topCategoryIndex].Count = catergoryCount;
+							}
+						}
+						if (!isExistingCategory) {
+							$scope.topCategories.push(currentCategory);
+						}
 					}
 				}
 			};
 			function populateScopevariablesFromAPI(data) {
 				for (var index = 0; index < data.length; ++index) {
 					var card = data[index].lead_card;
-					if (card.locationId == -1) {
-						card.locationName = "Unknown Location";
-					}
-					if (card.categoryId == -1) {
-						card.categoryName = "Unknown Category";
-					}
 					card.relativeTime = moment(card.date_time, "YYYY-MM-DD HH:mm:ss").fromNow();
 					$scope.cards.push(card);
 				}

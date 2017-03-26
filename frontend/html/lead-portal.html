@@ -29,8 +29,8 @@
             <ul class="refine">
 	            <li ng-repeat="topCategory in topCategories">
 		            <input type="checkbox" ng-click="setSelectedCategories(topCategory)"
-		                   ng-checked="containsInArray(userSelectedCategories,topCategory.catId)">
-		            {{topCategory.catId}}<span class="ref_val">({{topCategory.Count}})</span>
+		                   ng-checked="containsInArray(userSelectedCategories,topCategory.Name)">
+		            {{topCategory.Name}}<span class="ref_val">({{topCategory.Count}})</span>
 	            </li>
 	            <a href="#">
 		            <li class="see_more" hidden>[+]See More</li>
@@ -40,8 +40,8 @@
             <ul class="refine">
 	            <li ng-repeat="topLocation in topLocations">
 		            <input type="checkbox" ng-click="setSelectedLocations(topLocation)"
-		                   ng-checked="containsInArray(userSelectedLocations,topLocation.locId)">
-		            {{topLocation.locId}}<span class="ref_val">({{topLocation.Count}})</span>
+		                   ng-checked="containsInArray(userSelectedLocations,topLocation.Name)">
+		            {{topLocation.Name}}<span class="ref_val">({{topLocation.Count}})</span>
 	            </li>
 	            <a href="#">
 		            <li class="see_more" hidden>[+]See More</li>
@@ -55,8 +55,8 @@
 						<div class="col-sm-12 bgimg">
 							<ul class="card-cont">
 								<li><i class="fa fa-user fa-fw" aria-hidden="true"></i>{{card.name}}</li>
-								<li><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>{{card.locationId}}</li>
-								<li><i class="fa fa-tag fa-fw" aria-hidden="true"></i>{{card.categoryId}}</li>
+								<li><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>{{card.locationList}}</li>
+								<li><i class="fa fa-tag fa-fw" aria-hidden="true"></i>{{card.categoryList}}</li>
 							</ul>
 						</div>
 					</div>
