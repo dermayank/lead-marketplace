@@ -22,7 +22,7 @@
             $user = get_user_by( 'id', $user_id );
             $email = $_POST['email'];
             $mobile_no = get_user_meta($user_id,'user_general_phone',true);
-            if($balance >= $karmas)
+            if($balance >= $karmas && $karmas>0)
             {
                $eduCashHelper = new EduCash_Helper();
                $current_count = $eduCashHelper->getEduCashForUser($user_id) + $educash;

@@ -97,7 +97,7 @@
                   </div>
         <?php
         }
-        else{
+        else if($value['spent']>0){
           ?>
                     <li>
                       <div>

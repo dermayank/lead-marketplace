@@ -231,7 +231,7 @@ include_once plugin_dir_path(__FILE__) . 'frontend/class-Custom-Lead-API.php'; /
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduCash-Helper.php'; /*Utility class used for dealing with EduCash */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduLead-Helper.php'; /*Utility class used for managing Leads */
 include_once plugin_dir_path(__FILE__) . 'database/class-DataBase-Helper.php'; /*Utility class used for dealing with Database */
-include_once plugin_dir_path(__FILE__) . 'database/class-ClientEmailPref-Helper.phpp'; /*Utility class used for dealing with Client preferences */
+include_once plugin_dir_path(__FILE__) . 'database/class-ClientEmailPref-Helper.php'; /*Utility class used for dealing with Client preferences */
 include_once plugin_dir_path(__FILE__) . 'database/class-UserMeta-Helper.php'; /*Utility class used for dealing with Meta information */
 include_once plugin_dir_path(__FILE__) . "send_email_to_client.php";
 
@@ -287,7 +287,7 @@ function edugorilla()
 
 			$edugorilla_email_body = stripslashes($edugorilla_email['body']);
 
-            
+
 			global $wpdb;
 			$result1 = $wpdb->insert(
 				$wpdb->prefix . 'edugorilla_lead_details',
