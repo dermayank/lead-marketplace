@@ -2,7 +2,6 @@
 
 class DataBase_Helper
 {
-	private $eduCashMetaDataKey = 'edu_cash_amount';
 
     public function addvaluetodatabase($client_ID, $educash, $money, $comment, $firstname, $lastname, $street, $city, $postalcode, $phone_number, $country)
 	{
@@ -46,32 +45,6 @@ class DataBase_Helper
 		return $insert_status;
 	}
 
-	private function metaEduCashFromUser($user_id, $amount)
-	{
-		$eduCashValue = get_user_meta($user_id, $key = $this->eduCashMetaDataKey, $single = true);
-		if (!$eduCashValue) {
-			//Initially everyone gets 10 eduCash
-			$eduCashValue = 10;
-			// Optional, default is false. Whether the same key should not be added.
-			$unique = true;
-			$meta_id = add_user_meta($user_id, $this->eduCashMetaDataKey, $eduCashValue, $unique);
-			if (false == $meta_id) {
-				return "Unable to Create EduCash Meta Tag";
-			}
-		}
-		$newEduCashValue = $eduCashValue - $amount;
-		if ($newEduCashValue < 0) {
-			return "Not Enough Funds";
-		}
-		$databaseHelper = new DataBase_Helper();
-		$databaseHelper->add_educash_transaction($user_id, $newEduCashValue, "Unlocked a lead");
-		$update_status = update_user_meta($user_id, $this->eduCashMetaDataKey, $newEduCashValue, $eduCashValue);
-		if (true != $update_status) {
-			return "Unable to update EduCash Meta Tag";
-		}
-		return "Success";
-	}
-
 	public function get_educash_for_user($current_user_id)
 	{
 		global $wpdb;
@@ -97,10 +70,7 @@ class DataBase_Helper
 		return $current_educash;
 	}
 
-	private function modify_educash_from_user($user_id, $amount)
-	{
 
-	}
 }
 
 

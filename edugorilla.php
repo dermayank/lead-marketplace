@@ -231,6 +231,8 @@ include_once plugin_dir_path(__FILE__) . 'frontend/class-Custom-Lead-API.php'; /
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduCash-Helper.php'; /*Utility class used for dealing with EduCash */
 include_once plugin_dir_path(__FILE__) . 'frontend/class-EduLead-Helper.php'; /*Utility class used for managing Leads */
 include_once plugin_dir_path(__FILE__) . 'database/class-DataBase-Helper.php'; /*Utility class used for dealing with Database */
+include_once plugin_dir_path(__FILE__) . 'database/class-ClientEmailPref-Helper.phpp'; /*Utility class used for dealing with Client preferences */
+include_once plugin_dir_path(__FILE__) . 'database/class-UserMeta-Helper.php'; /*Utility class used for dealing with Meta information */
 include_once plugin_dir_path(__FILE__) . "send_email_to_client.php";
 
 include_once plugin_dir_path(__FILE__) . "edugorilla_pages.php";
@@ -340,20 +342,16 @@ function edugorilla()
 				if ($is_promotional_lead == "yes") {
 					$institute_send_emails_status = send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card);
 
-					$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
-					$client_email_addresses = $wpdb->get_results("SELECT * FROM $table_name");
+
 
 					$institute_emails = explode(",", $json_result->emails);
+					$client_pref_database = new ClientEmailPref_Helper();
+					$institute_emails = $client_pref_database->removeUnsubscribedEmails($institute_emails);
+
 					foreach ($institute_emails as $institute_email) {
 						add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 
 						$is_email_sending_required = 1;
-						foreach ($client_email_addresses as $cea) {
-							if ($cea->email_id == $institute_email) {
-								$is_email_sending_required = 0;
-							}
-						}
-
 						if (!empty($institute_email) && $is_email_sending_required == 1)
 							$institute_emails_status[$institute_email] = wp_mail($institute_email, $edugorilla_email_subject, ucwords($edugorilla_email_body));
 

@@ -56,7 +56,7 @@ function showHint(str) {
 				$scope.userSelectedCategories = [];
 			}
 			$scope.setSelectedCategories = function(prop){
-				var currentCategory = prop.Name;
+				var currentCategory = prop.catId;
 				addCategoryToURLParameter(currentCategory);
 				if (!($scope.containsInArray($scope.userSelectedCategories, currentCategory))) {
 					$scope.userSelectedCategories.push(currentCategory);
@@ -65,7 +65,7 @@ function showHint(str) {
 				}
 			};
 			$scope.setSelectedLocations = function(prop){
-				var currentLocation = prop.Name;
+				var currentLocation = prop.locId;
 				addLocationToURLParameter(currentLocation);
 				if (!($scope.containsInArray($scope.userSelectedLocations, currentLocation))) {
 					$scope.userSelectedLocations.push(currentLocation);
