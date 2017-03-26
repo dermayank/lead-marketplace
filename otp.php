@@ -60,6 +60,7 @@ function edugorilla_settings()
     <ul>
       <li><a href="#tabs-1">Gupshup Credentials</a></li>
       <li><a href="#tabs-2">PayUMoney Credentials</a></li>
+      <li><a href="#tabs-3">Google url shortening key</a></li>
     </ul>
 
     <div id="tabs-1">
@@ -115,6 +116,23 @@ function edugorilla_settings()
         </div>
       </div>
     <div id="tabs-2">
+        <?php
+            if (isset($_POST['salt']) && isset($_POST['mcid']) )
+            {
+              $salt = $_POST['salt'];
+              $txnid = $_POST['mcid'];
+              if(!empty($salt) && !empty($txnid)){
+
+                $credentials1 = array("user_id"=>$salt, "password" =>$txnid);
+                update_option("payumoney_parameters",$credentials1);
+                $success = "Saved Successfully";
+
+              }
+              else{
+                echo "<h2>Please fill salt and test key properly </h2><br><br>";
+              }
+            }
+        ?>
       <div class="wrap">
           <h1>PayUMoney Credentials</h1></br>
           <?php
@@ -141,26 +159,47 @@ function edugorilla_settings()
           </form>
           </div></br></br>
       </div>
-      <?php
-      if (isset($_POST['salt']) && isset($_POST['mcid']) )
-      {
-        $salt = $_POST['salt'];
-        $txnid = $_POST['mcid'];
-        if(!empty($salt) && !empty($txnid)){
 
-          $credentials1 = array("user_id"=>$salt, "password" =>$txnid);
-          update_option("payumoney_parameters",$credentials1);
-          $success = "Saved Successfully";
 
-          echo"<h2>Your salt and merchant id are successfully recieved. Now you can go ahead and continue with transactions</h2>";
+      <div id="tabs-3">
+        <?php
+              if (isset($_POST['goog_key']) )
+              {
+                $goog_key = $_POST['goog_key'];
+                if(!empty($goog_key)){
 
-        }
-        else{
-          echo "<h2>Please fill salt and test key properly </h2><br><br>";
-        }
-      }
+                  $credentials1 = array("key" =>$goog_key);
+                  update_option("google_url_short_key",$credentials1);
+                  $success = "Saved Successfully";
+
+                }
+                else{
+                  echo "<h2>Please fill salt and test key properly </h2><br><br>";
+                }
+              }
+          ?>
+        <div class="wrap">
+            <h1>Google url-shortener Key</h1></br>
+            <?php
+            $out = get_option("google_url_short_key");
+           ?>
+            <form method="post" action="">
+                <table>
+                    <tr>
+                        <th>Key</th>
+                        <td>
+                            <input type="text" name="goog_key" value="<?php echo $out['key']; ?>"/></br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" class="button button-primary" value="Save"></td>
+                    </tr>
+                </table>
+            </form>
+            </div></br></br>
+        </div>
+<?php
 }
-
 
 function conversion_tables(){?>
     <div class="wrap">

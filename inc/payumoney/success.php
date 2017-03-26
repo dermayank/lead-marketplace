@@ -3,6 +3,7 @@
 $wploadPath = explode('/wp-content/', dirname(__FILE__));
 include_once(str_replace('wp-content/' , '', $wploadPath[0] . '/wp-load.php'));
 
+include_once plugin_dir_path(__FILE__) . "url_shortner.php";
 
 $educash_helper_path = explode('/inc/',dirname(__FILE__));
 include_once(str_replace('/inc','',$educash_helper_path[0].'/frontend/class-EduCash-Helper.php'));
@@ -37,8 +38,7 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
               update_option("user_educash_count",$user_cash);
               $credentials = get_option("ghupshup_credentials");
 
-              $url = get_home_url();
-              $url = $url."/manage-leads";
+              $url = get_home_url(); /* replace it with url to send */
 
               $email_setting_options = get_option('edugorilla_email_setting2');
               $email_subject = stripslashes($email_setting_options['subject']);
@@ -46,13 +46,20 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
 
               $email_body = str_replace("{ReceivedCount}", $educash, $email_body);
               $email_body = str_replace("{EduCashCount}", $current_count, $email_body);
-              $email_body = str_replace("{EduCashUrl}","$url", $email_body);
+              $email_body = str_replace("{EduCashUrl}",$url, $email_body);
               $email_body = str_replace("{Contact_Person}", $user->first_name, $email_body);
               $to = $email;
               $headers = array('Content-Type: text/html; charset=UTF-8');
               $value = wp_mail($to,$email_subject,$email_body,$headers);
 
               $sms_setting_options2 = get_option('edugorilla_sms_setting2');
+
+              $short_url = shorten_url($url);
+              $edugorilla_sms_body2 = str_replace("{ReceivedCount}", $educash, $edugorilla_sms_body2);
+              $edugorilla_sms_body2 = str_replace("{EduCashCount}", $current_count, $edugorilla_sms_body2);
+              $edugorilla_sms_body2 = str_replace("{EduCashUrl}",$short_url, $edugorilla_sms_body2);
+              $edugorilla_sms_body2 = str_replace("{Contact_Person}", $user->first_name, $edugorilla_sms_body2);
+
               $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
 
               $eduCashHelper->addEduCashToUser($userid, $educash, $status);
