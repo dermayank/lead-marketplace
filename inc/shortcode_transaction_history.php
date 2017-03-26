@@ -101,7 +101,7 @@
           ?>
                     <li>
                       <div>
-                        <time><tl class="tl">You</tl><tl class="tl">were</tl><tl class="tl">allocated</tl><tl class="tl"><?php echo $value['spent'];?></tl><tl class="tl">educash<tl class="tl">on</tl><tl class="tl"><?php echo $date;?></tl><tl class="tl">at</tl><tl class="tl"><?php echo $time;?></tl></time>
+                        <time><tl class="tl">You</tl><tl class="tl">were</tl><tl class="tl">allocated</tl><tl class="tl"><?php echo abs($value['spent']);?></tl><tl class="tl">educash<tl class="tl">on</tl><tl class="tl"><?php echo $date;?></tl><tl class="tl">at</tl><tl class="tl"><?php echo $time;?></tl></time>
                       </div>
             <?php
           }
