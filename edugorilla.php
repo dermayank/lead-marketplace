@@ -622,13 +622,13 @@ function edugorilla()
 
 function script()
 {
-	wp_enqueue_style('select2-css', plugins_url('/libs/select2/select2.css', __FILE__));
+	wp_enqueue_style('select2-css', plugins_url('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css', __FILE__));
 	wp_enqueue_style('modal-css', plugins_url('/css/jquery.modal.css', __FILE__));
 	wp_enqueue_style('jquery-ui-styles', "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css");
 
 	wp_enqueue_script(
 		'select2-script',                         // Handle
-		plugins_url('/libs/select2/select2.js', __FILE__),  // Path to file
+		plugins_url('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js', __FILE__),  // Path to file
 		array('jquery')                             // Dependancies
 	);
 
@@ -775,7 +775,7 @@ function edugorilla_shortcode_require()
 {
 	// for bootstrap 4.0 to work
 	wp_enqueue_style('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css');
-	wp_enqueue_script('ajaxlib1', 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js');
+	wp_enqueue_script('ajaxlib1', 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js');
 	wp_enqueue_script('ajaxlib2', 'https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js');
 	wp_enqueue_script('bootjs', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js');
 	wp_enqueue_script('angularJs', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js');
