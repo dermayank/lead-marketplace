@@ -85,6 +85,7 @@ function edugorilla_client(){
 
 		if (!empty($notification_all)) {
 			# code...
+			$notification = "";
 			foreach ($notification_all as $value) {
 				# code...
 				$notification = $value . ", " . $notification;
@@ -108,6 +109,8 @@ function edugorilla_client(){
 
 		$category = array();
 		$location = array();
+		$more_category = "";
+		$more_location = "";
 		$more_category_count = $category_count;
 		for ($i = 0; $i < $category_count; $i++) {
 			# code...
@@ -134,6 +137,7 @@ function edugorilla_client(){
 		}
 
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		$all_cat = "";
 		foreach ($categories_list as $cat_value) {
 			# code...
 			foreach ($category as $category_value) {
@@ -146,6 +150,7 @@ function edugorilla_client(){
 		}
 
 		$location_list = get_terms('locations', array('hide_empty' => false));
+		$all_loc = "";
 		foreach ($location_list as $loc_value) {
 			# code...
 			foreach ($location as $location_value) {
@@ -423,6 +428,7 @@ function do_this_weekly()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
@@ -479,6 +485,7 @@ function do_this_daily()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
