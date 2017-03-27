@@ -77,13 +77,14 @@ function str_starts_with($haystack, $needle)
 }
 
 //function to display client preferences form
-function get_category_current_user($user_id , $cliend_data)
+function get_category_current_user($user_id, $client_data)
 {
 		global $wpdb;
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
 		if($client_data){
 		foreach ($client_data as $client_data_single) {
 		$count = 1;
+			$more_category = "";
 		foreach ($categories_list as $category_) {
 			# code...
 			if (preg_match('/'.$category_->term_id.'/', $client_data_single->category)) {
@@ -108,11 +109,12 @@ function get_location_current_user($user_id , $client_data)
 		if($client_data){
 		foreach ($client_data as $client_data_single) {
 		$count2 = 1;
+			$more_location = "";
 		foreach ($location_list as $location_) {
 			# code...
 			if (preg_match('/'.$location_->term_id.'/', $client_data_single->location)) {
 				# code...
-				$location_name = "location".$count;
+				$location_name = "location" . $count2;
 				$more_location = $more_location.'<br/><input list="location_list" name="'.$location_name.'" size="30" value="'.$location_->name.'">';
 				$count2 = $count2+1;
 				
@@ -355,7 +357,7 @@ function edugorilla_client(){
 		<p><?php echo $client_success; ?></p>
 		<table>
 			<tr>
-				<td rowspan="4">Notification Preferences<sup><font color="red">*</font></sup> :</td>
+				<td rowspan="6">Notification Preferences<sup><font color="red">*</font></sup> :</td>
 				<td colspan="2"><input type="checkbox" name="notification[]" id="notification"
 				                       value="Instant_Notifications" <?php echo $in_val ?>>Instant Notification
 				</td>
@@ -625,6 +627,7 @@ function do_this_monthly()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
