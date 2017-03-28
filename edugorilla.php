@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Lead Marketplace
+ * Plugin Name: Lead Gen
  * Description: A platform to manage all the leads on Website.
  * Version: Alpha release
  * Author: EduGorilla Tech Team
