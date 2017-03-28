@@ -4,7 +4,7 @@ $appear = '';
 class Lead_Card implements JsonSerializable
 {
 
-	private $id, $name, $contact_no, $email, $query, $category_id, $category, $location_id, $location, $date_time, $isUnlocked, $isHidden;
+	private $id, $name, $contact_no, $email, $query, $category_list, $category, $location_list, $location, $date_time, $isUnlocked, $isHidden;
 
 	function __construct($id, $name, $contact_no, $email, $query, $category, $location, $date_time, $isUnlocked = false, $isHidden = false)
 	{
@@ -71,9 +71,9 @@ class Lead_Card implements JsonSerializable
 		$this->name = $x;
 	}
 
-	public function getLocationId()
+	public function getLocationList()
 	{
-		return $this->location_id;
+		return $this->location_list;
 	}
 
 	public function getLocationName()
@@ -83,15 +83,32 @@ class Lead_Card implements JsonSerializable
 
 	public function setLocation($location_id)
 	{
-		$this->location_id = $location_id;
-		$location_data = get_term_by('id', $location_id, 'locations');
-		$leads_location = html_entity_decode($location_data->name);
-		$this->location = $leads_location;
+		$locationIdArray = explode(',', $location_id);
+		$locationArray = array(); //Array of location objects
+		$locationListArray = array(); //Array of location name strings
+		foreach ($locationIdArray as $locationId) {
+			$location_data = get_term_by('id', $locationId, 'locations');
+			$resultData = array();
+			if (!$location_data) {
+				$resultData["loc_id"] = -1;
+				$resultData["loc_name"] = "Unknown Location";
+				$locationListArray[] = "Unknown Location";
+			} else {
+				$resultData["loc_id"] = $location_data->term_id;
+				$resultData["loc_name"] = html_entity_decode($location_data->name);
+				$locationListArray[] = html_entity_decode($location_data->name);
+			}
+			//$location_data->name = html_entity_decode($location_data->name);
+			$locationArray[] = $resultData;
+		}
+		$locationList = implode(', ', $locationListArray);
+		$this->location = $locationArray;
+		$this->location_list = $locationList;
 	}
 
-	public function getCategoryId()
+	public function getCategoryList()
 	{
-		return $this->category_id;
+		return $this->category_list;
 	}
 
 	public function getCategoryName()
@@ -101,10 +118,27 @@ class Lead_Card implements JsonSerializable
 
 	public function setCategory($category_id)
 	{
-		$this->category_id = $category_id;
-		$category_data = get_term_by('id', $category_id, 'listing_categories');
-		$leads_category = html_entity_decode($category_data->name);
-		$this->category = $leads_category;
+		$categoryIdArray = explode(',', $category_id);
+		$categoryArray = array(); //Array of category objects
+		$categoryListArray = array(); //Array of category name strings
+		foreach ($categoryIdArray as $categoryId) {
+			$category_data = get_term_by('id', $categoryId, 'listing_categories');
+			$categoryData = array();
+			if (!$category_data) {
+				$categoryData["cat_id"] = -1;
+				$categoryData["cat_name"] = "Unknown Category";
+				$categoryListArray[] = "Unknown Category";
+			} else {
+				$categoryData["cat_id"] = $category_data->term_id;
+				$categoryData["cat_name"] = html_entity_decode($category_data->name);
+				$categoryListArray[] = html_entity_decode($category_data->name);
+			}
+			//$category_data->name = html_entity_decode($category_data->name);
+			$categoryArray[] = $categoryData;
+		}
+		$categoryList = implode(', ', $categoryListArray);
+		$this->category = $categoryArray;
+		$this->category_list = $categoryList;
 	}
 
 	public function getQuery()
@@ -161,10 +195,10 @@ class Lead_Card implements JsonSerializable
 				'contact_no' => $this->getContactNo(),
 				'email' => $this->getEmail(),
 				'query' => $this->getQuery(),
-				'categoryName' => $this->getCategoryName(),
-				'locationName' => $this->getLocationName(),
-				'categoryId' => $this->getCategoryId(),
-				'locationId' => $this->getLocationId(),
+				'categoryDetails' => $this->getCategoryName(),
+				'locationDetails' => $this->getLocationName(),
+				'categoryList' => $this->getCategoryList(),
+				'locationList' => $this->getLocationList(),
 				'date_time' => $this->getDateTime(),
 				'isUnlocked' => $this->isUnlocked(),
 				'isHidden' => $this->isHidden()

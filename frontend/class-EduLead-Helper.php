@@ -47,7 +47,7 @@ class EduLead_Helper
 		$lead_table = $wpdb->prefix . 'edugorilla_lead_client_mapping';
 
 
-		$detail_query = "select * from $lead_detail_table";
+		$detail_query = "select * from $lead_detail_table ORDER By date_time DESC";
 		$leads_details = $wpdb->get_results($detail_query, 'ARRAY_A');
 		foreach ($leads_details as $leads_detail) {
 			$lead_id = $leads_detail['id'];

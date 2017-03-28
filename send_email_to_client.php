@@ -26,6 +26,7 @@ function table_for_client()
 }
 
 //end pluginUninstall function
+//Populate the Client Data
 
 function send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card)
 {
@@ -76,7 +77,87 @@ function str_starts_with($haystack, $needle)
 }
 
 //function to display client preferences form
+function get_category_current_user($user_id, $client_data)
+{
+		global $wpdb;
+		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		if($client_data){
+		foreach ($client_data as $client_data_single) {
+		$count = 1;
+			$more_category = "";
+		foreach ($categories_list as $category_) {
+			# code...
+			if (preg_match('/'.$category_->term_id.'/', $client_data_single->category)) {
+				# code...
+				$category_name = "category".$count;
+				$more_category = $more_category.'<br/><input list="categories_list" name="'.$category_name.'" size="30" value="'.$category_->name.'">';
+				$count = $count+1;
+				
+			}
+		}
+
+	}
+}
+return $count;
+
+}
+
+function get_location_current_user($user_id , $client_data)
+{
+		global $wpdb;
+		$location_list = get_terms('locations', array('hide_empty' => false));;
+		if($client_data){
+		foreach ($client_data as $client_data_single) {
+		$count2 = 1;
+			$more_location = "";
+		foreach ($location_list as $location_) {
+			# code...
+			if (preg_match('/'.$location_->term_id.'/', $client_data_single->location)) {
+				# code...
+				$location_name = "location" . $count2;
+				$more_location = $more_location.'<br/><input list="location_list" name="'.$location_name.'" size="30" value="'.$location_->name.'">';
+				$count2 = $count2+1;
+				
+			}
+		}
+
+	}
+}
+return $count2;
+}
+
+
 function edugorilla_client(){
+		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		$user_id = get_current_user_id();
+		$category_count_value =1;
+		$location_count_value =1;
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
+		$current_user_data = $wpdb->get_results("SELECT * FROM $table_name  WHERE id = $user_id");
+		foreach ($current_user_data as $data) {
+			$notificationString = $data->preferences;
+			$notificationArray = explode(",", $notificationString);
+			foreach ($notificationArray as $value) {
+				# code...
+				echo $value."/";
+				if($value == "Instant_Notifications")
+					$in_val = "checked";
+				else if($value == "Daily_Digest")
+					$dd_val = "checked";
+				else if($value == "Weekly_Digest")
+					$wd_val = "checked";
+				else if($value == "Monthly_Digest")
+					$md_val = "checked";
+				else if ($value == "Unsubscribe_Email")
+					$unsub_email_val = "checked";
+				else if ($value == "Unsubscribe_SMS")
+					$unsub_sms_val = "checked";
+			}
+		}
+
+		//$category_count_value = get_category_current_user($user_id , $current_user_data);
+		//$location_count_value = get_location_current_user($user_id , $current_user_data);
 
 	if (isset($_POST['submit_client_pref'])) {
 		# code...
@@ -85,6 +166,7 @@ function edugorilla_client(){
 
 		if (!empty($notification_all)) {
 			# code...
+			$notification = "";
 			foreach ($notification_all as $value) {
 				# code...
 				$notification = $value . ", " . $notification;
@@ -105,35 +187,37 @@ function edugorilla_client(){
 		}
 		$category_count = $_POST['category_count'];
 		$location_count = $_POST['location_count'];
+		$category_count_value = $category_count;
+		$location_count_value = $location_count;
 
 		$category = array();
 		$location = array();
-		$more_category_count = $category_count;
+		$more_category = "";
+		$more_location = "";
 		for ($i = 0; $i < $category_count; $i++) {
 			# code...
 			$category_name = "category".$i;
-			if ($more_category_count>1) {
+			if ($i>0) {
 				# code...
-				$more_category = $more_category.'<br/><input list="location_list" name="'.$category_name.'" size="30" value="'.$_POST[$category_name].'">';
-				$more_category_count = $more_category_count-1;
+				$more_category = $more_category.'<br/><input list="categories_list" name="'.$category_name.'" size="30" value="'.$_POST[$category_name].'">';
 			}else
 				$category_select_val = $_POST[$category_name];
 			array_push($category, $_POST[$category_name]);
 		}
-		$more_location_count = $location_count;
+		
 		for ($i = 0; $i < $location_count; $i++) {
 			# code...
 			$location_name = "location".$i;
-			if ($more_location_count>1) {
+			if ($i>0) {
 				# code...
 				$more_location = $more_location.'<br/><input list="location_list" name="'.$location_name.'" size="30" value="'.$_POST[$location_name].'">';
-				$more_location_count = $more_location_count-1;
 			}else
 			$location_select_val = $_POST[$location_name];
 			array_push($location, $_POST[$location_name]);
 		}
 
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		$all_cat = "";
 		foreach ($categories_list as $cat_value) {
 			# code...
 			foreach ($category as $category_value) {
@@ -146,6 +230,7 @@ function edugorilla_client(){
 		}
 
 		$location_list = get_terms('locations', array('hide_empty' => false));
+		$all_loc = "";
 		foreach ($location_list as $loc_value) {
 			# code...
 			foreach ($location as $location_value) {
@@ -176,6 +261,7 @@ function edugorilla_client(){
 
 
 		$user_id = get_current_user_id();
+		echo $user_id;
 		$user_detail = get_user_meta($user_id);
 		$first_name = $user_detail['first_name'][0];
 		$last_name = $user_detail['last_name'][0];
@@ -226,10 +312,10 @@ function edugorilla_client(){
 
 	<script type="text/javascript">
 
-		var ctrC = 1;
-		var ctrL = 1;
-
 		function add() {
+
+			var ctrC = parseInt(document.getElementById("category_count").value);
+			var ctrL = parseInt(document.getElementById("location_count").value);
 
 			//Create an input type dynamically.
 			var element_c = document.createElement("input");
@@ -264,12 +350,14 @@ function edugorilla_client(){
 
 	</script>
 
+
+
 	<!-- Client Form -->
 	<form action="" method="post">
 		<p><?php echo $client_success; ?></p>
 		<table>
 			<tr>
-				<td rowspan="4">Notification Preferences<sup><font color="red">*</font></sup> :</td>
+				<td rowspan="6">Notification Preferences<sup><font color="red">*</font></sup> :</td>
 				<td colspan="2"><input type="checkbox" name="notification[]" id="notification"
 				                       value="Instant_Notifications" <?php echo $in_val ?>>Instant Notification
 				</td>
@@ -322,7 +410,7 @@ function edugorilla_client(){
 						<input list="location_list" name="location0" size="30" value="<?php echo $location_select_val?>">
 						<?php echo $more_location ?>
 					</div>
-					<input type="text" hidden name="location_count" id="location_count" value="1">
+					<input type="text" hidden name="location_count" id="location_count" value="<?php echo $location_count_value ?>">
 					<font color="red"><?php echo $c_errors['location']; ?></font></td>
 				<!--<div class="ui-widget">
 				  <input id="tags" name="category" size="50">
@@ -335,11 +423,12 @@ function edugorilla_client(){
 							<?php } ?>
 					</datalist>
 					<div id="get_category">
-						<input list="categories_list" name="category0" size="30" value="<?php echo $category_select_val?>">
+						<input list="categories_list" name="category0" size="30" value="<?php
+						 echo $category_select_val?>">
 						<?php echo $more_category ?>
 						<input type="button" value="  +  " onclick="add()">
 					</div>
-					<input type="text" hidden name="category_count" id="category_count" value="1">
+					<input type="text" hidden name="category_count" id="category_count" value="<?php echo $category_count_value ?>">
 					<font color="red"><?php echo $c_errors['category']; ?></font></td>
 			</tr>
 			<tr>
@@ -423,6 +512,7 @@ function do_this_weekly()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
@@ -479,6 +569,7 @@ function do_this_daily()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
@@ -536,6 +627,7 @@ function do_this_monthly()
 				$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
 			}
 
+			$headers = "";
 			add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
 			$institute_emails_status = wp_mail($client->email_id, $edugorilla_email_subject, ucwords($edugorilla_email_body), $headers);
 			remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
