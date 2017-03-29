@@ -36,7 +36,7 @@ class EduCash_Helper
         $total = $wpdb->get_var("SELECT sum(transaction) FROM $table_name3 WHERE client_id = '$client_ID' ");
 		return $total;
 	}
-	
+
 	public function send_email($firstname, $lastname, $total, $clientName, $educash_added, $attachment)
 	{
 		$edugorilla_email_datas = get_option('edugorilla_email_setting2');
@@ -49,9 +49,9 @@ class EduCash_Helper
         $arr2 = array($firstname." ".$lastname, $educash_added, $total, "https://edugorilla.com/");
         $positive_email_body = str_replace($arr1, $arr2, $edugorilla_email_datas['body']);
         $message =  $positive_email_body;
-		
+
 		wp_mail( $to, $subject, $message, "Content-type: text/html; charset=iso-8859-1", $attachment);
-		
+
 		}
         else{
         $negative_email_subject = $edugorilla_email_datas2['subject'];
@@ -60,7 +60,7 @@ class EduCash_Helper
         $arr3 = array($firstname." ".$lastname, $negative_educash, $total, "https://edugorilla.com/");
         $negative_email_body = str_replace($arr1, $arr3, $edugorilla_email_datas2['body']);
         $message =  $negative_email_body;
-		
+
 		 wp_mail($to, $subject, $message, "Content-type: text/html; charset=iso-8859-1");
         }
 	}
@@ -70,7 +70,7 @@ class EduCash_Helper
 		global $wpdb;
         $table_name3 = $wpdb->prefix . 'edugorilla_lead_educash_transactions';
 		$adminName = wp_get_current_user();
-		
+
 		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
         echo "<center></p>You have made the following entry just now:</p>";
         echo "<table class='widefat fixed' cellspacing='0'><tr><th>Id</th><th>Admin Email</th><th>Client Email</th><th>Educash transaction</th><th>Amount</th><th>Time</th><th>Comments</th></tr>";
@@ -106,13 +106,34 @@ class EduCash_Helper
 
 	public function removeEduCashFromUser($user_id, $amount)
 	{
+        global $wpdb;
 		$databaseHelper = new DataBase_Helper();
 		$currentEduCashValue = $databaseHelper->get_educash_for_user($user_id);
 		$newEduCashValue = $currentEduCashValue - $amount;
 		$transaction_cost = -$amount;
 		if ($newEduCashValue > 0) {
 			$insertion_status = $databaseHelper->add_educash_transaction($user_id, $transaction_cost, "Unlocked a lead");
-			return "Success : $insertion_status";
+
+            $user = get_user_by( 'id', $user_id );
+            $full_name = $user->first_name." ".$user->last_name;
+            $email = $user->user_email;
+            $url = get_home_url();
+            $eduCashHelper = new EduCash_Helper();
+            $current_count = $eduCashHelper->getEduCashForUser($user_id) - $amount;
+
+            $email_setting_options = get_option('edugorilla_email_setting4');
+            $email_subject = stripslashes($email_setting_options['subject']);
+            $email_body = stripslashes($email_setting_options['body']);
+
+            $email_body = str_replace("{ReceivedCount}", $amount, $email_body);
+            $email_body = str_replace("{EduCashCount}", $current_count, $email_body);
+            $email_body = str_replace("{EduCashUrl}",$url, $email_body);
+            $email_body = str_replace("{Contact_Person}", $full_name, $email_body);
+
+            $to = "mayankrocking80@gmail.com";//$email;
+            $headers = array('Content-Type: text/html; charset=UTF-8');
+            $value = wp_mail($to,$email_subject,$email_body,$headers);
+            return "Success : $insertion_status";
 		}
 		return "Insufficient Funds : $newEduCashValue";
 	}
