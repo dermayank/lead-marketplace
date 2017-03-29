@@ -121,7 +121,7 @@ class EduCash_Helper
             $eduCashHelper = new EduCash_Helper();
             $current_count = $eduCashHelper->getEduCashForUser($user_id) - $amount;
 
-            $email_setting_options = get_option('edugorilla_email_setting4');
+            $email_setting_options = get_option('edugorilla_email_setting3');
             $email_subject = stripslashes($email_setting_options['subject']);
             $email_body = stripslashes($email_setting_options['body']);
 
