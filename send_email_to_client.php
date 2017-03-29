@@ -82,12 +82,11 @@ function get_category_current_user($user_id, $client_data)
 		global $wpdb;
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
 		if($client_data){
-		foreach ($client_data as $client_data_single) {
 		$count = 1;
-			$more_category = "";
+		$more_category = "";
 		foreach ($categories_list as $category_) {
 			# code...
-			if (preg_match('/'.$category_->term_id.'/', $client_data_single->category)) {
+			if (preg_match('/'.$category_->term_id.'/', $client_data->category)) {
 				# code...
 				$category_name = "category".$count;
 				$more_category = $more_category.'<br/><input list="categories_list" name="'.$category_name.'" size="30" value="'.$category_->name.'">';
@@ -95,10 +94,11 @@ function get_category_current_user($user_id, $client_data)
 				
 			}
 		}
-
-	}
 }
-return $count;
+$category_result = array();
+array_push($category_result ,$more_category);
+array_push($category_result, $count);
+return $category_result;
 
 }
 
@@ -107,12 +107,11 @@ function get_location_current_user($user_id , $client_data)
 		global $wpdb;
 		$location_list = get_terms('locations', array('hide_empty' => false));;
 		if($client_data){
-		foreach ($client_data as $client_data_single) {
 		$count2 = 1;
 			$more_location = "";
 		foreach ($location_list as $location_) {
 			# code...
-			if (preg_match('/'.$location_->term_id.'/', $client_data_single->location)) {
+			if (preg_match('/'.$location_->term_id.'/', $client_data->location)) {
 				# code...
 				$location_name = "location" . $count2;
 				$more_location = $more_location.'<br/><input list="location_list" name="'.$location_name.'" size="30" value="'.$location_->name.'">';
@@ -121,43 +120,53 @@ function get_location_current_user($user_id , $client_data)
 			}
 		}
 
-	}
 }
-return $count2;
+$location_result = array();
+array_push($location_result ,$more_location);
+array_push($location_result, $count2);
+return $location_result;
 }
-
 
 function edugorilla_client(){
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		$location_list = get_terms('locations', array('hide_empty' => false));
 		$user_id = get_current_user_id();
 		$category_count_value =1;
 		$location_count_value =1;
+		$notification = "";
+		$in_val = "";
+		$dd_val = "";
+		$wd_val = "";
+		$md_val = "";
+		$unsub_email_val = "";
+		$unsub_sms_val = "";
+		$unlock_val = "";
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
-		$current_user_data = $wpdb->get_results("SELECT * FROM $table_name  WHERE id = $user_id");
-		foreach ($current_user_data as $data) {
-			$notificationString = $data->preferences;
-			$notificationArray = explode(",", $notificationString);
-			foreach ($notificationArray as $value) {
-				# code...
-				echo $value."/";
-				if($value == "Instant_Notifications")
+		$current_user_data = $wpdb->get_row("SELECT * FROM $table_name  WHERE id = $user_id");
+			$notificationString = $current_user_data->preferences;
+			//$notificationArray = explode(",", $notificationString);
+				if(preg_match('/Instant_Notifications/',$notificationString))
 					$in_val = "checked";
-				else if($value == "Daily_Digest")
+				if(preg_match('/Daily_Digest/',$notificationString))
 					$dd_val = "checked";
-				else if($value == "Weekly_Digest")
+				if(preg_match('/Weekly_Digest/',$notificationString))
 					$wd_val = "checked";
-				else if($value == "Monthly_Digest")
+				if(preg_match('/Monthly_Digest/',$notificationString))
 					$md_val = "checked";
-				else if ($value == "Unsubscribe_Email")
+				if (preg_match('/Unsubscribe_Email/',$notificationString))
 					$unsub_email_val = "checked";
-				else if ($value == "Unsubscribe_SMS")
+				if (preg_match('/Unsubscribe_SMS/',$notificationString))
 					$unsub_sms_val = "checked";
-			}
-		}
+		if($current_user_data->unlock_lead == 1)
+			$unlock_val = "checked";		
+		$category_result = get_category_current_user($user_id , $current_user_data);
+		$more_category = $category_result[0];
+		$category_count_value = $category_result[1];
+		$location_result = get_location_current_user($user_id , $current_user_data);
+		$more_location = $location_result[0];
+		$location_count_value = $location_result[1];
 
-		//$category_count_value = get_category_current_user($user_id , $current_user_data);
-		//$location_count_value = get_location_current_user($user_id , $current_user_data);
 
 	if (isset($_POST['submit_client_pref'])) {
 		# code...
@@ -216,26 +225,20 @@ function edugorilla_client(){
 			array_push($location, $_POST[$location_name]);
 		}
 
-		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
-		$all_cat = "";
-		foreach ($categories_list as $cat_value) {
-			# code...
-			foreach ($category as $category_value) {
-				# code...
-				if ($category_value == $cat_value->name) {
-					# code...
+		foreach ($category as $category_value) {
+			$category_value =  str_replace("&","&amp;",$category_value);
+			foreach ($categories_list as $cat_value) {
+				//echo $categoryString;
+				if(strcmp($cat_value->name , $category_value) == 0){
 					$all_cat = $cat_value->term_id . "," . $all_cat;
 				}
 			}
 		}
 
-		$location_list = get_terms('locations', array('hide_empty' => false));
-		$all_loc = "";
-		foreach ($location_list as $loc_value) {
-			# code...
-			foreach ($location as $location_value) {
-				# code...
-				if ($location_value == $loc_value->name) {
+		foreach ($location as $location_value) {
+			$location_value =  str_replace("&","&amp;",$location_value);
+			foreach ($location_list as $loc_value) {
+				if (strcmp($location_value , $loc_value->name) == 0) {
 					# code...
 					$all_loc = $loc_value->term_id . "," . $all_loc;
 				}
@@ -524,7 +527,7 @@ function do_this_daily()
 {
 	//do something every day
 	// send mail every day at 5PM
-	$edugorilla_email = get_option('edugorilla_email_setting1');
+	$edugorilla_email = get_option('email_setting_form_daily');
 	$edugorilla_email_body = stripslashes($edugorilla_email['body']);
 	global $wpdb;
 	$table_name1 = $wpdb->prefix . 'edugorilla_lead_details';
