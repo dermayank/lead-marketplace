@@ -130,7 +130,7 @@ class EduCash_Helper
             $email_body = str_replace("{EduCashUrl}",$url, $email_body);
             $email_body = str_replace("{Contact_Person}", $full_name, $email_body);
 
-            $to = "mayankrocking80@gmail.com";//$email;
+            $to = $email;
             $headers = array('Content-Type: text/html; charset=UTF-8');
             $value = wp_mail($to,$email_subject,$email_body,$headers);
             return "Success : $insertion_status";
