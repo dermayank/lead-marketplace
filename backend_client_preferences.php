@@ -1,12 +1,9 @@
 <?php
 function client_preferences_page(){
-
 	global $wpdb;
 	$users_table = $wpdb->prefix.'users';
 	$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
-
 	if($_POST['submit']){
-
 		if(empty($_POST['client_email'])){
 			$php_empty_error = "*This field cannot be blank";
 		} else{
@@ -16,7 +13,6 @@ function client_preferences_page(){
                 $no_client_found = "*This client does not exist in our database";
             }
 		}
-
 	}
 ?>
 <style>
@@ -63,7 +59,6 @@ function form_not_empty(){
 <br/><br/><br/>
 
 <?php
-
        if($_POST['submit'] && !(empty($_POST['client_email'])) && $check_client > 0){
          $value = $wpdb->get_row("SELECT * FROM $table_name WHERE email_id = '$client_email' ");
 		 
@@ -88,7 +83,6 @@ function form_not_empty(){
 		 } else{
 			 $unlock_val = "";
 		 }	 
-
 		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
 		$location_list = get_terms('locations', array('hide_empty' => false));
 		$user_id = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$client_email' ");
@@ -118,13 +112,12 @@ function form_not_empty(){
 		$more_location = $location_result[0];
 		$location_count_value = $location_result[1];
 	   }
-
 	if (isset($_POST['submit_client_pref'])) {
-		# code...
+		$categories_list = get_terms('listing_categories', array('hide_empty' => false));
+		$location_list = get_terms('locations', array('hide_empty' => false));
 		$unlock_lead_ = $_POST['unlock_lead'];
 		$client_email2 = $_POST['client_email2'];
 		$notification_all = $_POST['notification'];
-
 		if (!empty($notification_all)) {
 			# code...
 			$notification = "";
@@ -146,7 +139,6 @@ function form_not_empty(){
 		$location_count = $_POST['location_count'];
 		$category_count_value = $category_count;
 		$location_count_value = $location_count;
-
 		$category = array();
 		$location = array();
 		$more_category = "";
@@ -172,7 +164,6 @@ function form_not_empty(){
 			$location_select_val = $_POST[$location_name];
 			array_push($location, $_POST[$location_name]);
 		}
-
 		foreach ($category as $category_value) {
 			$category_value =  str_replace("&","&amp;",$category_value);
 			foreach ($categories_list as $cat_value) {
@@ -182,7 +173,6 @@ function form_not_empty(){
 				}
 			}
 		}
-
 		foreach ($location as $location_value) {
 			$location_value =  str_replace("&","&amp;",$location_value);
 			foreach ($location_list as $loc_value) {
@@ -209,24 +199,12 @@ function form_not_empty(){
 			 $unsub_sms_val = "";
 			 $not_sms = 0;
 		 }
-
 		if ($unlock_lead_ != 1) {
 			# code...
 			$unlock_val = "";
 			$unlock_lead_ = 0;
 		}else
 			$unlock_val = "checked";
-
-		/** Error Checking **/
-		$c_errors = array();
-
-
-		if (empty($location)) $c_errors['location'] = "Empty";
-		//elseif (!preg_match("/([A-Za-z]+)/", $location)) $c_errors['location'] = "Invalid Name";
-
-		if (empty($category)) $c_errors['category'] = "Empty";
-		//elseif (!preg_match("/([A-Za-z]+)/", $category)) $c_errors['category'] = "Invalid Name";
-
 
 		$user_id = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$client_email2' ");
 		$user_detail = get_user_meta($user_id);
@@ -236,11 +214,6 @@ function form_not_empty(){
 		$client_email = $user_detail['user_general_email'][0];
 		$client_contact = $user_detail['user_general_phone'][0];
 
-		//Insert Data to table
-		if(empty($errors)){
-
-			global $wpdb;
-			$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
 			if ($wpdb->get_results("SELECT * FROM $table_name WHERE id = $user_id")) {
 				$client_result = $wpdb->update($table_name,
 					array(
@@ -271,30 +244,22 @@ function form_not_empty(){
 					)
 				);
 			}
-
 			if ($client_result)
-				$client_success = "Saved Successfully";
+				$client_success = "<font color = 'green'>Saved Successfully</font>";
 			else
-				$client_success = "Please try again";
+				$client_success = "<font color = 'red'>Please try again</font>";
 		}
-	}
-
-	?>
+?>
 
 	<script type="text/javascript">
-
 		function add() {
-
 			var ctrC = parseInt(document.getElementById("category_count").value);
 			var ctrL = parseInt(document.getElementById("location_count").value);
-
 			//Create an input type dynamically.
 			var element_c = document.createElement("input");
 			var element_l = document.createElement("input");
 			var br1 = document.createElement("br");
 			var br2 = document.createElement("br");
-
-
 			var element_name_c = "category" + ctrC;
 			element_c.setAttribute("list", "categories_list");
 			element_c.setAttribute("size", 30);
@@ -304,26 +269,19 @@ function form_not_empty(){
 			foo1.insertBefore(element_c, foo1.childNodes[0]);
 			ctrC++;
 			document.getElementById("category_count").value = ctrC;
-
 			var element_name_l = "location" + ctrL;
 			element_l.setAttribute("list", "location_list");
 			element_l.setAttribute("size", 30);
 			element_l.setAttribute("name", element_name_l);
 			//Assign different attributes to the element.
-
 			var foo2 = document.getElementById("get_location");
 			foo2.insertBefore(br2, foo2.childNodes[0]);
 			foo2.insertBefore(element_l, foo2.childNodes[0]);
 			ctrL++;
 			document.getElementById("location_count").value = ctrL;
 		}
-
-
 	</script>
 
-
-
-	<!-- Client Form -->
 <div id = "preference_form">
 <h2>Client Preferences</h2>
 	<form action="" method="post">
@@ -364,7 +322,6 @@ function form_not_empty(){
 				<td colspan="2"><input type="checkbox" id="notification" name="not_sms"
 				                       value="1" <?php echo $unsub_sms_val ?>>Unsubscribe
 					SMS<br/>
-					<font color="red"><?php echo $c_errors['notification']; ?></font>
 				</td>
 			</tr>
 			<tr>
@@ -372,9 +329,6 @@ function form_not_empty(){
 				<td>Location</td>
 				<td>Category</td>
 			</tr>
-			<!--<div class="ui-widget">
-			  <input id="tags_loc" name="location" size="50">
-			</div>-->
 			<tr>
 				<td>
 					<?php $location = get_terms('locations', array('hide_empty' => false)); ?>
@@ -389,9 +343,6 @@ function form_not_empty(){
 					</div>
 					<input type="text" hidden name="location_count" id="location_count" value="<?php echo $location_count_value ?>">
 					<font color="red"><?php echo $c_errors['location']; ?></font></td>
-				<!--<div class="ui-widget">
-				  <input id="tags" name="category" size="50">
-				</div>-->
 				<td>
 					<?php $categories = get_terms('listing_categories', array('hide_empty' => false)); ?>
 					<datalist id="categories_list">
