@@ -31,8 +31,8 @@ function table_for_client()
 function send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body, $lead_card)
 {
 	global $wpdb;
-	$location_ids = $lead_card->getLocationId();
-	$category = $lead_card->getCategoryId();
+	$location_ids = $lead_card->getLocationList();
+	$category = $lead_card->getCategoryList();
 	$lead_id = $lead_card->getId();
 	$categoryArray = explode(',', $category);
 	$locationArray = explode(',', $location_ids);
