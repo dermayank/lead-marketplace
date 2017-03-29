@@ -53,12 +53,12 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
               $value = wp_mail($to,$email_subject,$email_body,$headers);
 
               $sms_setting_options2 = get_option('edugorilla_sms_setting2');
-
+              $full_name = $user->first_name." ".$user->last_name;
               $short_url = shorten_url($url);
               $edugorilla_sms_body2 = str_replace("{ReceivedCount}", $educash, $edugorilla_sms_body2);
               $edugorilla_sms_body2 = str_replace("{EduCashCount}", $current_count, $edugorilla_sms_body2);
               $edugorilla_sms_body2 = str_replace("{EduCashUrl}",$short_url, $edugorilla_sms_body2);
-              $edugorilla_sms_body2 = str_replace("{Contact_Person}", $user->first_name, $edugorilla_sms_body2);
+              $edugorilla_sms_body2 = str_replace("{Contact_Person}", $full_name, $edugorilla_sms_body2);
 
               $edugorilla_sms_body2 = stripslashes($sms_setting_options2['body']);
 
