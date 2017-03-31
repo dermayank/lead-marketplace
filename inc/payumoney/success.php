@@ -18,6 +18,7 @@ include_once(str_replace('/inc','',$sms_code[0].'/api/gupshup.api.php'));
 global $wpdb;
 
 //$user = get_user_by( 'id', 1 );
+//$mobile_no = get_user_meta(1,'user_general_phone',true);
 //echo $full_name."\n\n".$user->user_address_street_and_number."- ".$user->user_address_postal_code.", " .$user->user_address_city."\n\n".$clientName."\n\n".$mobile_no;
 
 session_start();
@@ -66,9 +67,9 @@ if(isset($_POST['amount']) && isset($_POST['status']) && isset($_POST['txnid']) 
 
 
             $pdf->addCompanyAddress("Address: 4719/A, Sector 23A, Gurgaon-122002, India\n\nWebsite: https://edugorilla.com\n\nEmail: hello@edugorilla.com\n\nPhone no. +91 9410007819");
-            $pdf->addClientAddress(ucwords("\n".$full_name."\n\n".
+            $pdf->addClientAddress(ucwords("\n".$user->first_name.' '.$user->last_name."\n\n".
                                                     $user->user_address_street_and_number."- ".$user->user_address_postal_code.", " .
-                                                    $user->user_address_city)."\n\n".$clientName."\n\n".$mobile_no);
+                                                    $user->user_address_city)."\n\n".$email."\n\n".$mobile_no);
 
              $cols=array( "Item" => 61,
                                 "Rate"      => 43,
