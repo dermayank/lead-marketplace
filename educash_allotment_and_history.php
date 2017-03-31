@@ -360,7 +360,7 @@ function allocate_educash_form_page()
 
 		$pdf->right_blocks(40, 45, 22, "EduGorilla Community Pvt. Ltd.");
 		$pdf->right_blocks(40, 55, 12, "Regn. No. U74999UP2016PTC088614");
-		$pdf->Image("https://electronicsguide.000webhostapp.com/wp-content/uploads/2017/01/eg_logo.jpg",10,35,(53.898305)/2,30);
+		$pdf->Image(plugin_dir_path(__FILE__) . "pdf_library/eg_logo.JPG",10,35,26.9491525,30);
 		
 		$r = $wpdb->get_row("SELECT * FROM $table_name3 WHERE time = '$time' ");
 		
