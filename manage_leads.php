@@ -163,6 +163,6 @@ ul.tab li a:focus, .active {background-color: #ccc;}
 
 	}
 
-	add_shortcode('edugorilla_pages_ui','show_all_other_shortcodes');
+add_shortcode('manage_leads', 'show_all_other_shortcodes');
 
 ?>
