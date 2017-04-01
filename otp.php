@@ -153,9 +153,31 @@ function edugorilla_settings()
                       </td>
                   </tr>
                   <tr>
-                      <td><input type="submit" class="button button-primary" value="Save"></td>
+                      <td><input type="submit" class="button button-primary" value="Save"/></td>
                   </tr>
               </table>
+          </form></br></br>
+
+          <h1> Choose the mode of payment Gateway:</h1></br></br>
+
+          <?php
+              if (isset($_POST['pay_mode']))
+              {
+                  if(!empty($_POST['pay_mode'])){
+
+                      $credentials1 = array("mode"=>$_POST['pay_mode']);
+                      update_option("payment_mode",$credentials1);
+                      $success = "Saved Successfully";
+                  }
+              }
+              $out = get_option("payment_mode");
+              $val = $out['mode'];
+             ?>
+
+          <form method="post" action="">
+              <input type="radio" name="pay_mode" value="1" <?php if($val==1) echo"checked";?> >Test Mode</input> </br></br>
+              <input type="radio" name="pay_mode" value="2" <?php if($val==2) echo"checked";?> >Live Mode</input> </br></br>
+              <input type="submit" class="button button-primary" value="Save"/>
           </form>
           </div></br></br>
       </div>

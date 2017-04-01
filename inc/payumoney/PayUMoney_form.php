@@ -1,7 +1,22 @@
 <?php
 session_start();
-// End point - change to https://secure.payu.in for LIVE mode
-$PAYU_BASE_URL = "https://test.payu.in";
+
+global $wpdb;
+
+$wploadPath = explode('/wp-content/', dirname(__FILE__));
+include_once(str_replace('wp-content/' , '', $wploadPath[0] . '/wp-load.php'));
+
+$out = get_option("payment_mode");
+$val = $out['mode'];
+
+if($val==2)
+{
+    $PAYU_BASE_URL = "https://secure.payu.in";
+}
+else{
+    // End point - change to https://secure.payu.in for LIVE mode
+    $PAYU_BASE_URL = "https://test.payu.in";
+}
 
 // Merchant key here as provided by Payu
     $MERCHANT_KEY = $_POST['txnid'];
