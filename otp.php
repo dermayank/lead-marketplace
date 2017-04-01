@@ -175,8 +175,8 @@ function edugorilla_settings()
              ?>
 
           <form method="post" action="">
-              <input type="radio" name="pay_mode" value="1" <?php if($val==1) echo"checked";?> >Test Mode</br></br>
-              <input type="radio" name="pay_mode" value="2" <?php if($val==2) echo"checked";?> >Live Mode</br></br>
+              <input type="radio" name="pay_mode" value="1" <?php if($val==1) echo"checked";?> >Test Mode</input> </br></br>
+              <input type="radio" name="pay_mode" value="2" <?php if($val==2) echo"checked";?> >Live Mode</input> </br></br>
               <input type="submit" class="button button-primary" value="Save"/>
           </form>
           </div></br></br>
