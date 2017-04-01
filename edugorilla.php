@@ -235,7 +235,7 @@ include_once plugin_dir_path(__FILE__) . 'database/class-ClientEmailPref-Helper.
 include_once plugin_dir_path(__FILE__) . 'database/class-UserMeta-Helper.php'; /*Utility class used for dealing with Meta information */
 include_once plugin_dir_path(__FILE__) . "send_email_to_client.php";
 
-include_once plugin_dir_path(__FILE__) . "edugorilla_pages.php";
+include_once plugin_dir_path(__FILE__) . "manage_leads.php";
 
 
 
@@ -639,7 +639,7 @@ function script()
 	);
 	wp_enqueue_script(
 		'script',                         // Handle
-		plugins_url('/js/script.js', __FILE__),  // Path to file
+		plugins_url('/js/backend_clientlib.js', __FILE__),  // Path to file
 		array('jquery', 'jquery-ui-datepicker', 'jquery-ui-tabs') // Dependancies
 	);
 
