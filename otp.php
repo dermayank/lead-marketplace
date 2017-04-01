@@ -153,12 +153,12 @@ function edugorilla_settings()
                       </td>
                   </tr>
                   <tr>
-                      <td><input type="submit" class="button button-primary" value="Save"></td>
+                      <td><input type="submit" class="button button-primary" value="Save"/></td>
                   </tr>
               </table>
-          </form><br><br>
+          </form></br></br>
 
-          <h1> Choose the mode of payment Gateway:</h1><br><br>
+          <h1> Choose the mode of payment Gateway:</h1></br></br>
 
           <?php
               if (isset($_POST['pay_mode']))
