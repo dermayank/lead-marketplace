@@ -154,25 +154,24 @@ function edugorilla_client(){
 					$wd_val = "checked";
 				if(preg_match('/Monthly_Digest/',$notificationString))
 					$md_val = "checked";
-				if (preg_match('/Unsubscribe_Email/',$notificationString))
-					$unsub_email_val = "checked";
-				if (preg_match('/Unsubscribe_SMS/',$notificationString))
-					$unsub_sms_val = "checked";
-		if($current_user_data->unlock_lead == 1)
-			$unlock_val = "checked";		
+				
+        if($current_user_data->unlock_lead == 1)
+		    $unlock_val = "checked"; 
+        if($current_user_data->unsubscribe_email == 1)
+		    $unsub_email_val = "checked";
+        if($current_user_data->unsubscribe_sms == 1)
+		    $unsub_sms_val = "checked";
+                		
 		$category_result = get_category_current_user($user_id , $current_user_data);
 		$more_category = $category_result[0];
 		$category_count_value = $category_result[1];
 		$location_result = get_location_current_user($user_id , $current_user_data);
 		$more_location = $location_result[0];
 		$location_count_value = $location_result[1];
-
-
+    
 	if (isset($_POST['submit_client_pref'])) {
-		# code...
 		$unlock_lead_ = $_POST['unlock_lead'];
 		$notification_all = $_POST['notification'];
-
 		if (!empty($notification_all)) {
 			# code...
 			$notification = "";
@@ -187,18 +186,12 @@ function edugorilla_client(){
 					$wd_val = "checked";
 				else if($value == "Monthly_Digest")
 					$md_val = "checked";
-				else if ($value == "Unsubscribe_Email")
-					$unsub_email_val = "checked";
-				else if ($value == "Unsubscribe_SMS")
-					$unsub_sms_val = "checked";
-
 			}
 		}
 		$category_count = $_POST['category_count'];
 		$location_count = $_POST['location_count'];
 		$category_count_value = $category_count;
 		$location_count_value = $location_count;
-
 		$category = array();
 		$location = array();
 		$more_category = "";
@@ -224,7 +217,6 @@ function edugorilla_client(){
 			$location_select_val = $_POST[$location_name];
 			array_push($location, $_POST[$location_name]);
 		}
-
 		foreach ($category as $category_value) {
 			$category_value =  str_replace("&","&amp;",$category_value);
 			foreach ($categories_list as $cat_value) {
@@ -234,7 +226,6 @@ function edugorilla_client(){
 				}
 			}
 		}
-
 		foreach ($location as $location_value) {
 			$location_value =  str_replace("&","&amp;",$location_value);
 			foreach ($location_list as $loc_value) {
@@ -245,24 +236,28 @@ function edugorilla_client(){
 			}
 		}
 
+        $not_email = $_POST['not_email'];
+		$not_sms = $_POST['not_sms'];
+ 
+		if($not_email == 1){
+			$unsub_email_val = "checked";
+		} else{
+			$unsub_email_val = "";
+			$not_email = 0;
+		}
+		 
+		if($not_sms == 1){
+			$unsub_sms_val = "checked";
+		} else{
+			$unsub_sms_val = "";
+			$not_sms = 0;
+		}
 		if ($unlock_lead_ != 1) {
-			# code...
 			$unlock_val = "";
 			$unlock_lead_ = 0;
 		}else
 			$unlock_val = "checked";
-
-		/** Error Checking **/
-		$c_errors = array();
-
-
-		if (empty($location)) $c_errors['location'] = "Empty";
-		//elseif (!preg_match("/([A-Za-z]+)/", $location)) $c_errors['location'] = "Invalid Name";
-
-		if (empty($category)) $c_errors['category'] = "Empty";
-		//elseif (!preg_match("/([A-Za-z]+)/", $category)) $c_errors['category'] = "Invalid Name";
-
-
+		
 		$user_id = get_current_user_id();
 		echo $user_id;
 		$user_detail = get_user_meta($user_id);
@@ -271,9 +266,8 @@ function edugorilla_client(){
 		$_client_name = $first_name . " " . $last_name;
 		$client_email = $user_detail['user_general_email'][0];
 		$client_contact = $user_detail['user_general_phone'][0];
-
+ 
 		//Insert Data to table
-		if(empty($errors)){
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'edugorilla_client_preferences';
@@ -282,6 +276,8 @@ function edugorilla_client(){
 					array(
 						'preferences' => $notification,
 						'location' => $all_loc,
+                        'unsubscribe_email' => $not_email,
+						'unsubscribe_sms' => $not_sms,
 						'unlock_lead' => $unlock_lead_,
 						'category' => $all_cat
 					)
@@ -297,26 +293,23 @@ function edugorilla_client(){
 						'email_id' => $client_email,
 						'contact_no' => $client_contact,
 						'preferences' => $notification,
+                        'unsubscribe_email' => $not_email,
+						'unsubscribe_sms' => $not_sms,
 						'location' => $all_loc,
 						'unlock_lead' => $unlock_lead_,
 						'category' => $all_cat
 					)
 				);
 			}
-
 			if ($client_result)
 				$client_success = "Saved Successfully";
 			else
 				$client_success = "Please try again";
-		}
 	}
-
 	?>
 
 	<script type="text/javascript">
-
 		function add() {
-
 			var ctrC = parseInt(document.getElementById("category_count").value);
 			var ctrL = parseInt(document.getElementById("location_count").value);
 
@@ -325,7 +318,6 @@ function edugorilla_client(){
 			var element_l = document.createElement("input");
 			var br1 = document.createElement("br");
 			var br2 = document.createElement("br");
-
 
 			var element_name_c = "category" + ctrC;
 			element_c.setAttribute("list", "categories_list");
@@ -342,103 +334,90 @@ function edugorilla_client(){
 			element_l.setAttribute("size", 30);
 			element_l.setAttribute("name", element_name_l);
 			//Assign different attributes to the element.
-
 			var foo2 = document.getElementById("get_location");
 			foo2.insertBefore(br2, foo2.childNodes[0]);
 			foo2.insertBefore(element_l, foo2.childNodes[0]);
 			ctrL++;
 			document.getElementById("location_count").value = ctrL;
 		}
-
-
 	</script>
 
-
-
 	<!-- Client Form -->
-	<form action="" method="post">
+	<form action = "" method = "post">
 		<p><?php echo $client_success; ?></p>
 		<table>
 			<tr>
-				<td rowspan="6">Notification Preferences<sup><font color="red">*</font></sup> :</td>
-				<td colspan="2"><input type="checkbox" name="notification[]" id="notification"
-				                       value="Instant_Notifications" <?php echo $in_val ?>>Instant Notification
+				<td rowspan = "4">Notification Preferences<sup><font color = "red">*</font></sup> :</td>
+				<td colspan = "2"><input type = "checkbox" name = "notification[]" id = "notification"
+				                       value = "Instant_Notifications" <?php echo $in_val ?>>Instant Notification
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Daily_Digest" <?php echo $dd_val ?>>Daily
+				<td colspan = "2"><input type = "checkbox" id = "notification" name = "notification[]" value = "Daily_Digest" <?php echo $dd_val ?>>Daily
 					Digest
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Weekly_Digest" <?php echo $wd_val ?> >Weekly
+				<td colspan = "2"><input type = "checkbox" id = "notification" name = "notification[]" value = "Weekly_Digest" <?php echo $wd_val ?> >Weekly
 					Digest
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]" value="Monthly_Digest" <?php echo $md_val ?>>Monthly
+				<td colspan = "2"><input type = "checkbox" id = "notification" name = "notification[]" value = "Monthly_Digest" <?php echo $md_val ?>>Monthly
 					Digest
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]"
-				                       value="Unsubscribe_Email" <?php echo $unsub_email_val ?>>Unsubscribe
+				<td colspan = "2"><input type = "checkbox" id = "notification" name = "not_email"
+				                       value = "1" <?php echo $unsub_email_val ?>>Unsubscribe
 					Email
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><input type="checkbox" id="notification" name="notification[]"
-				                       value="Unsubscribe_SMS" <?php echo $unsub_sms_val ?>>Unsubscribe
+				<td colspan = "2"><input type = "checkbox" id = "notification" name = "not_sms"
+				                       value = "1" <?php echo $unsub_sms_val ?>>Unsubscribe
 					SMS<br/>
-					<font color="red"><?php echo $c_errors['notification']; ?></font>
 				</td>
 			</tr>
 			<tr>
-				<td rowspan="2">Subscribe for following Categories :</td>
+				<td rowspan = "2">Subscribe for following Categories :</td>
 				<td>Location</td>
 				<td>Category</td>
 			</tr>
-			<!--<div class="ui-widget">
-			  <input id="tags_loc" name="location" size="50">
-			</div>-->
 			<tr>
 				<td>
 					<?php $location = get_terms('locations', array('hide_empty' => false)); ?>
-					<datalist id="location_list">
+					<datalist id = "location_list">
 						<?php foreach ($location as $value) { ?>
-						<option value="<?php echo $value->name; ?>">
+						<option value = "<?php echo $value->name; ?>">
 							<?php } ?>
 					</datalist>
-					<div id="get_location">
-						<input list="location_list" name="location0" size="30" value="<?php echo $location_select_val?>">
+					<div id = "get_location">
+						<input list = "location_list" name = "location0" size = "30" value = "<?php echo $location_select_val?>">
 						<?php echo $more_location ?>
 					</div>
-					<input type="text" hidden name="location_count" id="location_count" value="<?php echo $location_count_value ?>">
-					<font color="red"><?php echo $c_errors['location']; ?></font></td>
-				<!--<div class="ui-widget">
-				  <input id="tags" name="category" size="50">
-				</div>-->
+					<input type = "text" hidden name = "location_count" id = "location_count" value = "<?php echo $location_count_value ?>"></td>
 				<td>
 					<?php $categories = get_terms('listing_categories', array('hide_empty' => false)); ?>
-					<datalist id="categories_list">
+					<datalist id = "categories_list">
 						<?php foreach ($categories as $value) { ?>
-						<option value="<?php echo $value->name; ?>">
+						<option value = "<?php echo $value->name; ?>">
 							<?php } ?>
 					</datalist>
-					<div id="get_category">
-						<input list="categories_list" name="category0" size="30" value="<?php
+					<div id = "get_category">
+						<input list = "categories_list" name = "category0" size = "30" value = "<?php
 						 echo $category_select_val?>">
 						<?php echo $more_category ?>
-						<input type="button" value="  +  " onclick="add()">
+						<input type = "button" value = "  +  " onclick = "add()">
 					</div>
-					<input type="text" hidden name="category_count" id="category_count" value="<?php echo $category_count_value ?>">
-					<font color="red"><?php echo $c_errors['category']; ?></font></td>
+					<input type = "text" hidden name = "category_count" id = "category_count" value = "<?php echo $category_count_value ?>">
+					</td>
 			</tr>
 			<tr>
 				<td>Automatically Unlock the Lead :</td>
-				<td><input type="checkbox" name="unlock_lead" value="1" <?php echo $unlock_val ?>></td>
+				<td><input type = "checkbox" name = "unlock_lead" value = "1" <?php echo $unlock_val ?>></td>
 			</tr>
-			<tr><td><input type="submit" name="submit_client_pref"/></td></tr>
+			<tr><td><input type = "submit" name = "submit_client_pref"/></td></tr>
 		</table>
 	</form>
 	<?php
