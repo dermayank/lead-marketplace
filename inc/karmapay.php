@@ -38,10 +38,12 @@
                $email_subject = stripslashes($email_setting_options['subject']);
                $email_body = stripslashes($email_setting_options['body']);
 
+               $new_string ="transaction using karmas";
                $full_name = $user->first_name." ".$user->last_name;
 
                $email_body = str_replace("{ReceivedCount}", $educash, $email_body);
-               $email_body = str_replace("{EduCashCount}", $current_count, $email_body);
+               $email_body = str_replace("transaction", $new_string, $email_body);
+               $email_body = str_replace("{EduCashCount}", $current_count." and your current karmas count is ".$new_balance, $email_body);
                $email_body = str_replace("{EduCashUrl}",$url, $email_body);
                $email_body = str_replace("{Contact_Person}", $full_name, $email_body);
 
