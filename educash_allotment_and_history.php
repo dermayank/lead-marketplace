@@ -415,6 +415,31 @@ function allocate_educash_form_page()
 		$display_transaction = new EduCash_Helper();
 		$display_transaction->display_current_transaction($time, $clientName);
 
+       if($educash_added > 0){
+			$table_name6 = $wpdb->prefix.'edugorilla_client_preferences';
+			$check_client_notifications = $wpdb->get_var("SELECT COUNT(id) from $table_name6 WHERE email_id = '$clientName' ");
+
+			if($check_client_notifications == 0){
+				$user_id = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientName' ");
+				$_client_name = $firstname . " " . $lastname;
+				$notification = "Monthly_Digest, Weekly_Digest, Daily_Digest, Instant_Notifications, ";
+				$wpdb->insert(
+					$table_name6,
+					array(
+						'id' => $user_id,
+						'client_name' => $_client_name,
+						'email_id' => $clientName,
+						'contact_no' => $phone_number,
+						'preferences' => $notification,
+                        'unsubscribe_email' => 0,
+						'unsubscribe_sms' => 0,
+						'unlock_lead' => 0
+					)
+				);
+			}
+
+		}
+
    } else{
 	   $client_ID_result = $wpdb->get_var("SELECT ID FROM $users_table WHERE user_email = '$clientName' ");
 	   $check_transaction = new EduCash_Helper();
