@@ -98,14 +98,15 @@ $(document).on('click','#edugorilla_filter',function(){
                 	 if($("#edu_name").val() !== "" && $("#edu_email").val() !== "" && $("#edu_contact_no").val() !== "" && $("#edu_query").val() !== "" && $("#edugorilla_institute_datas").val() !== "")
                     {
                     	$('#save_details_button').removeAttr("disabled");
-                    	if($("#is_promotional_lead").is(":checked"))
-                        {
+	                    //We should be showing modal in any case.
+	                    //if($("#is_promotional_lead").is(":checked"))
+	                    //{
                         	$('#save_details_button').attr("rel","modal:open");
-                        	
-                        }else
-                        {
-                        	$('#save_details_button').attr("onclick","document.details.submit();");
-                        }
+
+	                    //}else
+	                    //{
+	                    //	$('#save_details_button').attr("onclick","document.details.submit();");
+	                    //}
                     }
             
                 

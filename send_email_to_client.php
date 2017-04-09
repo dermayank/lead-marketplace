@@ -71,6 +71,44 @@ function send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body
 	return $institute_emails_status;
 }
 
+function send_mail_without_unlock( $edugorilla_email_subject, $edugorilla_email_body, $institute_emails, $institute_phones, $contact_name, $post_id, $contact_log_id ) {
+	global $wpdb;
+	foreach ( $institute_emails as $institute_email ) {
+		add_filter( 'wp_mail_content_type', 'edugorilla_html_mail_content_type' );
+
+		if ( ! empty( $institute_email ) ) {
+			$institute_emails_status[ $institute_email ] = wp_mail( $institute_email, $edugorilla_email_subject, ucwords( $edugorilla_email_body ) );
+		}
+
+		remove_filter( 'wp_mail_content_type', 'edugorilla_html_mail_content_type' );
+
+	}
+
+	include_once plugin_dir_path( __FILE__ ) . "api/gupshup-api.php";
+	foreach ( $institute_phones as $institute_phone ) {
+		$sms_setting_options1 = get_option( 'edugorilla_sms_setting1' );
+		$edugorilla_sms_body1 = stripslashes( $sms_setting_options1['body'] );
+
+		$credentials                              = get_option( "ghupshup_credentials" );
+		$msg                                      = str_replace( "{Contact_Person}", $contact_name, $edugorilla_sms_body1 );
+		$institute_sms_status[ $institute_phone ] = send_sms( $credentials['user_id'], $credentials['password'], $institute_phone, $msg );
+	}
+
+	$result2 = $wpdb->update(
+		$wpdb->prefix . 'edugorilla_lead_contact_log',
+		array(
+			'post_id'      => $post_id,
+			'email_status' => json_encode( $institute_emails_status ),
+			'sms_status'   => json_encode( $institute_sms_status ),
+			'date_time'    => current_time( 'mysql' )
+		),
+		array( 'contact_log_id' => $contact_log_id, )
+
+	);
+
+	return $result2;
+}
+
 function str_starts_with($haystack, $needle)
 {
 	return substr_compare($haystack, $needle, 0, strlen($needle)) === 0;
