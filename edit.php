@@ -87,53 +87,32 @@ function edugorilla_lead_edit(){
 				}
 			}
 
-			foreach ($json_results as $json_result) {
-				if ($is_promotional_lead == "yes") {
-					$edugorilla_email_subject = str_replace("{category}", $json_result->contact_category, $edugorilla_email['subject']);
-					$email_template_datas = array("{Contact_Person}" => $json_result->contact_person, "{category}" => $json_result->contact_category, "{location}" => $json_result->contact_location, "{listing_URL}" => $json_result->listing_url, "{name}" => $name, "{contact no}" => $contact_no, "{email address}" => $email, "{query}" => $query);
+			foreach ( $json_results as $json_result ) {
+				$edugorilla_email_subject = str_replace( "{category}", $json_result->contact_category, $edugorilla_email['subject'] );
+				$email_template_datas     = array(
+					"{Contact_Person}" => $json_result->contact_person,
+					"{category}"       => $json_result->contact_category,
+					"{location}"       => $json_result->contact_location,
+					"{listing_URL}"    => $json_result->listing_url,
+					"{name}"           => $name,
+					"{contact no}"     => $contact_no,
+					"{email address}"  => $email,
+					"{query}"          => $query
+				);
 
-					foreach ($email_template_datas as $var => $email_template_data) {
-						$edugorilla_email_body = str_replace($var, $email_template_data, $edugorilla_email_body);
-					}
+				foreach ( $email_template_datas as $var => $email_template_data ) {
+					$edugorilla_email_body = str_replace( $var, $email_template_data, $edugorilla_email_body );
+				}
+				$institute_emails    = explode( ",", $json_result->emails );
+				$institute_phones    = explode( ",", $json_result->phones );
+				$contact_log_id      = $wpdb->insert_id;
+				$contact_person_name = $json_result->contact_person;
+				$log_post_id         = $json_result->post_id;
+				if ( $is_promotional_lead == "yes" ) {
+					$result2 = send_mail_without_unlock( $edugorilla_email_subject, $edugorilla_email_body, $institute_emails, $institute_phones, $contact_log_id, $contact_person_name, $log_post_id );
 
-					$institute_send_emails_status = send_mail_with_unlock($edugorilla_email_subject, $edugorilla_email_body);
-
-					$institute_emails = explode(",", $json_result->emails);
-					foreach ($institute_emails as $institute_email) {
-						add_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
-
-						if (!empty($institute_email))
-							$institute_emails_status[$institute_email] = wp_mail($institute_email, $edugorilla_email_subject, ucwords($edugorilla_email_body));
-
-						remove_filter('wp_mail_content_type', 'edugorilla_html_mail_content_type');
-
-					}
-
-					$institute_phones = explode(",", $json_result->phones);
-					include_once plugin_dir_path(__FILE__) . "api/gupshup-api.php";
-					foreach ($institute_phones as $institute_phone) {
-                        $sms_setting_options1 = get_option('edugorilla_sms_setting1');
-                        $edugorilla_sms_body1 = stripslashes($sms_setting_options1['body']);
-
-                        $credentials = get_option("ghupshup_credentials");
-						$msg = str_replace("{Contact_Person}", $json_result->contact_person, $edugorilla_sms_body1);
-						$institute_sms_status[$institute_phone] = send_sms($credentials['user_id'],$credentials['password'],$institute_phone,$msg);
-					}
-
-					$contact_log_id = $wpdb->insert_id;
-
-					$result2 = $wpdb->update(
-						$wpdb->prefix . 'edugorilla_lead_contact_log',
-						array(
-							'post_id' => $json_result->post_id,
-							'email_status' => json_encode($institute_emails_status),
-							'sms_status' => json_encode($institute_sms_status),
-							'date_time' => current_time('mysql')
-						),
-						array( 'contact_log_id' => $contact_log_id, )
-
-					);
-
+				} else {
+					$result2 = send_mail_without_unlock( "LockedEmail : " . $edugorilla_email_subject, $edugorilla_email_body, $institute_emails, $institute_phones, $contact_log_id, $contact_person_name, $log_post_id );
 				}
 			}
 

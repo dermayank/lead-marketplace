@@ -31,7 +31,7 @@ Create a form to add following details
 Show the details of all the fetched Leads. They should be properly hyperlinked.
 
 1. Users should be able to purchase definite number of EduCash from their account. 
-2. We should be able to modify the EduCash credited in User&#39;s account from backend. We can provide an admin UI to bulk edit the EduCash for all users.
+2. We should be able to modify the EduCash credited in User&#39;s account from backend from the admin UI.
 3. User should be able to see the current points and history in his user panel.
 4. User should be able to sort, filter and find leads before purchasing.
 5. Overview of the leads should be given to the user before he makes the purchase (like which city the lead is from and what service the lead is looking for).
@@ -69,6 +69,7 @@ The following shortcodes are currently supported by this project :
 1. [educash_payment] - This page shows you the Payment gateway through which the user can buy EduCash
 1. [transaction_history]- This page can be used to view the current client's EduCash Trasncation history
 1. [client_preference_form] - This is to be used by the clients to enter their details and subscribe for email notifications.
+1. [manage_leads] - This will create a UI containing the above four short codes as tabs.
 
 ### Admin Menus:
 
@@ -77,10 +78,12 @@ The following menus will be available in the admin page after the plugin is inst
 1. Lead capture form - This is the main form that is used to add new Leads to our system
 1. Sent Leads - This form shows you Promotional/Bought leads that are sent to the customers
 1. OTP- This is used for debugging purposes to get the OTP to mobile number
-1. Template of Email - This is to be used by the operations team to edit the template of the email sent to customers
-1. Template of SMS - This is to be used by the operations team to edit the template of the SMS sent to customers
+1. Email Templates - This is to be used by the operations team to edit the template of the email sent to customers
+1. SMS Templates - This is to be used by the operations team to edit the template of the SMS sent to customers
 1. Allocate EduCash - This can be used to allocate new EduCash to our customers
 1. Transaction History - An UI to see the transaction history for any customer
+1. Client Preferences - This is the backend UI for the client preferences table that can be edited by user from [client_preference_form] UI
+1. Conversion Tables - An UI to modify the conversion tables which are used to convert between EduCash/Leads and actual money.
 1. Third Party Settings - Misc Admin settings that are used to communicate with third party APIs.
 
 
@@ -93,6 +96,7 @@ The following tables will be added to the database after the plugin is installed
 1. edugorilla_lead_educash_transactions - Transaction history for EduCash.
 1. edugorilla_lead_client_mapping - Mapping between client id and lead id.
 1. edugorilla_educash_conversion_ratio - Mapping between educash and other currencies.
+1. edugorilla_client_preferences - Contains the details of the client's email/sms preferences
 
 # Scope of project:
 
